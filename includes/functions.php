@@ -35,7 +35,7 @@ function give_google_analytics_send_data( $payment, $give_receipt_args ) {
 				'id': '<?php echo esc_js( $id ); ?>',
 				'name': '<?php echo give_get_payment_form_title( $meta ); ?>',
 
-			})
+			});
 			ga('ecommerce:send');
 
 		<?php //TODO: add conditional check for give category and add it as a 'category' key to the addItem command ?>
