@@ -1,6 +1,6 @@
 <?php
 /**
- * Give Google Analytics Ecommerce Tracking Activation.
+ * Give Google Analytics Ecommerce Tracking Activation.a
  *
  * @package     Give
  * @copyright   Copyright (c) 2016, WordImpress
