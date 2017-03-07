@@ -31,8 +31,10 @@ function give_google_analytics_donation_form() {
 		(function ($) {
 			$(function () {
 
-				// Looop through each form on page and provide an impression.
-				$('form.give-form').each( function ( index, value) {
+				var give_forms = $('form.give-form');
+
+				// Loop through each form on page and provide an impression.
+				give_forms.each( function ( index, value) {
 
 					var form_id = $(this).find('input[name="give-form-id"]').val();
 					var form_title = $(this).find('input[name="give-form-id"]').val();
@@ -51,7 +53,7 @@ function give_google_analytics_donation_form() {
                 });
 
 				// More code using $ as alias to jQuery
-				$('form.give-form').on('submit', function (event) {
+				give_forms.on('submit', function (event) {
 
 					var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
 
