@@ -106,7 +106,7 @@ function give_google_analytics_send_data( $payment, $give_receipt_args ) {
 	// Add the categories.
 	$ga_categories = give_google_analytics_get_categories( $form_id );
 
-	$ga_list       = give_get_option( 'google_analytics_list' );
+	$ga_list = give_get_option( 'google_analytics_list' );
 	?>
     <script type="text/javascript">
 		window.addEventListener("load", function give_ga_purchase(event) {
@@ -155,6 +155,34 @@ function give_google_analytics_send_data( $payment, $give_receipt_args ) {
 }
 
 add_action( 'give_payment_receipt_after_table', 'give_google_analytics_send_data', 10, 2 );
+
+
+/**
+ * @param $do_change
+ * @param $donation_id
+ * @param $new_status
+ * @param $old_status
+ */
+function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_status, $old_status ) {
+
+	$donation = new Give_Payment( $donation_id );
+
+	// Bailout.
+	if ( 'refunded' !== $new_status ) {
+		return $do_change;
+	} ?>
+
+    <script>
+	    // Refund an entire transaction.
+	    ga('ec:setAction', 'refund', {
+		    'id': '<?php echo $donation_id; ?>',
+	    });
+    </script>
+
+<?php }
+
+
+add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_tracking', 10, 4 );
 
 
 /**
@@ -242,11 +270,11 @@ function give_google_analytics_get_categories( $form_id ) {
 		// We have categories, loop through.
 		foreach ( $categories as $key => $category ) {
 
-		    if(0 === $key){
-			    $ga_categories .= $category->name;
-            } else {
-			    $ga_categories .= '/' . $category->name;
-            }
+			if ( 0 === $key ) {
+				$ga_categories .= $category->name;
+			} else {
+				$ga_categories .= '/' . $category->name;
+			}
 
 			if ( $key >= 4 ) {
 				break;
@@ -256,3 +284,7 @@ function give_google_analytics_get_categories( $form_id ) {
 
 	return apply_filters( 'give_google_analytics_get_categories', $ga_categories );
 }
+
+
+
+
