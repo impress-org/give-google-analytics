@@ -13,12 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Called when the user begins the checkout process.
  *
- * @param $form_id
- * @param $args
- *
  * @return bool
  */
-function give_google_analytics_donate_click( $form_id, $args ) {
+function give_google_analytics_donation_form() {
 
 	// Don't track site admins
 	if ( is_user_logged_in() && current_user_can( 'administrator' ) ) {
@@ -35,28 +32,32 @@ function give_google_analytics_donate_click( $form_id, $args ) {
 			$(function () {
 
 				// More code using $ as alias to jQuery
-				$('#give-form-<?php echo $form_id; ?>').on('submit', function (event) {
+				$('form.give-form').on('submit', function (event) {
 
 					var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
 
 					// If ga function is ready. Let's proceed.
 					if ('function' === typeof ga) {
 
+						var form_id = $(this).find('input[name="give-form-id"]').val();
+						var form_title = $(this).find('input[name="give-form-id"]').val();
+						var form_gateway = $(this).find('input[name="give-gateway"]').val();
+
 						// Load the Ecommerce plugin.
 						ga('require', 'ec');
 
 						ga('ec:addProduct', {
-							'id': '<?php echo esc_js( $form_id ); ?>',
-							'name': '<?php echo esc_js( html_entity_decode( get_the_title( $form_id ) ) ); ?>',
+							'id': form_id,
+							'name': form_title,
 							<?php if ( ! empty( $ga_categories ) ) : ?>
 							'category': '<?php echo esc_js( $ga_categories ); ?>',
 							<?php endif; ?>
-							'price': $(this).find('.give-amount-hidden').val(),
+							'price': form_id.find('.give-amount-hidden').val(),
 							'quantity': 1
 						});
 
 						ga('ec:setAction', 'checkout', {
-							'option': $(this).find('input[name="give-gateway"]').val()   // Payment method
+							'option': form_gateway  // Payment method
 						});
 
 						ga('send', 'event');
@@ -70,7 +71,7 @@ function give_google_analytics_donate_click( $form_id, $args ) {
 
 }
 
-add_action( 'wp_footer', 'give_google_analytics_donate_click', 10, 2 );
+add_action( 'wp_footer', 'give_google_analytics_donation_form', 99999 );
 
 /**
  * Donation success page: Send the GA data.
@@ -82,7 +83,7 @@ add_action( 'wp_footer', 'give_google_analytics_donate_click', 10, 2 );
  *
  * @return bool
  */
-function give_google_analytics_send_data( $payment, $give_receipt_args ) {
+function give_google_analytics_completed_donation( $payment, $give_receipt_args ) {
 
 	// Need Payment ID to continue.
 	if ( empty( $payment->ID ) ) {
@@ -156,91 +157,58 @@ function give_google_analytics_send_data( $payment, $give_receipt_args ) {
 
 }
 
-add_action( 'give_payment_receipt_after_table', 'give_google_analytics_send_data', 10, 2 );
+add_action( 'give_payment_receipt_after_table', 'give_google_analytics_completed_donation', 10, 2 );
 
 
 /**
+ * GA Refund tracking.
+ *
  * @param $do_change
  * @param $donation_id
  * @param $new_status
  * @param $old_status
+ *
+ * @return mixed
  */
 function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_status, $old_status ) {
-
-	$donation = new Give_Payment( $donation_id );
 
 	// Bailout.
 	if ( 'refunded' !== $new_status ) {
 		return $do_change;
-	} ?>
+	}
 
+	// Need GA code to continue.
+	$ua_code = give_get_option( 'google_analytics_ua_code' );
+	if ( empty( $ua_code ) ) {
+		return $do_change;
+	}
+
+	?>
     <script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', '<?php echo $ua_code; ?>', 'auto');
+
 		// Refund an entire transaction.
 		ga('ec:setAction', 'refund', {
 			'id': '<?php echo $donation_id; ?>',
 		});
+
+		ga('send', 'event');
+
     </script>
 
 <?php }
 
 
 add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_tracking', 10, 4 );
-
-
-/**
- * Check if GA is activated and ready.
- *
- * @return bool|mixed
- */
-function give_google_analytics_check() {
-
-	$setup_option = get_option( 'give_google_analytics_setup' );
-
-	if ( ! empty( $setup_option ) ) {
-		// Properly setup, return true.
-		return true;
-	}
-
-	// Only output on frontend
-	if ( is_user_logged_in() ) {
-		return false;
-	}
-	?>
-    <script>
-		window.addEventListener("load", function give_ga_winload(event) {
-
-			//remove listener, no longer needed.
-			window.removeEventListener("load", give_ga_winload, false);
-
-			// GA Check.
-			var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
-
-			if ('function' !== typeof ga) {
-				// analytics does not exist.
-				<?php update_option( 'give_google_analytics_setup', 'not_setup' ); ?>
-			} else {
-				// analytics does exist.
-				<?php delete_option( 'give_google_analytics_setup' ); ?>
-			}
-
-		}, false);
-    </script>
-	<?php
-
-	// Not properly setup, return false.
-	return false;
-
-}
-
-add_action( 'wp_footer', 'give_google_analytics_check', 9999 );
-
-
-/**
- * Show notice if GA not tracking properly
- */
-function give_google_analytics_maybe_show_notice() {
-
-    
-}
-
-add_action( 'admin_notices', 'give_google_analytics_maybe_show_notice' );

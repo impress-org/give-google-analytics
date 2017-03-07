@@ -174,7 +174,7 @@ class Give_Google_Analytics_Settings {
 	function description_field() { ?>
 
         <div class="give-ga-settings-description">
-            <p><img src="<?php echo GIVE_GOOGLE_ANALYTICS_URL .'assets/img/ga-logo-small.png'; ?>"></p>
+            <p style="margin:20px 0 0;"><img src="<?php echo GIVE_GOOGLE_ANALYTICS_URL .'assets/img/ga-logo-small.png'; ?>"></p>
         </div>
 
 	<?php }
