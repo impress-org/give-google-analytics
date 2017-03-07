@@ -31,6 +31,25 @@ function give_google_analytics_donation_form() {
 		(function ($) {
 			$(function () {
 
+				// Looop through each form on page and provide an impression.
+				$('form.give-form').each( function ( index, value) {
+
+					var form_id = $(this).find('input[name="give-form-id"]').val();
+					var form_title = $(this).find('input[name="give-form-id"]').val();
+					var form_gateway = $(this).find('input[name="give-gateway"]').val();
+
+					ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
+						'id': form_id,                   // Product ID (string).
+						'name': form_title, // Product name (string).
+						<?php if ( ! empty( $ga_categories ) ) : ?>
+						'category': '<?php echo esc_js( $ga_categories ); ?>',
+						<?php endif; ?>
+						'list': 'Donation Options',       // Product list (string).
+						'position': index + 1                     // Product position (number).
+					});
+
+                });
+
 				// More code using $ as alias to jQuery
 				$('form.give-form').on('submit', function (event) {
 
