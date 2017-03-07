@@ -128,14 +128,14 @@ class Give_Google_Analytics_Settings {
 				'desc'       => __( 'Since refunds are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google.', 'give-google-analytics' ),
 			),
 			array(
-				'name'    => __( 'Track Refunds', 'give-google-analytics' ),
-				'id'      => 'google_analytics_refunds_option',
+				'name'    => __( 'Tracking Values', 'give-google-analytics' ),
+				'id'      => 'google_analytics_tracking_vals',
 				'type'    => 'radio_inline',
-				'desc'    => __( 'When a donation changes status to refunded in Give then the refund will also be reflected in Google Analytics as a refund.', 'give-google-analytics' ),
-				'default' => 'disabled',
+				'desc'    => __( 'Adjust some of the values sent to Google Analytics Enhanced Ecommerce.', 'give-google-analytics' ),
+				'default' => 'default',
 				'options' => array(
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
+					'customized'  => __( 'Customize', 'give' ),
+					'default' => __( 'Default', 'give' ),
 				)
 			),
 			array(

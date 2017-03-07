@@ -35,6 +35,24 @@ jQuery.noConflict();
 
 		}).change();
 
+		var ga_tracking_customize = $( 'input[name="google_analytics_tracking_vals"]' );
+
+		ga_tracking_customize.on('change', function () {
+
+			var ga_tracking_customize_val = $( this ).filter( ':checked' ).val();
+
+			if (typeof ga_tracking_customize_val == 'undefined') {
+				return;
+			}
+
+			if (ga_tracking_customize_val === 'default') {
+				$( '.give-ga-advanced-field' ).hide();
+			} else {
+				$( '.give-ga-advanced-field' ).show();
+			}
+
+		}).change();
+
 	};
 
 	// On DOM Ready

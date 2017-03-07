@@ -26,14 +26,16 @@ function give_google_analytics_donate_click( $form_id, $args ) {
 	}
 
 	// Add the categories.
-	$ga_categories = give_google_analytics_get_categories( $form_id ); ?>
+	$ga_categories = give_get_option( 'google_analytics_category' ); ?>
+
     <script type="text/javascript">
 		//GA Enhance Ecommerce tracking.
 		jQuery.noConflict();
 		(function ($) {
 			$(function () {
+
 				// More code using $ as alias to jQuery
-				$('.give-form').on('submit', function (event) {
+				$('#give-form-<?php echo $form_id; ?>').on('submit', function (event) {
 
 					var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
 
@@ -68,7 +70,7 @@ function give_google_analytics_donate_click( $form_id, $args ) {
 
 }
 
-add_action( 'give_post_form_output', 'give_google_analytics_donate_click', 10, 2 );
+add_action( 'wp_footer', 'give_google_analytics_donate_click', 10, 2 );
 
 /**
  * Donation success page: Send the GA data.
@@ -104,7 +106,7 @@ function give_google_analytics_send_data( $payment, $give_receipt_args ) {
 	$affiliation = give_get_option( 'google_analytics_affiliate' );
 
 	// Add the categories.
-	$ga_categories = give_google_analytics_get_categories( $form_id );
+	$ga_categories = give_get_option( 'google_analytics_category' );
 
 	$ga_list = give_get_option( 'google_analytics_list' );
 	?>
@@ -173,10 +175,10 @@ function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_s
 	} ?>
 
     <script>
-	    // Refund an entire transaction.
-	    ga('ec:setAction', 'refund', {
-		    'id': '<?php echo $donation_id; ?>',
-	    });
+		// Refund an entire transaction.
+		ga('ec:setAction', 'refund', {
+			'id': '<?php echo $donation_id; ?>',
+		});
     </script>
 
 <?php }
@@ -238,53 +240,7 @@ add_action( 'wp_footer', 'give_google_analytics_check', 9999 );
  */
 function give_google_analytics_maybe_show_notice() {
 
+    
 }
 
 add_action( 'admin_notices', 'give_google_analytics_maybe_show_notice' );
-
-
-/**
- * Format form categories for GA.
- *
- * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce#impression-data
- * The category to which the product belongs (e.g. Apparel). Use / as a delimiter to specify up to 5-levels of
- * hierarchy (e.g. Apparel/Men/T-Shirts).
- *
- * @param $form_id
- *
- * @return bool|mixed
- */
-function give_google_analytics_get_categories( $form_id ) {
-
-	$ga_categories = '';
-
-	if ( taxonomy_exists( 'give_forms_category' ) ) {
-
-		$categories = get_the_terms( $form_id, 'give_forms_category' );
-
-		// Need array to proceed.
-		if ( ! is_array( $categories ) ) {
-			return false;
-		}
-
-		// We have categories, loop through.
-		foreach ( $categories as $key => $category ) {
-
-			if ( 0 === $key ) {
-				$ga_categories .= $category->name;
-			} else {
-				$ga_categories .= '/' . $category->name;
-			}
-
-			if ( $key >= 4 ) {
-				break;
-			}
-		}
-	}
-
-	return apply_filters( 'give_google_analytics_get_categories', $ga_categories );
-}
-
-
-
-
