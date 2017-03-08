@@ -68,7 +68,7 @@ function give_google_analytics_ecommerce_tracking_plugin_action_links( $actions 
 		'settings' => sprintf(
 			'<a href="%1$s">%2$s</a>',
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=google-analytics' ),
-			esc_html__( 'Settings', 'give-google-analytics-ecommerce-tracking' )
+			esc_html__( 'Settings', 'give-google-analytics' )
 		),
 	);
 
@@ -102,7 +102,7 @@ function give_google_analytics_ecommerce_tracking_plugin_row_meta( $plugin_meta,
 					'utm_campaign' => 'admin',
 				), 'https://givewp.com/documentation/add-ons/google-analytics-ecommerce-tracking/' )
 			),
-			esc_html__( 'Documentation', 'give-google-analytics-ecommerce-tracking' )
+			esc_html__( 'Documentation', 'give-google-analytics' )
 		),
 		sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
@@ -112,7 +112,7 @@ function give_google_analytics_ecommerce_tracking_plugin_row_meta( $plugin_meta,
 					'utm_campaign' => 'admin',
 				), 'https://givewp.com/addons/' )
 			),
-			esc_html__( 'Add-ons', 'give-google-analytics-ecommerce-tracking' )
+			esc_html__( 'Add-ons', 'give-google-analytics' )
 		),
 	);
 

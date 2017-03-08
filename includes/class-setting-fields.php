@@ -115,8 +115,8 @@ class Give_Google_Analytics_Settings {
 				'desc'    => __( 'Do you want to track donations that are made when Give is in test mode?', 'give-google-analytics' ),
 				'default' => 'disabled',
 				'options' => array(
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
+					'enabled'  => __( 'Enabled', 'give-google-analytics' ),
+					'disabled' => __( 'Disabled', 'give-google-analytics' ),
 				)
 			),
 			array(
@@ -126,8 +126,8 @@ class Give_Google_Analytics_Settings {
 				'desc'    => __( 'When a donation changes status to refunded in Give then the refund will also be reflected in Google Analytics as a refund.', 'give-google-analytics' ),
 				'default' => 'disabled',
 				'options' => array(
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
+					'enabled'  => __( 'Enabled', 'give-google-analytics' ),
+					'disabled' => __( 'Disabled', 'give-google-analytics' ),
 				)
 			),
 			array(
@@ -145,8 +145,8 @@ class Give_Google_Analytics_Settings {
 				'desc'    => __( 'Adjust some of the values sent to Google Analytics Enhanced Ecommerce.', 'give-google-analytics' ),
 				'default' => 'default',
 				'options' => array(
-					'customized'  => __( 'Customize', 'give' ),
-					'default' => __( 'Default', 'give' ),
+					'customized'  => __( 'Customize', 'give-google-analytics' ),
+					'default' => __( 'Default', 'give-google-analytics' ),
 				)
 			),
 			array(
