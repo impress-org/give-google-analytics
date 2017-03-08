@@ -139,6 +139,17 @@ function give_google_analytics_load() {
 
 add_action( 'plugins_loaded', 'give_google_analytics_load' );
 
+/**
+ * Give - GA Add-on Licensing
+ */
+function give_add_google_analytics_licensing() {
+
+	if ( class_exists( 'Give_License' ) ) {
+		new Give_License( __FILE__, 'Google Analytics', GIVE_GOOGLE_ANALYTICS_VERSION, 'WordImpress' );
+	}
+}
+
+add_action( 'plugins_loaded', 'give_add_google_analytics_licensing' );
 
 /**
  * Check the environment before starting up.
