@@ -51,7 +51,7 @@ function give_google_analytics_donation_form() {
 					give_forms.each(function (index, value) {
 
 						var form_id = $(this).find('input[name="give-form-id"]').val();
-						var form_title = $(this).find('input[name="give-form-id"]').val();
+						var form_title = $(this).find('input[name="give-form-title"]').val();
 
 						ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
 							'id': form_id,                   // Product ID (string).
@@ -76,7 +76,7 @@ function give_google_analytics_donation_form() {
 						if ('function' === typeof ga) {
 
 							var form_id = $(this).find('input[name="give-form-id"]').val();
-							var form_title = $(this).find('input[name="give-form-id"]').val();
+							var form_title = $(this).find('input[name="give-form-title"]').val();
 							var form_gateway = $(this).find('input[name="give-gateway"]').val();
 
 							// Load the Ecommerce plugin.
