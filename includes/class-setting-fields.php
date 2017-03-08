@@ -109,6 +109,17 @@ class Give_Google_Analytics_Settings {
 				'type' => 'ga_description',
 			),
 			array(
+				'name'    => __( 'Track Test Donations', 'give-google-analytics' ),
+				'id'      => 'google_analytics_test_option',
+				'type'    => 'radio_inline',
+				'desc'    => __( 'Do you want to track donations that are made when Give is in test mode?', 'give-google-analytics' ),
+				'default' => 'disabled',
+				'options' => array(
+					'enabled'  => __( 'Enabled', 'give' ),
+					'disabled' => __( 'Disabled', 'give' ),
+				)
+			),
+			array(
 				'name'    => __( 'Track Refunds', 'give-google-analytics' ),
 				'id'      => 'google_analytics_refunds_option',
 				'type'    => 'radio_inline',

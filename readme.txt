@@ -1,23 +1,23 @@
-=== Give - Google Analytics Ecommerce Tracking ===
-Contributors: wordimpress, ben.meredith@gmail.com
+=== Give - Google Analytics ===
+Contributors: wordimpress, givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
-Requires at least: 4.0
-Tested up to: 4.6.1
+Requires at least: 4.2
+Tested up to: 4.7.2
 Stable tag: 1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Add Google Analytics ecmmerce tracking for your GiveWP donations
+Google Analytics Enhanced Ecommerce tracking for your GiveWP donations.
 
 == Description ==
 
-This plugin requires the Give plugin activated to function properly. When activated, it adds a small script to the Donation Confirmation page that sends eccommerce data to Google Analytics.
+This plugin requires the Give plugin activated to function properly. When activated, it adds a small script to the Donation Confirmation page that sends ecommerce data to Google Analytics.
 
-Also, This plugin assumes that you have already added Google analytics tracking code containing your site's ID to the head of the
+Also, This plugin assumes that you have already added Google analytics tracking code containing your site's Universal Analytics ID in the head of your website.
 
 = Minimum Requirements =
 
-* WordPress 4.0 or greater
+* WordPress 4.2 or greater
 * PHP version 5.3 or greater
 * MySQL version 5.0 or greater
 * Some payment gateways require fsockopen support (for IPN access)

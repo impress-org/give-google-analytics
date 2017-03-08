@@ -25,6 +25,11 @@ function give_google_analytics_donation_form() {
 		return false;
 	}
 
+	// Don't continue if test mode is enabled and test mode tracking is disabled.
+	if ( give_is_test_mode() && ! give_google_analytics_track_testing() ) {
+		return false;
+	}
+
 	// Add the categories.
 	$ga_categories = give_get_option( 'google_analytics_category' );
 	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
@@ -55,9 +60,9 @@ function give_google_analytics_donation_form() {
 
 						ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
 							'id': form_id,                   // Product ID (string).
-							'name': form_title, // Product name (string).
+							'name': form_title,
 							'category': '<?php echo esc_js( $ga_categories ); ?>',
-							'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>',       // Product list (string).
+							'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>',
 							'position': index + 1                     // Product position (number).
 						});
 
@@ -133,13 +138,18 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 		return false;
 	}
 
-	// Don't track site admins
+	// Don't track site admins.
 	if ( is_user_logged_in() && current_user_can( 'administrator' ) ) {
 		return false;
 	}
 
-	$form_id = give_get_payment_form_id( $payment->ID );
-	$total   = give_get_payment_amount( $payment->ID );
+	// Don't continue if test mode is enabled and test mode tracking is disabled.
+	if ( give_is_test_mode() && ! give_google_analytics_track_testing() ) {
+		return false;
+	}
+
+	$form_id     = give_get_payment_form_id( $payment->ID );
+	$total       = give_get_payment_amount( $payment->ID );
 	$affiliation = give_get_option( 'google_analytics_affiliate' );
 
 	// Add the categories.
@@ -176,6 +186,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 					'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
 				});
 
+				ga('send', 'event');
 			}
 
 		}, false);
@@ -221,6 +232,7 @@ function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_s
 		return $do_change;
 	}
 
+	// All is well, sent beacon.
 	give_insert_payment_note( $donation_id, __( 'Google Analytics donation refund tracking beacon sent.', 'give-google-analytics' ) );
 
 	// Important to always return.
@@ -237,22 +249,28 @@ add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_t
  *
  * @return bool
  */
-function give_google_analytics_send_refund_beacon($donation_id){
+function give_google_analytics_send_refund_beacon( $donation_id ) {
 
-    $donation = new Give_Payment($donation_id);
-    $status = give_get_payment_status($donation);
+	$donation = new Give_Payment( $donation_id );
+	$status   = give_get_payment_status( $donation );
 
-    // Bailout.
+	// Bailout.
 	if ( 'refunded' !== $status ) {
 		return false;
 	}
-
 	// Check for UA code.
 	$ua_code = give_get_option( 'google_analytics_ua_code' );
 	if ( empty( $ua_code ) ) {
-	    return false;
-    } ?>
-    <script>
+		return false;
+	}
+
+	// Check if the beacon has already been sent.
+	$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent' );
+	if ( ! empty( $beacon_sent ) ) {
+		return false;
+	}
+	?>
+	<script>
 		(function (i, s, o, g, r, a, m) {
 			i['GoogleAnalyticsObject'] = r;
 			i[r] = i[r] || function () {
@@ -275,7 +293,23 @@ function give_google_analytics_send_refund_beacon($donation_id){
 		});
 
 		ga('send', 'event');
-    </script> <?php
+	</script> <?php
+
+	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
 }
 
-add_action('give_view_order_details_after', 'give_google_analytics_send_refund_beacon', 10, 1);
+add_action( 'give_view_order_details_after', 'give_google_analytics_send_refund_beacon', 10, 1 );
+
+
+/**
+ * Should track testing?
+ *
+ * @return bool
+ */
+function give_google_analytics_track_testing() {
+	if ( give_is_setting_enabled( give_get_option( 'google_analytics_test_option' ) ) ) {
+		return true;
+	}
+
+	return false;
+}
