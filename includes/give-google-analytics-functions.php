@@ -134,7 +134,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 	}
 
 	// Use a meta value so we only send the beacon once.
-	if ( get_post_meta( $payment->ID, 'give_ga_beacon_sent', true ) ) {
+	if ( get_post_meta( $payment->ID, '_give_ga_beacon_sent', true ) ) {
 		return false;
 	}
 
@@ -195,7 +195,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 	<?php
 	// Add Payment note.
 	give_insert_payment_note( $payment->ID, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
-	update_post_meta( $payment->ID, 'give_ga_beacon_sent', true );
+	update_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
 
 }
 
