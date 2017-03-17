@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:     Give - Google Analytics
+ * Plugin Name:     Give - Google Analytics Donation Tracking
  * Plugin URI:      https://givewp.com/addons/give-google-analytics/
- * Description:     Add Google Analytics eCommerce tracking functionality to Give to track donations.
+ * Description:     Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
  * Version:         1.0
  * Author:          WordImpress
  * Author URI:      https://wordimpress.com
@@ -145,7 +145,7 @@ add_action( 'plugins_loaded', 'give_google_analytics_load' );
 function give_add_google_analytics_licensing() {
 
 	if ( class_exists( 'Give_License' ) ) {
-		new Give_License( __FILE__, 'Google Analytics', GIVE_GOOGLE_ANALYTICS_VERSION, 'WordImpress' );
+		new Give_License( __FILE__, 'Google Analytics Donation Tracking', GIVE_GOOGLE_ANALYTICS_VERSION, 'WordImpress' );
 	}
 }
 
