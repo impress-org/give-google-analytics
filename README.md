@@ -1,6 +1,6 @@
-# Give - Google Analytics #
+# Give - Google Analytics Donation Tracking #
 
-Google Analytics Enhanced Ecommerce tracking for your GiveWP donations.
+Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
 
 ## Description ##
 
