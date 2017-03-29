@@ -46,10 +46,14 @@ class Give_Google_Analytics_Settings {
 	/**
 	 * Setup hooks.
 	 */
-	public function setup_hooks() {
+	public function setup() {
+		// Setup params.
+		$this->section_id = 'google-analytics';
+		$this->section_label = __( 'Google Analytics', 'give-google-analytics' );
 
 		// Add settings.
-		add_filter( 'give_settings_general', array( $this, 'add_settings' ), 99999 );
+		add_filter( 'give_get_settings_general', array( $this, 'add_settings' ), 99999 );
+		add_filter( 'give_get_sections_general', array( $this, 'add_section' ), 99999 );
 
 		add_filter( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
 
@@ -94,6 +98,11 @@ class Give_Google_Analytics_Settings {
 	 * @return array
 	 */
 	public function add_settings( $settings ) {
+
+		// Show setting only on section page.
+		if( $this->section_id !== give_get_current_setting_section() ) {
+			return $settings;
+		}
 
 		$give_ga__settings = array(
 			array(
@@ -181,4 +190,4 @@ class Give_Google_Analytics_Settings {
 
 }
 
-Give_Google_Analytics_Settings::get_instance()->setup_hooks();
+Give_Google_Analytics_Settings::get_instance()->setup();
