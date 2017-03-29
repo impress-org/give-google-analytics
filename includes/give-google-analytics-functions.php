@@ -237,12 +237,12 @@ add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_t
  *
  * @return bool
  */
-function give_google_analytics_send_refund_beacon($donation_id){
+function give_google_analytics_send_refund_beacon( $donation_id ) {
 
-    $donation = new Give_Payment($donation_id);
-    $status = give_get_payment_status($donation);
+	$donation = new Give_Payment( $donation_id );
+	$status = give_get_payment_status( $donation );
 
-    // Bailout.
+	// Bailout.
 	if ( 'refunded' !== $status ) {
 		return false;
 	}
@@ -251,8 +251,8 @@ function give_google_analytics_send_refund_beacon($donation_id){
 	$ua_code = give_get_option( 'google_analytics_ua_code' );
 	if ( empty( $ua_code ) ) {
 	    return false;
-    } ?>
-    <script>
+	} ?>
+	<script>
 		(function (i, s, o, g, r, a, m) {
 			i['GoogleAnalyticsObject'] = r;
 			i[r] = i[r] || function () {
@@ -275,7 +275,7 @@ function give_google_analytics_send_refund_beacon($donation_id){
 		});
 
 		ga('send', 'event');
-    </script> <?php
+	</script> <?php
 }
 
-add_action('give_view_order_details_after', 'give_google_analytics_send_refund_beacon', 10, 1);
+add_action( 'give_view_order_details_after', 'give_google_analytics_send_refund_beacon', 10, 1 );
