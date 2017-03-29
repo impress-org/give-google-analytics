@@ -46,10 +46,14 @@ class Give_Google_Analytics_Settings {
 	/**
 	 * Setup hooks.
 	 */
-	public function setup_hooks() {
+	public function setup() {
+		// Setup params.
+		$this->section_id    = 'google-analytics';
+		$this->section_label = __( 'Google Analytics', 'give-google-analytics' );
 
 		// Add settings.
-		add_filter( 'give_settings_general', array( $this, 'add_settings' ), 99999 );
+		add_filter( 'give_get_settings_general', array( $this, 'add_settings' ), 99999 );
+		add_filter( 'give_get_sections_general', array( $this, 'add_section' ), 99999 );
 
 		add_filter( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
 
@@ -68,7 +72,7 @@ class Give_Google_Analytics_Settings {
 		wp_register_style( 'give-ga-settings-css', GIVE_GOOGLE_ANALYTICS_URL . 'assets/css/give-ga-settings.css' );
 		wp_enqueue_style( 'give-ga-settings-css' );
 
-		wp_register_script( 'give-ga-settings-js', GIVE_GOOGLE_ANALYTICS_URL . 'assets/js/give-ga-settings.js', array('jquery'), GIVE_GOOGLE_ANALYTICS_VERSION, false );
+		wp_register_script( 'give-ga-settings-js', GIVE_GOOGLE_ANALYTICS_URL . 'assets/js/give-ga-settings.js', array( 'jquery' ), GIVE_GOOGLE_ANALYTICS_VERSION, false );
 		wp_enqueue_script( 'give-ga-settings-js' );
 
 	}
@@ -94,6 +98,11 @@ class Give_Google_Analytics_Settings {
 	 * @return array
 	 */
 	public function add_settings( $settings ) {
+
+		// Show setting only on section page.
+		if ( $this->section_id !== give_get_current_setting_section() ) {
+			return $settings;
+		}
 
 		$give_ga__settings = array(
 			array(
@@ -128,15 +137,15 @@ class Give_Google_Analytics_Settings {
 				'options' => array(
 					'enabled'  => __( 'Enabled', 'give-google-analytics' ),
 					'disabled' => __( 'Disabled', 'give-google-analytics' ),
-				)
+				),
 			),
 			array(
-				'name'       => __( 'Tracking ID', 'give-google-analytics' ),
-				'id'         => 'google_analytics_ua_code',
-				'type'       => 'text',
-				'attributes' => array( 'placeholder' => 'UA-XXXXXXXX-XX' ),
-                'row_classes' => 'give-ga-tracking-id',
-				'desc'       => __( 'Since refunds are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google.', 'give-google-analytics' ),
+				'name'        => __( 'Tracking ID', 'give-google-analytics' ),
+				'id'          => 'google_analytics_ua_code',
+				'type'        => 'text',
+				'attributes'  => array( 'placeholder' => 'UA-XXXXXXXX-XX' ),
+				'row_classes' => 'give-ga-tracking-id',
+				'desc'        => __( 'Since refunds are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google.', 'give-google-analytics' ),
 			),
 			array(
 				'name'    => __( 'Tracking Values', 'give-google-analytics' ),
@@ -147,31 +156,31 @@ class Give_Google_Analytics_Settings {
 				'options' => array(
 					'customized'  => __( 'Customize', 'give-google-analytics' ),
 					'default' => __( 'Default', 'give-google-analytics' ),
-				)
+				),
 			),
 			array(
-				'name'    => __( 'Category', 'give-google-analytics' ),
-				'id'      => 'google_analytics_category',
-				'type'    => 'text',
+				'name'        => __( 'Category', 'give-google-analytics' ),
+				'id'          => 'google_analytics_category',
+				'type'        => 'text',
 				'row_classes' => 'give-ga-advanced-field',
-				'default' => __( 'Donations', 'give-google-analytics' ),
-				'desc'    => __( 'The category to which the "product" belongs to within Google Analytics.', 'give-google-analytics' ),
+				'default'     => __( 'Donations', 'give-google-analytics' ),
+				'desc'        => __( 'The category to which the "product" belongs to within Google Analytics.', 'give-google-analytics' ),
 			),
 			array(
-				'name'    => __( 'Affiliation', 'give-google-analytics' ),
-				'id'      => 'google_analytics_affiliate',
-				'type'    => 'text',
+				'name'        => __( 'Affiliation', 'give-google-analytics' ),
+				'id'          => 'google_analytics_affiliate',
+				'type'        => 'text',
 				'row_classes' => 'give-ga-advanced-field',
-				'default' => get_bloginfo( 'name' ),
-				'desc'    => __( 'The site from which this transaction occurred. Typically this is your site or organization\'s name', 'give-google-analytics' ),
+				'default'     => get_bloginfo( 'name' ),
+				'desc'        => __( 'The site from which this transaction occurred. Typically this is your site or organization\'s name', 'give-google-analytics' ),
 			),
 			array(
-				'name'    => __( 'List Name', 'give-google-analytics' ),
-				'id'      => 'google_analytics_list',
-				'type'    => 'text',
+				'name'        => __( 'List Name', 'give-google-analytics' ),
+				'id'          => 'google_analytics_list',
+				'type'        => 'text',
 				'row_classes' => 'give-ga-advanced-field',
-				'default' => 'Donation Forms',
-				'desc'    => __( 'The list that the donations belong to and are organized under in Google Analytics.', 'give-google-analytics' ),
+				'default'     => 'Donation Forms',
+				'desc'        => __( 'The list that the donations belong to and are organized under in Google Analytics.', 'give-google-analytics' ),
 			),
 		);
 
@@ -182,14 +191,16 @@ class Give_Google_Analytics_Settings {
 	/**
 	 * Description Field.
 	 */
-	function description_field() { ?>
+	function description_field() {
+	?>
 
-        <div class="give-ga-settings-description">
-            <p style="margin:20px 0 0;"><img src="<?php echo GIVE_GOOGLE_ANALYTICS_URL .'assets/img/ga-logo-small.png'; ?>"></p>
-        </div>
+		<div class="give-ga-settings-description">
+			<p style="margin:20px 0 0;">
+				<img src="<?php echo GIVE_GOOGLE_ANALYTICS_URL . 'assets/img/ga-logo-small.png'; ?>"></p>
+		</div>
 
 	<?php }
 
 }
 
-Give_Google_Analytics_Settings::get_instance()->setup_hooks();
+Give_Google_Analytics_Settings::get_instance()->setup();

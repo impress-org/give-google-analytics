@@ -252,7 +252,7 @@ add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_t
 function give_google_analytics_send_refund_beacon( $donation_id ) {
 
 	$donation = new Give_Payment( $donation_id );
-	$status   = give_get_payment_status( $donation );
+	$status = give_get_payment_status( $donation );
 
 	// Bailout.
 	if ( 'refunded' !== $status ) {
@@ -293,6 +293,7 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 		});
 
 		ga('send', 'event');
+    
     </script> <?php
 
 	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
