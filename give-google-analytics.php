@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     Give - Google Analytics Donation Tracking
- * Plugin URI:      https://givewp.com/addons/give-google-analytics/
+ * Plugin URI:      https://givewp.com/addons/google-analytics/
  * Description:     Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
  * Version:         1.0
  * Author:          WordImpress
