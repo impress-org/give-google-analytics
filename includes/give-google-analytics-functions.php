@@ -35,9 +35,9 @@ function give_google_analytics_donation_form() {
 	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
 	$ga_list       = give_get_option( 'google_analytics_list' );
 	?>
-    <script type="text/javascript">
+	<script type="text/javascript">
 
-		//GA Enhance Ecommerce tracking.
+		// Give - Google Analytics Enhanced Ecommerce tracking script.
 		jQuery.noConflict();
 		(function ($) {
 
@@ -109,7 +109,7 @@ function give_google_analytics_donation_form() {
 			}, false); // end win load
 
 		})(jQuery); //
-    </script>
+	</script>
 	<?php
 
 }
@@ -157,7 +157,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
 	$ga_list       = give_get_option( 'google_analytics_list' );
 	?>
-    <script type="text/javascript">
+	<script type="text/javascript">
 		window.addEventListener("load", function give_ga_purchase(event) {
 
 			window.removeEventListener("load", give_ga_purchase, false);
@@ -191,7 +191,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 
 		}, false);
 
-    </script>
+	</script>
 	<?php
 	// Add Payment note.
 	give_insert_payment_note( $payment->ID, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
@@ -270,7 +270,7 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 		return false;
 	}
 	?>
-    <script>
+	<script>
 		(function (i, s, o, g, r, a, m) {
 			i['GoogleAnalyticsObject'] = r;
 			i[r] = i[r] || function () {
@@ -293,8 +293,8 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 		});
 
 		ga('send', 'event');
-    
-    </script> <?php
+	
+	</script> <?php
 
 	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
 }
