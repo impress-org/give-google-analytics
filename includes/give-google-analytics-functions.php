@@ -51,6 +51,7 @@ function give_google_analytics_donation_form() {
 				if ('function' === typeof ga) {
 
 					var give_forms = $('form.give-form');
+                    ga('require', 'ec');
 
 					// Loop through each form on page and provide an impression.
 					give_forms.each(function (index, value) {
@@ -77,12 +78,10 @@ function give_google_analytics_donation_form() {
 
 						var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
 
-						// If ga function is ready. Let's proceed.
-						if ('function' === typeof ga) {
-
 							var form_id = $(this).find('input[name="give-form-id"]').val();
 							var form_title = $(this).find('input[name="give-form-title"]').val();
 							var form_gateway = $(this).find('input[name="give-gateway"]').val();
+							var donation_amt = $(this).find('.give-amount-hidden').val();
 
 							// Load the Ecommerce plugin.
 							ga('require', 'ec');
@@ -91,7 +90,7 @@ function give_google_analytics_donation_form() {
 								'id': form_id,
 								'name': form_title,
 								'category': '<?php echo esc_js( $ga_categories ); ?>',
-								'price': $(this).find('.give-amount-hidden').val(),
+								'price': donation_amt,
 								'quantity': 1
 							});
 
@@ -101,7 +100,6 @@ function give_google_analytics_donation_form() {
 
 							ga('send', 'event');
 
-						}
 					});
 
 				} // end if
