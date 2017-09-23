@@ -30,6 +30,11 @@ function give_google_analytics_donation_form() {
 		return false;
 	}
 
+	// Not needed on the success page.
+	if ( give_is_success_page() ) {
+		return false;
+	}
+
 	// Add the categories.
 	$ga_categories = give_get_option( 'google_analytics_category' );
 	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
@@ -37,76 +42,80 @@ function give_google_analytics_donation_form() {
 	?>
 	<script type="text/javascript">
 
-		// Give - Google Analytics Enhanced Ecommerce tracking script.
-		jQuery.noConflict();
-		(function ($) {
+			//GA Enhance Ecommerce tracking.
+			jQuery.noConflict();
+			(function( $ ) {
 
-			window.addEventListener("load", function give_ga_purchase(event) {
+				window.addEventListener( 'load', function give_ga_purchase( event ) {
 
-				window.removeEventListener("load", give_ga_purchase, false);
+					window.removeEventListener( 'load', give_ga_purchase, false );
 
-				var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
+					var ga = window[ window[ 'GoogleAnalyticsObject' ] || 'ga' ];
 
-				// If ga function is ready. Let's proceed.
-				if ('function' === typeof ga) {
+					// If ga function is ready. Let's proceed.
+					if ( 'function' === typeof ga ) {
 
-					var give_forms = $('form.give-form');
-                    ga('require', 'ec');
+						var give_forms = $( 'form.give-form' );
 
-					// Loop through each form on page and provide an impression.
-					give_forms.each(function (index, value) {
+						// Loop through each form on page and provide an impression.
+						give_forms.each( function( index, value ) {
 
-						var form_id = $(this).find('input[name="give-form-id"]').val();
-						var form_title = $(this).find('input[name="give-form-title"]').val();
+							var form_id = $( this ).find( 'input[name="give-form-id"]' ).val();
+							var form_title = $( this ).find( 'input[name="give-form-title"]' ).val();
 
-						ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
-							'id': form_id,                   // Product ID (string).
-							'name': form_title,
-							'category': '<?php echo esc_js( $ga_categories ); ?>',
-							'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>',
-							'position': index + 1                     // Product position (number).
-						});
-
-						ga('ec:setAction', 'detail');
-
-						ga('send', 'event');
-
-					});
-
-					// More code using $ as alias to jQuery
-					give_forms.on('submit', function (event) {
-
-						var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
-
-							var form_id = $(this).find('input[name="give-form-id"]').val();
-							var form_title = $(this).find('input[name="give-form-title"]').val();
-							var form_gateway = $(this).find('input[name="give-gateway"]').val();
-							var donation_amt = $(this).find('.give-amount-hidden').val();
-
-							// Load the Ecommerce plugin.
-							ga('require', 'ec');
-
-							ga('ec:addProduct', {
-								'id': form_id,
+							ga( 'ec:addImpression', {            // Provide product details in an impressionFieldObject.
+								'id': form_id,                   // Product ID (string).
 								'name': form_title,
 								'category': '<?php echo esc_js( $ga_categories ); ?>',
-								'price': donation_amt,
-								'quantity': 1
-							});
+								'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>',
+								'position': index + 1                     // Product position (number).
+							} );
 
-							ga('ec:setAction', 'checkout', {
-								'option': form_gateway  // Payment method
-							});
+							ga( 'ec:setAction', 'detail' );
 
-							ga('send', 'event');
+							ga( 'send', 'event', 'fundraising', 'detail', form_title, { 'nonInteraction': true } );
 
-					});
+						} );
 
-				} // end if
+						// More code using $ as alias to jQuery
+						give_forms.on( 'submit', function( event ) {
 
-			}, false); // end win load
+							var ga = window[ window[ 'GoogleAnalyticsObject' ] || 'ga' ];
 
-		})(jQuery); //
+							// If ga function is ready. Let's proceed.
+							if ( 'function' === typeof ga ) {
+
+								var form_id = $( this ).find( 'input[name="give-form-id"]' ).val();
+								var form_title = $( this ).find( 'input[name="give-form-title"]' ).val();
+								var form_gateway = $( this ).find( 'input[name="give-gateway"]' ).val();
+
+								// Load the Ecommerce plugin.
+								ga( 'require', 'ec' );
+
+								ga( 'ec:addProduct', {
+									'id': form_id,
+									'name': form_title,
+									'category': '<?php echo esc_js( $ga_categories ); ?>',
+									'price': $( this ).find( '.give-amount-hidden' ).val(),
+									'quantity': 1
+								} );
+								ga( 'ec:setAction', 'add' );
+
+								ga( 'ec:setAction', 'checkout', {
+									'option': form_gateway  // Payment method
+								} );
+
+								ga( 'send', 'event', 'fundraising', 'click', form_title + ': Submit Button Clicked' );
+
+							}
+
+						} );
+
+					} // end if
+
+				}, false ); // end win load
+
+			})( jQuery ); //
 	</script>
 	<?php
 
@@ -131,8 +140,10 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 		return false;
 	}
 
+	$sent_already = get_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
+
 	// Use a meta value so we only send the beacon once.
-	if ( get_post_meta( $payment->ID, '_give_ga_beacon_sent', true ) ) {
+	if ( ! empty( $sent_already ) ) {
 		return false;
 	}
 
@@ -147,6 +158,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 	}
 
 	$form_id     = give_get_payment_form_id( $payment->ID );
+	$form_title  = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
 	$total       = give_get_payment_amount( $payment->ID );
 	$affiliation = give_get_option( 'google_analytics_affiliate' );
 
@@ -154,46 +166,50 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 	$ga_categories = give_get_option( 'google_analytics_category' );
 	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
 	$ga_list       = give_get_option( 'google_analytics_list' );
+
+	ob_start();
 	?>
 	<script type="text/javascript">
-		window.addEventListener("load", function give_ga_purchase(event) {
+			window.addEventListener( 'load', function give_ga_purchase( event ) {
 
-			window.removeEventListener("load", give_ga_purchase, false);
+				window.removeEventListener( 'load', give_ga_purchase, false );
 
-			var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
+				var ga = window[ window[ 'GoogleAnalyticsObject' ] || 'ga' ];
 
-			// If ga function is ready. Let's proceed.
-			if ('function' === typeof ga) {
+				// If ga function is ready. Let's proceed.
+				if ( 'function' === typeof ga ) {
 
-				// Load the Ecommerce plugin.
-				ga('require', 'ec');
+					// Load the Ecommerce plugin.
+					ga( 'require', 'ec' );
 
-				ga('ec:addProduct', {
-					'id': '<?php echo esc_js( $form_id ); ?>',
-					'name': '<?php echo esc_js( html_entity_decode( get_the_title( $form_id ) ) ); ?>',
-					'category': '<?php echo esc_js( $ga_categories ); ?>',
-					'price': '<?php echo esc_js( $total ); ?>',
-					'quantity': 1
-				});
+					ga( 'ec:addProduct', {
+						'id': '<?php echo esc_js( $form_id ); ?>',
+						'name': '<?php echo $form_title; ?>',
+						'category': '<?php echo esc_js( $ga_categories ); ?>',
+						'price': '<?php echo esc_js( $total ); ?>',
+						'quantity': 1
+					} );
 
-				ga('ec:setAction', 'purchase', {
-					'id': '<?php echo esc_js( $payment->ID ); ?>',
-					'affiliation': '<?php echo ! empty( $affiliation ) ? esc_js( $affiliation ) : esc_js( get_bloginfo( 'name' ) ); ?>',
-					'category': '<?php echo esc_js( $ga_categories ); ?>',
-					'revenue': '<?php echo esc_js( $total ); ?>', // Donation amount.
-					'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
-				});
+					ga( 'ec:setAction', 'purchase', {
+						'id': '<?php echo esc_js( $payment->ID ); ?>',
+						'affiliation': '<?php echo ! empty( $affiliation ) ? esc_js( $affiliation ) : esc_js( get_bloginfo( 'name' ) ); ?>',
+						'category': '<?php echo esc_js( $ga_categories ); ?>',
+						'revenue': '<?php echo esc_js( $total ); ?>', // Donation amount.
+						'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
+					} );
 
-				ga('send', 'event');
-			}
+					ga( 'send', 'event', 'purchase', 'donation', '<?php echo $form_title; ?>', { 'nonInteraction': true } );
+				}
 
-		}, false);
+			}, false );
 
 	</script>
 	<?php
+	echo ob_get_clean();
+
 	// Add Payment note.
 	give_insert_payment_note( $payment->ID, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
-	update_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
+	add_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
 
 }
 
@@ -250,7 +266,7 @@ add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_t
 function give_google_analytics_send_refund_beacon( $donation_id ) {
 
 	$donation = new Give_Payment( $donation_id );
-	$status = give_get_payment_status( $donation );
+	$status   = give_get_payment_status( $donation );
 
 	// Bailout.
 	if ( 'refunded' !== $status ) {
@@ -269,29 +285,28 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 	}
 	?>
 	<script>
-		(function (i, s, o, g, r, a, m) {
-			i['GoogleAnalyticsObject'] = r;
-			i[r] = i[r] || function () {
-					(i[r].q = i[r].q || []).push(arguments)
-				}, i[r].l = 1 * new Date();
-			a = s.createElement(o),
-				m = s.getElementsByTagName(o)[0];
-			a.async = 1;
-			a.src = g;
-			m.parentNode.insertBefore(a, m)
-		})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+			(function( i, s, o, g, r, a, m ) {
+				i[ 'GoogleAnalyticsObject' ] = r;
+				i[ r ] = i[ r ] || function() {
+					(i[ r ].q = i[ r ].q || []).push( arguments );
+				}, i[ r ].l = 1 * new Date();
+				a = s.createElement( o ),
+					m = s.getElementsByTagName( o )[ 0 ];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore( a, m );
+			})( window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga' );
 
-		ga('create', '<?php echo $ua_code; ?>', 'auto');
+			ga( 'create', '<?php echo $ua_code; ?>', 'auto' );
 
-		ga('require', 'ec');
+			ga( 'require', 'ec' );
 
-		// Refund an entire transaction.
-		ga('ec:setAction', 'refund', {
-			'id': '<?php echo $donation_id; ?>',
-		});
+			// Refund an entire transaction.
+			ga( 'ec:setAction', 'refund', {
+				'id': '<?php echo $donation_id; ?>',
+			} );
 
-		ga('send', 'event');
-	
+			ga( 'send', 'event' );
 	</script> <?php
 
 	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
