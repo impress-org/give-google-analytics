@@ -112,6 +112,14 @@ class Give_Google_Analytics_Settings {
 				'type' => 'give_title',
 			),
 			array(
+				'name'        => __( 'Tracking ID', 'give-google-analytics' ),
+				'id'          => 'google_analytics_ua_code',
+				'type'        => 'text',
+				'attributes'  => array( 'placeholder' => 'UA-XXXXXXXX-XX' ),
+				'row_classes' => 'give-ga-tracking-id',
+				'desc'        => sprintf(__( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/'),
+			),
+			array(
 				'name' => '',
 				'desc' => '',
 				'id'   => 'ga_description',
@@ -138,14 +146,6 @@ class Give_Google_Analytics_Settings {
 					'enabled'  => __( 'Enabled', 'give-google-analytics' ),
 					'disabled' => __( 'Disabled', 'give-google-analytics' ),
 				),
-			),
-			array(
-				'name'        => __( 'Tracking ID', 'give-google-analytics' ),
-				'id'          => 'google_analytics_ua_code',
-				'type'        => 'text',
-				'attributes'  => array( 'placeholder' => 'UA-XXXXXXXX-XX' ),
-				'row_classes' => 'give-ga-tracking-id',
-				'desc'        => __( 'Since refunds are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google.', 'give-google-analytics' ),
 			),
 			array(
 				'name'    => __( 'Tracking Values', 'give-google-analytics' ),

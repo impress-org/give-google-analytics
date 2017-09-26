@@ -82,7 +82,7 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 		 * @return      void
 		 */
 		private function includes() {
-			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/class-setting-fields.php';
+			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/class-give-google-analytics-settings.php';
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/give-google-analytics-functions.php';
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/give-google-analytics-activation.php';
 		}

@@ -239,9 +239,10 @@ add_action( 'wp_footer', 'give_google_analytics_flag_beacon', 10 );
  * @return bool
  */
 function give_should_send_beacon( $payment_id ) {
+
 	$sent_already = get_post_meta( $payment_id, '_give_ga_beacon_sent', true );
 
-	// Use a meta value so we only send the beacon once.
+	// Check meta beacon flag.
 	if ( ! empty( $sent_already ) ) {
 		return false;
 	}
@@ -257,7 +258,7 @@ function give_should_send_beacon( $payment_id ) {
 	}
 
 	// Passed conditions so return true.
-	return true;
+	return apply_filters( 'give_should_send_beacon', true, $payment_id );
 }
 
 /**
@@ -417,4 +418,111 @@ function give_google_analytics_track_testing() {
 	}
 
 	return false;
+}
+
+/**
+ * Track donation completions for offsite gateways.
+ *
+ * Since donors often don't return from offsite gateways we need to watch for payments updating from "pending" to "completed" statuses.
+ * When it does we then check the date of the donation and if a beacon has been sent along with other checks before sending the check.
+ *
+ * @since  1.1
+ *
+ * @param $do_change
+ * @param $donation_id
+ * @param $new_status
+ * @param $old_status
+ *
+ * @return int $do_change
+ */
+function give_google_analytics_handle_offsite_gateways( $do_change, $donation_id, $new_status, $old_status ) {
+
+	// Check conditions.
+	$sent_already = get_post_meta( $donation_id, '_give_ga_beacon_sent', true );
+
+	if ( ! empty( $sent_already ) ) {
+		return $do_change;
+	}
+
+
+	// Going from "pending" to "Publish" -> like PayPal Standard when receiving a successful payment IPN.
+	if ( 'pending' === $old_status && 'publish' === $new_status ) {
+		give_google_analytics_record_offsite_payment( $donation_id );
+	}
+
+	return $do_change;
+}
+
+add_action( 'give_should_update_payment_status', 'give_google_analytics_handle_offsite_gateways', 10, 4 );
+
+
+/**
+ * Triggers when a payment is updated from pending to complete.
+ *
+ * @since 1.1
+ *
+ * @param string $donation_id Payment ID.
+ */
+function give_google_analytics_record_offsite_payment( $donation_id ) {
+
+	$ua_code = give_get_option( 'google_analytics_ua_code' );
+	if ( empty( $ua_code ) ) {
+		// All is well, sent beacon.
+		give_insert_payment_note( $donation_id, __( 'Google Analytics donation tracking beacon could not send due to missing GA Tracking ID.', 'give-google-analytics' ) );
+		return false;
+	}
+
+	// Set vars.
+	$form_id     = give_get_payment_form_id( $donation_id );
+	$form_title  = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
+	$total       = give_get_payment_amount( $donation_id );
+	$affiliation = give_get_option( 'google_analytics_affiliate' );
+
+	// Add the categories.
+	$ga_categories = give_get_option( 'google_analytics_category' );
+	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
+	$ga_list       = give_get_option( 'google_analytics_list' );
+	ob_start();
+	?>
+	<script>
+			(function( i, s, o, g, r, a, m ) {
+				i[ 'GoogleAnalyticsObject' ] = r;
+				i[ r ] = i[ r ] || function() {
+					(i[ r ].q = i[ r ].q || []).push( arguments );
+				}, i[ r ].l = 1 * new Date();
+				a = s.createElement( o ),
+					m = s.getElementsByTagName( o )[ 0 ];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore( a, m );
+			})( window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga' );
+
+			ga( 'create', '<?php echo $ua_code; ?>', 'auto' );
+
+			ga( 'require', 'ec' );
+
+			ga( 'ec:addProduct', {
+				'id': '<?php echo esc_js( $form_id ); ?>',
+				'name': '<?php echo $form_title; ?>',
+				'category': '<?php echo esc_js( $ga_categories ); ?>',
+				'brand': 'Fundraising',
+				'price': '<?php echo esc_js( $total ); ?>',
+				'quantity': 1
+			} );
+
+			ga( 'ec:setAction', 'purchase', {
+				'id': '<?php echo esc_js( $donation_id ); ?>',
+				'affiliation': '<?php echo ! empty( $affiliation ) ? esc_js( $affiliation ) : esc_js( get_bloginfo( 'name' ) ); ?>',
+				'category': '<?php echo esc_js( $ga_categories ); ?>',
+				'revenue': '<?php echo esc_js( $total ); ?>', // Donation amount.
+				'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
+			} );
+
+			ga( 'send', 'event', 'Fundraising', 'Donation Form Success', '<?php echo $form_title; ?>' );
+	</script>
+
+	<?php echo apply_filters( 'give_google_analytics_record_offsite_payment', ob_get_clean(), $form_id, $donation_id );
+
+	add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
+
 }

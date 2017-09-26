@@ -8,58 +8,40 @@
  */
 
 jQuery.noConflict();
-(function ($) {
+(function( $ ) {
 
 	/**
 	 * Toggle Conditional Form Fields
 	 *
 	 *  @since: 1.0
 	 */
-	var toggle_ga_fields = function () {
-
-		var ga_refund_option = $( 'input[name="google_analytics_refunds_option"]' );
-
-		ga_refund_option.on('change', function () {
-
-			var ga_option_val = $( this ).filter( ':checked' ).val();
-
-			if (typeof ga_option_val == 'undefined') {
-				return;
-			}
-
-			if (ga_option_val === 'disabled') {
-				$( '.give-ga-tracking-id' ).hide();
-			} else {
-				$( '.give-ga-tracking-id' ).show();
-			}
-
-		}).change();
+	var toggle_ga_fields = function() {
 
 		var ga_tracking_customize = $( 'input[name="google_analytics_tracking_vals"]' );
 
-		ga_tracking_customize.on('change', function () {
+		ga_tracking_customize.on( 'change', function() {
 
 			var ga_tracking_customize_val = $( this ).filter( ':checked' ).val();
 
-			if (typeof ga_tracking_customize_val == 'undefined') {
+			if ( 'undefined' === typeof ga_tracking_customize_val ) {
 				return;
 			}
 
-			if (ga_tracking_customize_val === 'default') {
+			if ( ga_tracking_customize_val === 'default' ) {
 				$( '.give-ga-advanced-field' ).hide();
 			} else {
 				$( '.give-ga-advanced-field' ).show();
 			}
 
-		}).change();
+		} ).change();
 
 	};
 
 	// On DOM Ready
-	$(function () {
+	$( function() {
 
 		toggle_ga_fields();
 
-	});
+	} );
 
-})(jQuery);
+})( jQuery );
