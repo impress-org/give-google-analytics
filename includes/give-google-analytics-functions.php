@@ -96,7 +96,7 @@ function give_google_analytics_donation_form() {
 									'id': form_id,
 									'name': form_title,
 									'category': '<?php echo esc_js( $ga_categories ); ?>',
-									'brand': 'Fundraising'
+									'brand': 'Fundraising',
 									'price': $( this ).find( '.give-amount-hidden' ).val(),
 									'quantity': 1
 								} );
@@ -189,6 +189,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 						'id': '<?php echo esc_js( $form_id ); ?>',
 						'name': '<?php echo $form_title; ?>',
 						'category': '<?php echo esc_js( $ga_categories ); ?>',
+						'brand': 'Fundraising',
 						'price': '<?php echo esc_js( $total ); ?>',
 						'quantity': 1
 					} );
@@ -326,7 +327,7 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 				'id': '<?php echo $donation_id; ?>'
 			} );
 
-			ga( 'send', 'event', 'Fundraising', 'Refund', '<?php echo $form_title; ?>' );
+			ga( 'send', 'event', 'Fundraising', 'Refund Processed', '<?php echo $form_title; ?>' );
 	</script> <?php
 
 	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
@@ -338,7 +339,7 @@ add_action( 'give_view_order_details_after', 'give_google_analytics_send_refund_
 /**
  * Should track testing?
  *
- * @return bool
+ * @return boola
  */
 function give_google_analytics_track_testing() {
 	if ( give_is_setting_enabled( give_get_option( 'google_analytics_test_option' ) ) ) {
