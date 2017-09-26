@@ -282,21 +282,22 @@ add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_t
  */
 function give_google_analytics_send_refund_beacon( $donation_id ) {
 
-	$donation = new Give_Payment( $donation_id );
-	$status   = give_get_payment_status( $donation );
-
-	// Bailout.
-	if ( 'refunded' !== $status ) {
-		return false;
-	}
 	// Check for UA code.
 	$ua_code = give_get_option( 'google_analytics_ua_code' );
 	if ( empty( $ua_code ) ) {
 		return false;
 	}
 
+	$status   = give_get_payment_status( $donation_id );
+
+	// Bailout.
+	if ( 'refunded' !== $status ) {
+		return false;
+	}
+
 	// Check if the beacon has already been sent.
-	$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent' );
+	$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
+
 	if ( ! empty( $beacon_sent ) ) {
 		return false;
 	}
@@ -330,16 +331,57 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 			ga( 'send', 'event', 'Fundraising', 'Refund Processed', '<?php echo $form_title; ?>' );
 	</script> <?php
 
-	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
 }
 
 add_action( 'give_view_order_details_after', 'give_google_analytics_send_refund_beacon', 10, 1 );
 
+/**
+ * Flag refund beacon after payment updated to refund status.
+ */
+function give_google_analytics_admin_flag_beacon() {
+
+	// Must be updating payment on the payment details page.
+	if ( ! isset( $_GET['page'] ) || 'give-payment-history' !== $_GET['page'] ) {
+		return false;
+	}
+
+	if ( ! isset( $_GET['give-message'] ) || 'payment-updated' !== $_GET['give-message'] ) {
+		return false;
+	}
+
+	// Must have page ID.
+	if ( ! isset( $_GET['id'] ) ) {
+		return false;
+	}
+
+	$donation_id = $_GET['id'];
+
+	$status   = give_get_payment_status( $donation_id );
+
+	// Bailout.
+	if ( 'refunded' !== $status ) {
+		return false;
+	}
+
+	// Check if the beacon has already been sent.
+	$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
+
+	if ( ! empty( $beacon_sent ) ) {
+		return false;
+	}
+
+
+	// Passed all checks. Now process beacon.
+	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
+
+}
+
+add_action( 'admin_footer', 'give_google_analytics_admin_flag_beacon' );
 
 /**
  * Should track testing?
  *
- * @return boola
+ * @return bool
  */
 function give_google_analytics_track_testing() {
 	if ( give_is_setting_enabled( give_get_option( 'google_analytics_test_option' ) ) ) {
