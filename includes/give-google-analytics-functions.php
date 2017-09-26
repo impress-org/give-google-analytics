@@ -291,14 +291,10 @@ function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_s
 		return $do_change;
 	}
 
-	// All is well, sent beacon.
-	give_insert_payment_note( $donation_id, __( 'Google Analytics donation refund tracking beacon sent.', 'give-google-analytics' ) );
-
 	// Important to always return.
 	return $do_change;
 
 }
-
 
 add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_tracking', 10, 4 );
 
@@ -360,6 +356,9 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 			ga( 'send', 'event', 'Fundraising', 'Refund Processed', '<?php echo $form_title; ?>', { 'nonInteraction': 1 } );
 	</script> <?php
 
+	// All is well, sent beacon.
+	give_insert_payment_note( $donation_id, __( 'Google Analytics donation refund tracking beacon sent.', 'give-google-analytics' ) );
+
 }
 
 add_action( 'give_view_order_details_after', 'give_google_analytics_send_refund_beacon', 10, 1 );
@@ -399,7 +398,6 @@ function give_google_analytics_admin_flag_beacon() {
 		return false;
 	}
 
-
 	// Passed all checks. Now process beacon.
 	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
 
@@ -428,32 +426,29 @@ function give_google_analytics_track_testing() {
  *
  * @since  1.1
  *
- * @param $do_change
  * @param $donation_id
  * @param $new_status
  * @param $old_status
  *
  * @return int $do_change
  */
-function give_google_analytics_handle_offsite_gateways( $do_change, $donation_id, $new_status, $old_status ) {
+function give_google_analytics_handle_offsite_gateways( $donation_id, $new_status, $old_status ) {
 
 	// Check conditions.
 	$sent_already = get_post_meta( $donation_id, '_give_ga_beacon_sent', true );
 
 	if ( ! empty( $sent_already ) ) {
-		return $do_change;
+		return false;
 	}
-
 
 	// Going from "pending" to "Publish" -> like PayPal Standard when receiving a successful payment IPN.
 	if ( 'pending' === $old_status && 'publish' === $new_status ) {
-		give_google_analytics_record_offsite_payment( $donation_id );
+		add_action( 'admin_footer', 'give_google_analytics_record_offsite_payment', 10 );
 	}
 
-	return $do_change;
 }
 
-add_action( 'give_should_update_payment_status', 'give_google_analytics_handle_offsite_gateways', 10, 4 );
+add_action( 'give_update_payment_status', 'give_google_analytics_handle_offsite_gateways', 110, 3 );
 
 
 /**
@@ -461,14 +456,22 @@ add_action( 'give_should_update_payment_status', 'give_google_analytics_handle_o
  *
  * @since 1.1
  *
- * @param string $donation_id Payment ID.
+ * @return string
  */
-function give_google_analytics_record_offsite_payment( $donation_id ) {
+function give_google_analytics_record_offsite_payment() {
+
+	die('here');
+	if ( ! isset( $_GET['id'] ) ) {
+		return false;
+	}
+
+	$donation_id = $_GET['id'];
 
 	$ua_code = give_get_option( 'google_analytics_ua_code' );
 	if ( empty( $ua_code ) ) {
 		// All is well, sent beacon.
 		give_insert_payment_note( $donation_id, __( 'Google Analytics donation tracking beacon could not send due to missing GA Tracking ID.', 'give-google-analytics' ) );
+
 		return false;
 	}
 
@@ -526,3 +529,4 @@ function give_google_analytics_record_offsite_payment( $donation_id ) {
 	add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
 
 }
+
