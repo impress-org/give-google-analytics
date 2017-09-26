@@ -73,7 +73,7 @@ function give_google_analytics_donation_form() {
 
 							ga( 'ec:setAction', 'detail' );
 
-							ga( 'send', 'event', 'fundraising', 'detail', form_title, { 'nonInteraction': true } );
+							ga( 'send', 'event', 'Fundraising', 'Donation Form View', form_title );
 
 						} );
 
@@ -96,16 +96,19 @@ function give_google_analytics_donation_form() {
 									'id': form_id,
 									'name': form_title,
 									'category': '<?php echo esc_js( $ga_categories ); ?>',
+									'brand': 'Fundraising'
 									'price': $( this ).find( '.give-amount-hidden' ).val(),
 									'quantity': 1
 								} );
 								ga( 'ec:setAction', 'add' );
 
+								ga( 'send', 'event', 'Fundraising', 'Donation Form Begin Checkout', form_title );
+
 								ga( 'ec:setAction', 'checkout', {
 									'option': form_gateway  // Payment method
 								} );
 
-								ga( 'send', 'event', 'fundraising', 'click', form_title + ': Submit Button Clicked' );
+								ga( 'send', 'event', 'Fundraising', 'Donation Form Submitted', form_title );
 
 							}
 
@@ -198,7 +201,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 						'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
 					} );
 
-					ga( 'send', 'event', 'purchase', 'donation', '<?php echo $form_title; ?>', { 'nonInteraction': true } );
+					ga( 'send', 'event', 'Fundraising', 'Donation Form Success Page', '<?php echo $form_title; ?>' );
 				}
 
 			}, false );
@@ -209,11 +212,24 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 
 	// Add Payment note.
 	give_insert_payment_note( $payment->ID, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
-	add_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
 
 }
 
 add_action( 'give_payment_receipt_after_table', 'give_google_analytics_completed_donation', 10, 2 );
+
+/**
+ * Use postmeta to flag that analytics has sent ecommerce event.
+ */
+function give_google_analytics_flag_beacon() {
+
+	// Only on the success page.
+	if ( give_is_success_page() ) {
+		global $payment;
+		add_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
+	}
+}
+
+add_action( 'wp_footer', 'give_google_analytics_flag_beacon', 10 );
 
 
 /**
@@ -283,6 +299,10 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 	if ( ! empty( $beacon_sent ) ) {
 		return false;
 	}
+
+	$form_id    = give_get_payment_form_id( $donation_id );
+	$form_title = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
+
 	?>
 	<script>
 			(function( i, s, o, g, r, a, m ) {
@@ -303,10 +323,10 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 
 			// Refund an entire transaction.
 			ga( 'ec:setAction', 'refund', {
-				'id': '<?php echo $donation_id; ?>',
+				'id': '<?php echo $donation_id; ?>'
 			} );
 
-			ga( 'send', 'event' );
+			ga( 'send', 'event', 'Fundraising', 'Refund', '<?php echo $form_title; ?>' );
 	</script> <?php
 
 	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
