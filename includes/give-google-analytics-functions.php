@@ -303,6 +303,8 @@ add_filter( 'give_should_update_payment_status', 'give_google_analytics_refund_t
 
 
 /**
+ * Track refund donations within GA.
+ *
  * @param $donation_id
  *
  * @return bool
@@ -331,7 +333,6 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 
 	$form_id    = give_get_payment_form_id( $donation_id );
 	$form_title = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
-
 	?>
 	<script>
 			(function( i, s, o, g, r, a, m ) {
