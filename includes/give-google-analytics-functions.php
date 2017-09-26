@@ -143,23 +143,12 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 		return false;
 	}
 
-	$sent_already = get_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
-
-	// Use a meta value so we only send the beacon once.
-	if ( ! empty( $sent_already ) ) {
+	// Check conditions.
+	if ( ! give_should_send_beacon( $payment->ID ) ) {
 		return false;
 	}
 
-	// Don't track site admins.
-	if ( is_user_logged_in() && current_user_can( 'administrator' ) ) {
-		return false;
-	}
-
-	// Don't continue if test mode is enabled and test mode tracking is disabled.
-	if ( give_is_test_mode() && ! give_google_analytics_track_testing() ) {
-		return false;
-	}
-
+	// Set vars.
 	$form_id     = give_get_payment_form_id( $payment->ID );
 	$form_title  = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
 	$total       = give_get_payment_amount( $payment->ID );
@@ -209,10 +198,9 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 
 	</script>
 	<?php
-	echo ob_get_clean();
 
-	// Add Payment note.
-	give_insert_payment_note( $payment->ID, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
+	// Output via filter.
+	echo apply_filters( 'give_google_analytics_completed_donation_output', ob_get_clean(), $form_id, $payment );
 
 }
 
@@ -220,18 +208,57 @@ add_action( 'give_payment_receipt_after_table', 'give_google_analytics_completed
 
 /**
  * Use postmeta to flag that analytics has sent ecommerce event.
+ *
+ * @since 1.1
  */
 function give_google_analytics_flag_beacon() {
 
 	// Only on the success page.
 	if ( give_is_success_page() ) {
 		global $payment;
-		add_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
+
+		// Check conditions.
+		if ( give_should_send_beacon( $payment->ID ) ) {
+			// Save post meta.
+			add_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
+			// Add Payment note.
+			give_insert_payment_note( $payment->ID, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
+		}
 	}
 }
 
 add_action( 'wp_footer', 'give_google_analytics_flag_beacon', 10 );
 
+/**
+ * Helper function to check conditions for triggering GA tracking code.
+ *
+ * @since 1.1
+ *
+ * @param $payment_id
+ *
+ * @return bool
+ */
+function give_should_send_beacon( $payment_id ) {
+	$sent_already = get_post_meta( $payment_id, '_give_ga_beacon_sent', true );
+
+	// Use a meta value so we only send the beacon once.
+	if ( ! empty( $sent_already ) ) {
+		return false;
+	}
+
+	// Don't track site admins.
+	if ( is_user_logged_in() && current_user_can( 'administrator' ) ) {
+		return false;
+	}
+
+	// Don't continue if test mode is enabled and test mode tracking is disabled.
+	if ( give_is_test_mode() && ! give_google_analytics_track_testing() ) {
+		return false;
+	}
+
+	// Passed conditions so return true.
+	return true;
+}
 
 /**
  * GA Refund tracking.
@@ -288,7 +315,7 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 		return false;
 	}
 
-	$status   = give_get_payment_status( $donation_id );
+	$status = give_get_payment_status( $donation_id );
 
 	// Bailout.
 	if ( 'refunded' !== $status ) {
@@ -328,7 +355,7 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 				'id': '<?php echo $donation_id; ?>'
 			} );
 
-			ga( 'send', 'event', 'Fundraising', 'Refund Processed', '<?php echo $form_title; ?>' );
+			ga( 'send', 'event', 'Fundraising', 'Refund Processed', '<?php echo $form_title; ?>', { 'nonInteraction': 1 } );
 	</script> <?php
 
 }
@@ -356,7 +383,7 @@ function give_google_analytics_admin_flag_beacon() {
 
 	$donation_id = $_GET['id'];
 
-	$status   = give_get_payment_status( $donation_id );
+	$status = give_get_payment_status( $donation_id );
 
 	// Bailout.
 	if ( 'refunded' !== $status ) {
