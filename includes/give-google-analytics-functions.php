@@ -490,20 +490,20 @@ function give_google_analytics_record_offsite_payment( $donation_id ) {
 
 	$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
 		'v'     => 1,
-		't'     => 'event', // Event hit type.
+		'tid'   => $ua_code, // Tracking ID required.
 		'cid'   => 555, // Random Client ID. Required.
+		't'     => 'event', // Event hit type.
 		'ec'    => 'Fundraising', // Event Category. Required.
 		'ea'    => 'Donation Success', // Event Action. Required.
 		'el'    => $form_title, // Event Label.
-		'tid'   => $ua_code,
 		'ti'    => $donation_id, // Transaction ID.
 		'tr'    => $total,  // Revenue.
 		'ta'    => $affiliation,  // Affiliation.
-		'pa'    => 'purchase',
 		'pal'   => $ga_list,   // Product Action List.
-		'pr1id' => $form_id,
-		'pr1nm' => $form_title,
-		'pr1ca' => $ga_categories,
+		'pa'    => 'purchase',
+		'pr1id' => $form_id,  // Product 1 ID. Either ID or name must be set.
+		'pr1nm' => $form_title, // Product 1 name. Either ID or name must be set.
+		'pr1ca' => $ga_categories, // Product 1 category.
 		'pr1br' => 'Fundraising',
 	) );
 	$args = array_map( 'rawurlencode', $args );
