@@ -182,6 +182,13 @@ class Give_Google_Analytics_Settings {
 				'default'     => 'Donation Forms',
 				'desc'        => __( 'The list that the donations belong to and are organized under in Google Analytics.', 'give-google-analytics' ),
 			),
+			array(
+				'name'  => esc_html__( 'Google Analytics Docs Link', 'give' ),
+				'id'    => 'google_analytics_docs_link',
+				'url'   => esc_url( 'http://docs.givewp.com/addon-google-analytics' ),
+				'title' => __( 'Give - Google Analytics Add-on Documentation', 'give' ),
+				'type'  => 'give_docs_link',
+			),
 		);
 
 		return array_merge( $settings, $give_ga__settings );
