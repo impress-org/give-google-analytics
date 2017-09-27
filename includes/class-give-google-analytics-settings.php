@@ -186,12 +186,12 @@ class Give_Google_Analytics_Settings {
 				'name'  => esc_html__( 'Google Analytics Docs Link', 'give-google-analytics' ),
 				'id'    => 'google_analytics_docs_link',
 				'url'   => esc_url( 'http://docs.givewp.com/addon-google-analytics' ),
-				'title' => __( 'Give - Google Analytics Add-on Documentation', 'give-google-analytics' ),
+				'title' => __( 'Google Analytics Add-on Documentation', 'give-google-analytics' ),
 				'type'  => 'give_docs_link',
 			),
 		);
 
-		return array_merge( $settings, $give_ga__settings );
+		return $give_ga__settings;
 	}
 
 
