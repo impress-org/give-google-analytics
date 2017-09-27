@@ -191,7 +191,7 @@ function give_google_analytics_completed_donation( $payment, $give_receipt_args 
 						'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
 					} );
 
-					ga( 'send', 'event', 'Fundraising', 'Donation Form Success Page', '<?php echo $form_title; ?>' );
+					ga( 'send', 'event', 'Fundraising', 'Donation Successful', '<?php echo $form_title; ?>' );
 				}
 
 			}, false );
@@ -249,6 +249,11 @@ function give_should_send_beacon( $payment_id ) {
 
 	// Don't track site admins.
 	if ( is_user_logged_in() && current_user_can( 'administrator' ) ) {
+		return false;
+	}
+
+	// Must be publish status.
+	if ( 'publish' !== give_get_payment_status( $payment_id ) ) {
 		return false;
 	}
 
@@ -443,7 +448,7 @@ function give_google_analytics_handle_offsite_gateways( $donation_id, $new_statu
 
 	// Going from "pending" to "Publish" -> like PayPal Standard when receiving a successful payment IPN.
 	if ( 'pending' === $old_status && 'publish' === $new_status ) {
-		add_action( 'admin_footer', 'give_google_analytics_record_offsite_payment', 10 );
+		give_google_analytics_record_offsite_payment( $donation_id );
 	}
 
 }
@@ -454,18 +459,15 @@ add_action( 'give_update_payment_status', 'give_google_analytics_handle_offsite_
 /**
  * Triggers when a payment is updated from pending to complete.
  *
+ * Uses the Measurement Protocol within GA's API https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
+ *
  * @since 1.1
+ *
+ * @param string $donation_id
  *
  * @return string
  */
-function give_google_analytics_record_offsite_payment() {
-
-	die('here');
-	if ( ! isset( $_GET['id'] ) ) {
-		return false;
-	}
-
-	$donation_id = $_GET['id'];
+function give_google_analytics_record_offsite_payment( $donation_id ) {
 
 	$ua_code = give_get_option( 'google_analytics_ua_code' );
 	if ( empty( $ua_code ) ) {
@@ -477,7 +479,7 @@ function give_google_analytics_record_offsite_payment() {
 
 	// Set vars.
 	$form_id     = give_get_payment_form_id( $donation_id );
-	$form_title  = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
+	$form_title  = get_the_title( $form_id );
 	$total       = give_get_payment_amount( $donation_id );
 	$affiliation = give_get_option( 'google_analytics_affiliate' );
 
@@ -485,48 +487,38 @@ function give_google_analytics_record_offsite_payment() {
 	$ga_categories = give_get_option( 'google_analytics_category' );
 	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
 	$ga_list       = give_get_option( 'google_analytics_list' );
-	ob_start();
-	?>
-	<script>
-			(function( i, s, o, g, r, a, m ) {
-				i[ 'GoogleAnalyticsObject' ] = r;
-				i[ r ] = i[ r ] || function() {
-					(i[ r ].q = i[ r ].q || []).push( arguments );
-				}, i[ r ].l = 1 * new Date();
-				a = s.createElement( o ),
-					m = s.getElementsByTagName( o )[ 0 ];
-				a.async = 1;
-				a.src = g;
-				m.parentNode.insertBefore( a, m );
-			})( window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga' );
 
-			ga( 'create', '<?php echo $ua_code; ?>', 'auto' );
+	$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
+		'v'     => 1,
+		't'     => 'event', // Event hit type.
+		'cid'   => 555, // Random Client ID. Required.
+		'ec'    => 'Fundraising', // Event Category. Required.
+		'ea'    => 'Donation Success', // Event Action. Required.
+		'el'    => $form_title, // Event Label.
+		'tid'   => $ua_code,
+		'ti'    => $donation_id, // Transaction ID.
+		'tr'    => $total,  // Revenue.
+		'ta'    => $affiliation,  // Affiliation.
+		'pa'    => 'purchase',
+		'pal'   => $ga_list,   // Product Action List.
+		'pr1id' => $form_id,
+		'pr1nm' => $form_title,
+		'pr1ca' => $ga_categories,
+		'pr1br' => 'Fundraising',
+	) );
+	$args = array_map( 'rawurlencode', $args );
 
-			ga( 'require', 'ec' );
+	$url = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
 
-			ga( 'ec:addProduct', {
-				'id': '<?php echo esc_js( $form_id ); ?>',
-				'name': '<?php echo $form_title; ?>',
-				'category': '<?php echo esc_js( $ga_categories ); ?>',
-				'brand': 'Fundraising',
-				'price': '<?php echo esc_js( $total ); ?>',
-				'quantity': 1
-			} );
+	$request = wp_remote_post( $url );
 
-			ga( 'ec:setAction', 'purchase', {
-				'id': '<?php echo esc_js( $donation_id ); ?>',
-				'affiliation': '<?php echo ! empty( $affiliation ) ? esc_js( $affiliation ) : esc_js( get_bloginfo( 'name' ) ); ?>',
-				'category': '<?php echo esc_js( $ga_categories ); ?>',
-				'revenue': '<?php echo esc_js( $total ); ?>', // Donation amount.
-				'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
-			} );
+	// Check if beacon sent successfully.
+	if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
 
-			ga( 'send', 'event', 'Fundraising', 'Donation Form Success', '<?php echo $form_title; ?>' );
-	</script>
+		add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
+		give_insert_payment_note( $donation_id, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
 
-	<?php echo apply_filters( 'give_google_analytics_record_offsite_payment', ob_get_clean(), $form_id, $donation_id );
+	}
 
-	add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
 
 }
-
