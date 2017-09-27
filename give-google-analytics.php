@@ -15,12 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '1.0' );
+	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '1.1' );
 }
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '1.8.4' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '1.8.12' );
 }
 
 // Plugin path.

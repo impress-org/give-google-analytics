@@ -2,7 +2,7 @@
 Contributors: wordimpress, givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.2
-Tested up to: 4.7.2
+Tested up to: 4.8
 Stable tag: 1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -40,6 +40,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 = 1.1: September 26th, 2017 =
 * New: GA Events now display all under the "Fundraising" category.
+* New: Improved tracking for offsite payment gateways such as PayPal Standard.
 * Fix: Resolved issues with sending tracking code on WP Engine.
 * Fix: Improved checkout flow so the "Add to Cart" step is always fulfilled and there's no gap in the checkout flow within GA.
 

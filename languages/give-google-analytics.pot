@@ -24,83 +24,83 @@ msgstr ""
 msgid "<strong>Activation Error:</strong> You must have <a href=\"%1$s\" target=\"_blank\">Give</a> version %2$s+ for the Google Analytics add-on to activate."
 msgstr ""
 
-#: includes/class-setting-fields.php:100, includes/give-google-analytics-activation.php:39
+#: includes/class-give-google-analytics-settings.php:52, includes/class-give-google-analytics-settings.php:109, includes/give-google-analytics-activation.php:39
 msgid "Google Analytics"
 msgstr ""
 
-#: includes/class-setting-fields.php:112
-msgid "Track Test Donations"
-msgstr ""
-
-#: includes/class-setting-fields.php:115
-msgid "Do you want to track donations that are made when Give is in test mode?"
-msgstr ""
-
-#: includes/class-setting-fields.php:118, includes/class-setting-fields.php:129
-msgid "Enabled"
-msgstr ""
-
-#: includes/class-setting-fields.php:119, includes/class-setting-fields.php:130
-msgid "Disabled"
-msgstr ""
-
-#: includes/class-setting-fields.php:123
-msgid "Track Refunds"
-msgstr ""
-
-#: includes/class-setting-fields.php:126
-msgid "When a donation changes status to refunded in Give then the refund will also be reflected in Google Analytics as a refund."
-msgstr ""
-
-#: includes/class-setting-fields.php:134
+#: includes/class-give-google-analytics-settings.php:115
 msgid "Tracking ID"
 msgstr ""
 
-#: includes/class-setting-fields.php:139
-msgid "Since refunds are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google."
+#: includes/class-give-google-analytics-settings.php:120
+msgid "Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href=\"%s\" target=\"_blank\">Google Analytics</a> dashboard."
 msgstr ""
 
-#: includes/class-setting-fields.php:142
+#: includes/class-give-google-analytics-settings.php:129
+msgid "Track Test Donations"
+msgstr ""
+
+#: includes/class-give-google-analytics-settings.php:132
+msgid "Do you want to track donations that are made when Give is in test mode?"
+msgstr ""
+
+#: includes/class-give-google-analytics-settings.php:135, includes/class-give-google-analytics-settings.php:146
+msgid "Enabled"
+msgstr ""
+
+#: includes/class-give-google-analytics-settings.php:136, includes/class-give-google-analytics-settings.php:147
+msgid "Disabled"
+msgstr ""
+
+#: includes/class-give-google-analytics-settings.php:140
+msgid "Track Refunds"
+msgstr ""
+
+#: includes/class-give-google-analytics-settings.php:143
+msgid "When a donation changes status to refunded in Give then the refund will also be reflected in Google Analytics as a refund."
+msgstr ""
+
+#: includes/class-give-google-analytics-settings.php:151
 msgid "Tracking Values"
 msgstr ""
 
-#: includes/class-setting-fields.php:145
+#: includes/class-give-google-analytics-settings.php:154
 msgid "Adjust some of the values sent to Google Analytics Enhanced Ecommerce."
 msgstr ""
 
-#: includes/class-setting-fields.php:148
+#: includes/class-give-google-analytics-settings.php:157
 msgid "Customize"
 msgstr ""
 
-#: includes/class-setting-fields.php:149
+#: includes/class-give-google-analytics-settings.php:158
 msgid "Default"
 msgstr ""
 
-#: includes/class-setting-fields.php:153
+#: includes/class-give-google-analytics-settings.php:162
 msgid "Category"
 msgstr ""
 
-#: includes/class-setting-fields.php:157
+#: includes/class-give-google-analytics-settings.php:166
 msgid "Donations"
 msgstr ""
 
-#: includes/class-setting-fields.php:158
+#: includes/class-give-google-analytics-settings.php:167
 msgid "The category to which the \"product\" belongs to within Google Analytics."
 msgstr ""
 
-#: includes/class-setting-fields.php:161
+#: includes/class-give-google-analytics-settings.php:170
 msgid "Affiliation"
 msgstr ""
 
-#: includes/class-setting-fields.php:166
+#: includes/class-give-google-analytics-settings.php:175
 msgid "The site from which this transaction occurred. Typically this is your site or organization's name"
 msgstr ""
 
-#: includes/class-setting-fields.php:169
+#: includes/class-give-google-analytics-settings.php:178
 msgid "List Name"
 msgstr ""
 
-#: includes/class-setting-fields.php:174
+#: includes/class-give-google-analytics-settings.php:183
 msgid "The list that the donations belong to and are organized under in Google Analytics."
 msgstr ""
 
@@ -116,14 +116,18 @@ msgstr ""
 msgid "Add-ons"
 msgstr ""
 
-#: includes/give-google-analytics-functions.php:197
+#: includes/give-google-analytics-functions.php:225, includes/give-google-analytics-functions.php:519
 msgid "Google Analytics ecommerce tracking beacon sent."
 msgstr ""
 
-#: includes/give-google-analytics-functions.php:230
+#: includes/give-google-analytics-functions.php:294
 msgid "Google Analytics refund tracking beacon could not send because the UA code is missing in Give's settings"
 msgstr ""
 
-#: includes/give-google-analytics-functions.php:236
+#: includes/give-google-analytics-functions.php:365
 msgid "Google Analytics donation refund tracking beacon sent."
+msgstr ""
+
+#: includes/give-google-analytics-functions.php:475
+msgid "Google Analytics donation tracking beacon could not send due to missing GA Tracking ID."
 msgstr ""
