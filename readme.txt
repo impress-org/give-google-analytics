@@ -2,8 +2,8 @@
 Contributors: wordimpress, givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.2
-Tested up to: 4.8
-Stable tag: 1.1
+Tested up to: 4.9
+Stable tag: 1.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -37,6 +37,9 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 1.1.1: October 13th, 2017 =
+* Fix: Make the "Donation Form View" event a non-interactive event as to not mess with bounce rates if forms are embedded throughout the site.
 
 = 1.1: September 26th, 2017 =
 * New: GA Events now display all under the "Fundraising" category.
