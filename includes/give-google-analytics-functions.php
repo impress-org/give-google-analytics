@@ -73,7 +73,7 @@ function give_google_analytics_donation_form() {
 
 							ga( 'ec:setAction', 'detail' );
 
-							ga( 'send', 'event', 'Fundraising', 'Donation Form View', form_title );
+							ga( 'send', 'event', 'Fundraising', 'Donation Form View', form_title, { 'nonInteraction': 1 } );
 
 						} );
 
