@@ -38,7 +38,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Changelog ==
 
-= 1.1.1: October 13th, 2017 =
+= 1.1.1: October 16th, 2017 =
 * Fix: Make the "Donation Form View" event a non-interactive event as to not mess with bounce rates if forms are embedded throughout the site.
 
 = 1.1: September 26th, 2017 =
