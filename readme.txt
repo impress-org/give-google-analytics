@@ -1,7 +1,7 @@
 === Give - Google Analytics Donation Tracking ===
 Contributors: wordimpress, givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
-Requires at least: 4.2
+Requires at least: 4.5
 Tested up to: 4.9
 Stable tag: 1.1.1
 License: GPLv3
