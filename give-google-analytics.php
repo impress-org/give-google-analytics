@@ -30,12 +30,12 @@ if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_DIR' ) ) {
 
 // Plugin URL.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_URL' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_URL', plugin_dir_url( __FILE__ ) );
+	define( 'GIVE_GOOGLE_ANALYTICS_URL', plugin_dir_url( GIVE_GOOGLE_ANALYTICS_DIR ) );
 }
 
 // Basename.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_BASENAME' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_BASENAME', plugin_basename( __FILE__ ) );
+	define( 'GIVE_GOOGLE_ANALYTICS_BASENAME', plugin_basename( GIVE_GOOGLE_ANALYTICS_DIR ) );
 }
 
 /**
@@ -145,7 +145,7 @@ add_action( 'plugins_loaded', 'give_google_analytics_load' );
 function give_add_google_analytics_licensing() {
 
 	if ( class_exists( 'Give_License' ) ) {
-		new Give_License( __FILE__, 'Google Analytics Donation Tracking', GIVE_GOOGLE_ANALYTICS_VERSION, 'WordImpress' );
+		new Give_License( GIVE_GOOGLE_ANALYTICS_DIR, 'Google Analytics Donation Tracking', GIVE_GOOGLE_ANALYTICS_VERSION, 'WordImpress' );
 	}
 }
 
