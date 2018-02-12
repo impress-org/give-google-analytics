@@ -127,86 +127,6 @@ function give_google_analytics_donation_form() {
 add_action( 'wp_footer', 'give_google_analytics_donation_form', 99999 );
 
 /**
- * Donation success page: Send the GA data.
- *
- * @see: https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce
- *
- * @param $payment
- * @param $give_receipt_args
- *
- * @return bool
- */
-function give_google_analytics_completed_donation( $payment, $give_receipt_args ) {
-
-	// Need Payment ID to continue.
-	if ( empty( $payment->ID ) ) {
-		return false;
-	}
-
-	// Check conditions.
-	if ( ! give_should_send_beacon( $payment->ID ) ) {
-		return false;
-	}
-
-	// Set vars.
-	$form_id     = give_get_payment_form_id( $payment->ID );
-	$form_title  = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
-	$total       = give_get_payment_amount( $payment->ID );
-	$affiliation = give_get_option( 'google_analytics_affiliate' );
-
-	// Add the categories.
-	$ga_categories = give_get_option( 'google_analytics_category' );
-	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
-	$ga_list       = give_get_option( 'google_analytics_list' );
-
-	ob_start();
-	?>
-	<script type="text/javascript">
-			window.addEventListener( 'load', function give_ga_purchase( event ) {
-
-				window.removeEventListener( 'load', give_ga_purchase, false );
-
-				var ga = window[ window[ 'GoogleAnalyticsObject' ] || 'ga' ];
-
-				// If ga function is ready. Let's proceed.
-				if ( 'function' === typeof ga ) {
-
-					// Load the Ecommerce plugin.
-					ga( 'require', 'ec' );
-
-					ga( 'ec:addProduct', {
-						'id': '<?php echo esc_js( $form_id ); ?>',
-						'name': '<?php echo $form_title; ?>',
-						'category': '<?php echo esc_js( $ga_categories ); ?>',
-						'brand': 'Fundraising',
-						'price': '<?php echo esc_js( $total ); ?>',
-						'quantity': 1
-					} );
-
-					ga( 'ec:setAction', 'purchase', {
-						'id': '<?php echo esc_js( $payment->ID ); ?>',
-						'affiliation': '<?php echo ! empty( $affiliation ) ? esc_js( $affiliation ) : esc_js( get_bloginfo( 'name' ) ); ?>',
-						'category': '<?php echo esc_js( $ga_categories ); ?>',
-						'revenue': '<?php echo esc_js( $total ); ?>', // Donation amount.
-						'list': '<?php echo ! empty( $ga_list ) ? esc_js( $ga_list ) : 'Donation Forms'; ?>'
-					} );
-
-					ga( 'send', 'event', 'Fundraising', 'Donation Successful', '<?php echo $form_title; ?>' );
-				}
-
-			}, false );
-
-	</script>
-	<?php
-
-	// Output via filter.
-	echo apply_filters( 'give_google_analytics_completed_donation_output', ob_get_clean(), $form_id, $payment );
-
-}
-
-add_action( 'give_payment_receipt_after_table', 'give_google_analytics_completed_donation', 10, 2 );
-
-/**
  * Use postmeta to flag that analytics has sent ecommerce event.
  *
  * @since 1.1
@@ -424,20 +344,22 @@ function give_google_analytics_track_testing() {
 }
 
 /**
- * Track donation completions for offsite gateways.
+ * Triggers when a payment is updated from pending to complete.
  *
- * Since donors often don't return from offsite gateways we need to watch for payments updating from "pending" to "completed" statuses.
- * When it does we then check the date of the donation and if a beacon has been sent along with other checks before sending the check.
+ * Support on-site and offsite gateways. Since donors often don't return from offsite gateways we need to watch for payments updating from "pending" to "completed" statuses.
+ * When it does we then check the date of the donation and if a beacon has been sent along with other checks before sending.
  *
- * @since  1.1
+ * Uses the Measurement Protocol within GA's API https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
  *
- * @param $donation_id
+ * @since 1.1
+ *
+ * @param string     $donation_id The donation payment ID.
  * @param $new_status
  * @param $old_status
  *
- * @return int $do_change
+ * @return string
  */
-function give_google_analytics_handle_offsite_gateways( $donation_id, $new_status, $old_status ) {
+function give_google_analytics_send_donation_success( $donation_id, $new_status, $old_status ) {
 
 	// Check conditions.
 	$sent_already = get_post_meta( $donation_id, '_give_ga_beacon_sent', true );
@@ -448,82 +370,67 @@ function give_google_analytics_handle_offsite_gateways( $donation_id, $new_statu
 
 	// Going from "pending" to "Publish" -> like PayPal Standard when receiving a successful payment IPN.
 	if ( 'pending' === $old_status && 'publish' === $new_status ) {
-		give_google_analytics_record_offsite_payment( $donation_id );
-	}
+
+		$ua_code = give_get_option( 'google_analytics_ua_code' );
+		if ( empty( $ua_code ) ) {
+			// All is well, sent beacon.
+			give_insert_payment_note( $donation_id, __( 'Google Analytics donation tracking beacon could not send due to missing GA Tracking ID.', 'give-google-analytics' ) );
+
+			return false;
+		}
+
+		// Set vars.
+		$form_id     = give_get_payment_form_id( $donation_id );
+		$form_title  = get_the_title( $form_id );
+		$total       = give_donation_amount( $donation_id, array(
+			'currency' => false,
+			'amount' => array(
+			'decimal' => true,
+			),
+		) );
+		$affiliation = give_get_option( 'google_analytics_affiliate' );
+
+		// Add the categories.
+		$ga_categories = give_get_option( 'google_analytics_category', 'Donations' );
+		$ga_list       = give_get_option( 'google_analytics_list' );
+
+		$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
+			'v'     => 1,
+			'tid'   => $ua_code, // Tracking ID required.
+			'cid'   => give_analytics_gen_uuid(), // Random Client ID. Required.
+			't'     => 'event', // Event hit type.
+			'ec'    => 'Fundraising', // Event Category. Required.
+			'ea'    => 'Donation Success', // Event Action. Required.
+			'el'    => $form_title, // Event Label.
+			'ti'    => $donation_id, // Transaction ID.
+			'ta'    => $affiliation,  // Affiliation.
+			'pal'   => $ga_list,   // Product Action List.
+			'pa'    => 'purchase',
+			'pr1id' => $form_id,  // Product 1 ID. Either ID or name must be set.
+			'pr1nm' => $form_title, // Product 1 name. Either ID or name must be set.
+			'pr1ca' => $ga_categories, // Product 1 category.
+			'pr1br' => 'Fundraising',
+			'pr1qt' => 1, // Product 1 quantity.
+			'pr1pr' => $total, // Product price
+		) );
+
+		$args    = array_map( 'rawurlencode', $args );
+		$url     = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
+		$request = wp_remote_post( $url );
+
+		// Check if beacon sent successfully.
+		if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
+
+			add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
+			give_insert_payment_note( $donation_id, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
+		}
+
+	}// End if().
 
 }
 
-add_action( 'give_update_payment_status', 'give_google_analytics_handle_offsite_gateways', 110, 3 );
+add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_success', 110, 3 );
 
-
-/**
- * Triggers when a payment is updated from pending to complete.
- *
- * Uses the Measurement Protocol within GA's API https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
- *
- * @since 1.1
- *
- * @param string $donation_id The donation payment ID.
- *
- * @return string
- */
-function give_google_analytics_record_offsite_payment( $donation_id ) {
-
-	$ua_code = give_get_option( 'google_analytics_ua_code' );
-	if ( empty( $ua_code ) ) {
-		// All is well, sent beacon.
-		give_insert_payment_note( $donation_id, __( 'Google Analytics donation tracking beacon could not send due to missing GA Tracking ID.', 'give-google-analytics' ) );
-
-		return false;
-	}
-
-	// Set vars.
-	$form_id     = give_get_payment_form_id( $donation_id );
-	$form_title  = get_the_title( $form_id );
-	$total       = give_donation_amount( $donation_id, array( 'currency' => false, 'amount' => array( 'decimal' => true ) ) );
-	$affiliation = give_get_option( 'google_analytics_affiliate' );
-
-	// Add the categories.
-	$ga_categories = give_get_option( 'google_analytics_category', 'Donations' );
-	$ga_list       = give_get_option( 'google_analytics_list' );
-
-	$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
-		'v'     => 1,
-		'tid'   => $ua_code, // Tracking ID required.
-		'cid'   => give_analytics_gen_uuid(), // Random Client ID. Required.
-		't'     => 'event', // Event hit type.
-		'ec'    => 'Fundraising', // Event Category. Required.
-		'ea'    => 'Donation Success', // Event Action. Required.
-		'el'    => $form_title, // Event Label.
-		'ti'    => $donation_id, // Transaction ID.
-		'ta'    => $affiliation,  // Affiliation.
-		'pal'   => $ga_list,   // Product Action List.
-		'pa'    => 'purchase',
-		'pr1id' => $form_id,  // Product 1 ID. Either ID or name must be set.
-		'pr1nm' => $form_title, // Product 1 name. Either ID or name must be set.
-		'pr1ca' => $ga_categories, // Product 1 category.
-		'pr1br' => 'Fundraising',
-		'pr1qt' => 1, // Product 1 quantity.
-		'pr1pr' => $total, // Product price
-	) );
-
-	$args    = array_map( 'rawurlencode', $args );
-	$url     = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
-	$request = wp_remote_post( $url );
-
-	error_log( print_r( $args, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-	error_log( print_r( $url, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
-
-	// Check if beacon sent successfully.
-	if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
-
-		add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
-		give_insert_payment_note( $donation_id, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
-
-	}
-
-}
 
 /**
  * Generate a unique user ID for GA.
@@ -534,19 +441,15 @@ function give_analytics_gen_uuid() {
 	return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 		// 32 bits for "time_low"
 		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-
 		// 16 bits for "time_mid"
 		mt_rand( 0, 0xffff ),
-
 		// 16 bits for "time_hi_and_version",
 		// four most significant bits holds version number 4
 		mt_rand( 0, 0x0fff ) | 0x4000,
-
 		// 16 bits, 8 bits for "clk_seq_hi_res",
 		// 8 bits for "clk_seq_low",
 		// two most significant bits holds zero and one for variant DCE1.1
 		mt_rand( 0, 0x3fff ) | 0x8000,
-
 		// 48 bits for "node"
 		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
 	);
