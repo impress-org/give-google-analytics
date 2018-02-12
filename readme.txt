@@ -1,9 +1,9 @@
 === Give - Google Analytics Donation Tracking ===
 Contributors: wordimpress, givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
-Requires at least: 4.5
+Requires at least: 4.8
 Tested up to: 4.9
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Also, This plugin assumes that you have already added Google analytics tracking 
 
 = Minimum Requirements =
 
-* WordPress 4.2 or greater
+* WordPress 4.8 or greater
 * PHP version 5.3 or greater
 * MySQL version 5.0 or greater
 * Some payment gateways require fsockopen support (for IPN access)
@@ -37,6 +37,9 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 1.1.2: October 16th, 2017 =
+* Fix: Corrected parameters being sent to Google Analytics Enhanced Ecommerce tracking causing quantity and price to not display properly.
 
 = 1.1.1: October 16th, 2017 =
 * Fix: Make the "Donation Form View" event a non-interactive event as to not mess with bounce rates if forms are embedded throughout the site.
