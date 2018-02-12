@@ -164,7 +164,7 @@ class Give_Google_Analytics_Settings {
 				'type'        => 'text',
 				'row_classes' => 'give-ga-advanced-field',
 				'default'     => __( 'Donations', 'give-google-analytics' ),
-				'desc'        => __( 'The category to which the "product" belongs to within Google Analytics.', 'give-google-analytics' ),
+				'desc'        => __( 'The "product" category which donation belongs to within Google Analytics. This is helpful for filtering in GA to view only donations.', 'give-google-analytics' ),
 			),
 			array(
 				'name'        => __( 'Affiliation', 'give-google-analytics' ),
@@ -172,7 +172,7 @@ class Give_Google_Analytics_Settings {
 				'type'        => 'text',
 				'row_classes' => 'give-ga-advanced-field',
 				'default'     => get_bloginfo( 'name' ),
-				'desc'        => __( 'The site from which this transaction occurred. Typically this is your site or organization\'s name', 'give-google-analytics' ),
+				'desc'        => __( 'The site from which this transaction occurred. Typically this is your website or organization\'s name.', 'give-google-analytics' ),
 			),
 			array(
 				'name'        => __( 'List Name', 'give-google-analytics' ),
