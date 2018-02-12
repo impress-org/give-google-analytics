@@ -463,7 +463,7 @@ add_action( 'give_update_payment_status', 'give_google_analytics_handle_offsite_
  *
  * @since 1.1
  *
- * @param string $donation_id
+ * @param string $donation_id The donation payment ID.
  *
  * @return string
  */
@@ -480,24 +480,22 @@ function give_google_analytics_record_offsite_payment( $donation_id ) {
 	// Set vars.
 	$form_id     = give_get_payment_form_id( $donation_id );
 	$form_title  = get_the_title( $form_id );
-	$total       = give_get_payment_amount( $donation_id );
+	$total       = give_donation_amount( $donation_id, array( 'currency' => false, 'amount' => array( 'decimal' => true ) ) );
 	$affiliation = give_get_option( 'google_analytics_affiliate' );
 
 	// Add the categories.
-	$ga_categories = give_get_option( 'google_analytics_category' );
-	$ga_categories = ! empty( $ga_categories ) ? $ga_categories : 'Donations';
+	$ga_categories = give_get_option( 'google_analytics_category', 'Donations' );
 	$ga_list       = give_get_option( 'google_analytics_list' );
 
 	$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
 		'v'     => 1,
 		'tid'   => $ua_code, // Tracking ID required.
-		'cid'   => 555, // Random Client ID. Required.
+		'cid'   => give_analytics_gen_uuid(), // Random Client ID. Required.
 		't'     => 'event', // Event hit type.
 		'ec'    => 'Fundraising', // Event Category. Required.
 		'ea'    => 'Donation Success', // Event Action. Required.
 		'el'    => $form_title, // Event Label.
 		'ti'    => $donation_id, // Transaction ID.
-		'tr'    => $total,  // Revenue.
 		'ta'    => $affiliation,  // Affiliation.
 		'pal'   => $ga_list,   // Product Action List.
 		'pa'    => 'purchase',
@@ -505,12 +503,17 @@ function give_google_analytics_record_offsite_payment( $donation_id ) {
 		'pr1nm' => $form_title, // Product 1 name. Either ID or name must be set.
 		'pr1ca' => $ga_categories, // Product 1 category.
 		'pr1br' => 'Fundraising',
+		'pr1qt' => 1, // Product 1 quantity.
+		'pr1pr' => $total, // Product price
 	) );
-	$args = array_map( 'rawurlencode', $args );
 
-	$url = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
-
+	$args    = array_map( 'rawurlencode', $args );
+	$url     = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
 	$request = wp_remote_post( $url );
+
+	error_log( print_r( $args, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+	error_log( print_r( $url, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
 
 	// Check if beacon sent successfully.
 	if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
@@ -520,5 +523,31 @@ function give_google_analytics_record_offsite_payment( $donation_id ) {
 
 	}
 
+}
 
+/**
+ * Generate a unique user ID for GA.
+ *
+ * @return string
+ */
+function give_analytics_gen_uuid() {
+	return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+		// 32 bits for "time_low"
+		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+
+		// 16 bits for "time_mid"
+		mt_rand( 0, 0xffff ),
+
+		// 16 bits for "time_hi_and_version",
+		// four most significant bits holds version number 4
+		mt_rand( 0, 0x0fff ) | 0x4000,
+
+		// 16 bits, 8 bits for "clk_seq_hi_res",
+		// 8 bits for "clk_seq_low",
+		// two most significant bits holds zero and one for variant DCE1.1
+		mt_rand( 0, 0x3fff ) | 0x8000,
+
+		// 48 bits for "node"
+		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+	);
 }
