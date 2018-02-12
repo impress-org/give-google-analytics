@@ -38,7 +38,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Changelog ==
 
-= 1.1.2: October 16th, 2017 =
+= 1.1.2: February 12th, 2018 =
 * Fix: Corrected parameters being sent to Google Analytics Enhanced Ecommerce tracking causing quantity and price to not display properly.
 
 = 1.1.1: October 16th, 2017 =
