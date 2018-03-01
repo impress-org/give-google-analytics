@@ -23,14 +23,19 @@ if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
 	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '1.8.12' );
 }
 
+// Plugin File.
+if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_PLUGIN_FILE' ) ) {
+	define( 'GIVE_GOOGLE_ANALYTICS_PLUGIN_FILE', __FILE__ );
+}
+
 // Plugin path.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_DIR' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_DIR', plugin_dir_path( __FILE__ ) );
+	define( 'GIVE_GOOGLE_ANALYTICS_DIR', plugin_dir_path( GIVE_GOOGLE_ANALYTICS_PLUGIN_FILE ) );
 }
 
 // Plugin URL.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_URL' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_URL', plugin_dir_url( GIVE_GOOGLE_ANALYTICS_DIR ) );
+	define( 'GIVE_GOOGLE_ANALYTICS_URL', plugin_dir_url( GIVE_GOOGLE_ANALYTICS_PLUGIN_FILE ) );
 }
 
 // Basename.
