@@ -3,7 +3,7 @@ Contributors: wordimpress, givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.8
 Tested up to: 4.9
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -37,6 +37,10 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 1.1.3: March 5th, 2018 =
+* Tweak: Made a change to how the "Source / Medium" information is collected when a donation is processed so that you should now see the correct source display in Enhanced Ecommerce. Such as if a donor was referred from "Facebook" or "Google" it will now display properly rather than "(direct) / (none)" incorrectly.
+* Fix: Corrected constants that we preventing certain images and scripts from loading due to an incorrect path.
 
 = 1.1.2: February 12th, 2018 =
 * Fix: Corrected parameters being sent to Google Analytics Enhanced Ecommerce tracking causing quantity and price to not display properly.
