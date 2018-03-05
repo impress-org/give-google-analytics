@@ -1,5 +1,28 @@
 # Change Log
 
+## [Unreleased](https://github.com/WordImpress/Give-Google-Analytics/tree/HEAD)
+
+[Full Changelog](https://github.com/WordImpress/Give-Google-Analytics/compare/1.1.2...HEAD)
+
+**Fixed bugs:**
+
+- Doesn't track with Divi theme [\#12](https://github.com/WordImpress/Give-Google-Analytics/issues/12)
+
+**Closed issues:**
+
+- fix\(main file\): call the constant correctly. [\#18](https://github.com/WordImpress/Give-Google-Analytics/issues/18)
+
+**Merged pull requests:**
+
+- fix\(main file\): call the constant correctly. \#18 [\#19](https://github.com/WordImpress/Give-Google-Analytics/pull/19) ([Benunc](https://github.com/Benunc))
+
+## [1.1.2](https://github.com/WordImpress/Give-Google-Analytics/tree/1.1.2) (2018-02-12)
+[Full Changelog](https://github.com/WordImpress/Give-Google-Analytics/compare/1.1.1...1.1.2)
+
+**Fixed bugs:**
+
+- Not correctly firing the ecommerce bits on the \[give\_receipt\] page, potentially others. [\#17](https://github.com/WordImpress/Give-Google-Analytics/issues/17)
+
 ## [1.1.1](https://github.com/WordImpress/Give-Google-Analytics/tree/1.1.1) (2017-10-17)
 [Full Changelog](https://github.com/WordImpress/Give-Google-Analytics/compare/1.1...1.1.1)
 
