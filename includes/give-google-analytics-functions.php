@@ -44,7 +44,6 @@ function give_google_analytics_donation_form() {
     <script type="text/javascript">
 
         // GA Enhance Ecommerce tracking.
-        jQuery.noConflict();
         (function ($) {
 
             window.addEventListener('load', function give_ga_purchase(event) {
@@ -53,18 +52,15 @@ function give_google_analytics_donation_form() {
 
                 var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
 
-                // Save campaign source for donation completion page.
-                // It's sent serverside via stored cookie.
-                ga(function (tracker) {
-
-                    var campaignSource = tracker.get('campaignSource');
-
-                    console.log(campaignSource);
-                    document.cookie = 'givesource=' + campaignSource;
-                });
-
                 // If ga function is ready. Let's proceed.
                 if ('function' === typeof ga) {
+
+	                // Save campaign source for donation completion page.
+	                // It's sent serverside via stored cookie.
+	                ga( function ( tracker ) {
+		                var campaignSource = tracker.get( 'campaignSource' );
+		                document.cookie = 'givesource=' + campaignSource;
+	                } );
 
                     // Load the Ecommerce plugin.
                     ga('require', 'ec');
