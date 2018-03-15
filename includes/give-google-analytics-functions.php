@@ -52,6 +52,10 @@ function give_google_analytics_donation_form() {
 
                 var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
 
+	            document.cookie = 'give_source=' + get_parameter( 'utm_source' );
+	            document.cookie = 'give_medium=' + get_parameter( 'utm_medium' );
+	            document.cookie = 'give_campaign=' + get_parameter( 'utm_source' );
+
                 // If ga function is ready. Let's proceed.
                 if ('function' === typeof ga) {
 
@@ -59,7 +63,10 @@ function give_google_analytics_donation_form() {
 	                // It's sent serverside via stored cookie.
 	                ga( function ( tracker ) {
 		                var campaignSource = tracker.get( 'campaignSource' );
-		                document.cookie = 'givesource=' + campaignSource;
+		                document.cookie = 'give_source=' + campaignSource;
+
+		                var campaignMedium = tracker.get( 'campaignMedium' );
+		                document.cookie = 'give_medium=' + campaignMedium;
 	                } );
 
                     // Load the Ecommerce plugin.
@@ -117,6 +124,35 @@ function give_google_analytics_donation_form() {
                 } // end if
 
             }, false); // end win load
+
+
+	        /**
+	         * Get specific parameter value from Query string.
+	         * @param string parameter Parameter of query string.
+	         * @param object data Set of data.
+	         * @return bool
+	         */
+	        function get_parameter ( parameter, data ) {
+
+		        if ( ! parameter ) {
+			        return false;
+		        }
+
+		        if ( ! data ) {
+			        data = window.location.href;
+		        }
+
+		        var parameter = parameter.replace( /[\[]/, "\\\[" ).replace( /[\]]/, "\\\]" );
+		        var expr = parameter + "=([^&#]*)";
+		        var regex = new RegExp( expr );
+		        var results = regex.exec( data );
+
+		        if ( null !== results ) {
+			        return results[1];
+		        } else {
+			        return '';
+		        };
+	        }
 
         })(jQuery); //
     </script>
@@ -380,15 +416,18 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		}
 
 		// Set vars.
-		$form_id     = give_get_payment_form_id( $donation_id );
-		$form_title  = get_the_title( $form_id );
-		$total       = give_donation_amount( $donation_id, array(
+		$form_id    = give_get_payment_form_id( $donation_id );
+		$form_title = get_the_title( $form_id );
+		$total      = give_donation_amount( $donation_id, array(
 			'currency' => false,
 			'amount'   => array(
 				'decimal' => true,
 			),
 		) );
-		$campaign_source = isset($_COOKIE['givesource']) ? $_COOKIE['givesource'] : 'undefined';
+
+		$campaign_source = empty( $_COOKIE['give_source'] ) ? 'undefined' : $_COOKIE['give_source'];
+		$cpmpaign_medium = empty( $_COOKIE['give_medium'] ) ? 'undefined' : $_COOKIE['give_medium'];
+
 		$affiliation = give_get_option( 'google_analytics_affiliate' );
 
 		// Add the categories.
@@ -406,6 +445,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 			'ti'    => $donation_id, // Transaction ID.
 			'ta'    => $affiliation,  // Affiliation.
 			'cs'    => $campaign_source,  // Campaign Source.
+			'cm'    => $cpmpaign_medium,  // Campaign Medium.
 			'pal'   => $ga_list,   // Product Action List.
 			'pa'    => 'purchase',
 			'pr1id' => $form_id,  // Product 1 ID. Either ID or name must be set.
