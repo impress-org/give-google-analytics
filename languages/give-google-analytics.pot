@@ -124,18 +124,18 @@ msgstr ""
 msgid "Add-ons"
 msgstr ""
 
-#: includes/give-google-analytics-functions.php:149, includes/give-google-analytics-functions.php:431
+#: includes/give-google-analytics-functions.php:181, includes/give-google-analytics-functions.php:467
 msgid "Google Analytics ecommerce tracking beacon sent."
 msgstr ""
 
-#: includes/give-google-analytics-functions.php:218
+#: includes/give-google-analytics-functions.php:250
 msgid "Google Analytics refund tracking beacon could not send because the UA code is missing in Give's settings"
 msgstr ""
 
-#: includes/give-google-analytics-functions.php:289
+#: includes/give-google-analytics-functions.php:321
 msgid "Google Analytics donation refund tracking beacon sent."
 msgstr ""
 
-#: includes/give-google-analytics-functions.php:381
+#: includes/give-google-analytics-functions.php:413
 msgid "Google Analytics donation tracking beacon could not send due to missing GA Tracking ID."
 msgstr ""
