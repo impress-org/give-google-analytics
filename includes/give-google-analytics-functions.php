@@ -322,7 +322,7 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 
 }
 
-add_action( 'give_view_order_details_after', 'give_google_analytics_send_refund_beacon', 10, 1 );
+add_action( 'give_view_donation_details_after', 'give_google_analytics_send_refund_beacon', 10, 1 );
 
 /**
  * Flag refund beacon after payment updated to refund status.
