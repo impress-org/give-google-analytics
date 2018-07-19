@@ -33,12 +33,6 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 	if ( 'pending' === $old_status && 'publish' === $new_status ) {
 
 		$ua_code = give_get_option( 'google_analytics_ua_code' );
-		if ( empty( $ua_code ) ) {
-			// All is well, sent beacon.
-			give_insert_payment_note( $donation_id, __( 'Google Analytics donation tracking beacon could not send due to missing GA Tracking ID.', 'give-google-analytics' ) );
-
-			return false;
-		}
 
 		// Set vars.
 		$form_id    = give_get_payment_form_id( $donation_id );
