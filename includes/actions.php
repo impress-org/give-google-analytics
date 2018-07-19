@@ -132,52 +132,6 @@ add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
 
 
 /**
- * Flag refund beacon after payment updated to refund status.
- */
-function give_google_analytics_admin_flag_beacon() {
-	if( ! give_ga_can_send_event() ) {
-		return false;
-	}
-
-	// Must be updating payment on the payment details page.
-	if ( ! isset( $_GET['page'] ) || 'give-payment-history' !== $_GET['page'] ) {
-		return false;
-	}
-
-	if ( ! isset( $_GET['give-message'] ) || 'payment-updated' !== $_GET['give-message'] ) {
-		return false;
-	}
-
-	// Must have page ID.
-	if ( ! isset( $_GET['id'] ) ) {
-		return false;
-	}
-
-	$donation_id = $_GET['id'];
-
-	$status = give_get_payment_status( $donation_id );
-
-	// Bailout.
-	if ( 'refunded' !== $status ) {
-		return false;
-	}
-
-	// Check if the beacon has already been sent.
-	$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
-
-	if ( ! empty( $beacon_sent ) ) {
-		return false;
-	}
-
-	// Passed all checks. Now process beacon.
-	update_post_meta( $donation_id, '_give_ga_refund_beacon_sent', 'true' );
-
-}
-
-add_action( 'admin_footer', 'give_google_analytics_admin_flag_beacon' );
-
-
-/**
  * Track refund donations within GA.
  *
  * @param int $donation_id
@@ -190,7 +144,7 @@ function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $o
 	if ( ! give_ga_can_send_event() ) {
 		return false;
 	}
-	
+
 	// Bailout.
 	if ( 'refunded' === $new_status || 'publish' === $old_status ) {
 		// Check if the beacon has already been sent.
