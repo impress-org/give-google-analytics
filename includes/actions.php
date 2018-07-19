@@ -190,13 +190,7 @@ function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $o
 	if ( ! give_ga_can_send_event() ) {
 		return false;
 	}
-
-	// Check for UA code.
-	$ua_code = give_get_option( 'google_analytics_ua_code' );
-	if ( empty( $ua_code ) ) {
-		return false;
-	}
-
+	
 	// Bailout.
 	if ( 'refunded' === $new_status || 'publish' === $old_status ) {
 		// Check if the beacon has already been sent.
