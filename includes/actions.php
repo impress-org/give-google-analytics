@@ -180,11 +180,13 @@ add_action( 'admin_footer', 'give_google_analytics_admin_flag_beacon' );
 /**
  * Track refund donations within GA.
  *
- * @param $donation_id
+ * @param int $donation_id
+ * @param string $new_status
+ * @param string $old_status
  *
  * @return bool
  */
-function give_google_analytics_send_refund_beacon( $donation_id ) {
+function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $old_status ) {
 	if ( ! give_ga_can_send_event() ) {
 		return false;
 	}
@@ -195,50 +197,46 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 		return false;
 	}
 
-	$status = give_get_payment_status( $donation_id );
-
 	// Bailout.
-	if ( 'refunded' !== $status ) {
-		return false;
-	}
+	if ( 'refunded' === $new_status || 'publish' === $old_status ) {
+		// Check if the beacon has already been sent.
+		$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
 
-	// Check if the beacon has already been sent.
-	$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
+		if ( ! empty( $beacon_sent ) ) {
+			return false;
+		}
 
-	if ( ! empty( $beacon_sent ) ) {
-		return false;
-	}
+		$ua_code   = give_get_option( 'google_analytics_ua_code' );
+		$client_id = give_get_meta( $donation_id, '_give_ga_client_id', true );
 
-	$ua_code   = give_get_option( 'google_analytics_ua_code' );
-	$client_id = give_get_meta( $donation_id, '_give_ga_client_id', true );
+		$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
+			'v'   => 1,
+			'tid' => $ua_code, // Tracking ID required.
+			'cid' => ! empty( $client_id ) ? $client_id : give_analytics_gen_uuid(), // Client ID. Required (Set random if does not find client id ).
+			't'   => 'event', // Event hit type.
+			'ec'  => 'Fundraising', // Event Category. Required.
+			'ea'  => 'Donation Refund', // Event Action. Required.
+			'ti'  => $donation_id, // Transaction ID.
+			'pa'  => 'refund',
+			'ni'  => '1',
+		) );
 
-	$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
-		'v'   => 1,
-		'tid' => $ua_code, // Tracking ID required.
-		'cid' => ! empty( $client_id ) ? $client_id : give_analytics_gen_uuid(), // Client ID. Required (Set random if does not find client id ).
-		't'   => 'event', // Event hit type.
-		'ec'  => 'Fundraising', // Event Category. Required.
-		'ea'  => 'Donation Refund', // Event Action. Required.
-		'ti'  => $donation_id, // Transaction ID.
-		'pa'  => 'refund',
-		'ni'  => '1',
-	) );
+		$args    = array_map( 'rawurlencode', $args );
+		$url     = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
+		$request = wp_remote_post( $url );
 
-	$args    = array_map( 'rawurlencode', $args );
-	$url     = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
-	$request = wp_remote_post( $url );
+		// Check if beacon sent successfully.
+		if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
 
-	// Check if beacon sent successfully.
-	if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
+			add_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
 
-		add_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
-
-		// All is well, sent beacon.
-		give_insert_payment_note( $donation_id, __( 'Google Analytics donation refund tracking beacon sent.', 'give-google-analytics' ) );
+			// All is well, sent beacon.
+			give_insert_payment_note( $donation_id, __( 'Google Analytics donation refund tracking beacon sent.', 'give-google-analytics' ) );
+		}
 	}
 }
 
-add_action( 'give_view_donation_details_after', 'give_google_analytics_send_refund_beacon', 10, 1 );
+add_action( 'give_update_payment_status', 'give_google_analytics_send_refund_beacon', 10, 3 );
 
 
 /**
