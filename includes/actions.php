@@ -392,26 +392,3 @@ function give_google_analytics_donation_form() {
 }
 
 add_action( 'wp_footer', 'give_google_analytics_donation_form', 99999 );
-
-/**
- * Use postmeta to flag that analytics has sent ecommerce event.
- *
- * @since 1.1
- */
-function give_google_analytics_flag_beacon() {
-
-	// Only on the success page.
-	if ( give_is_success_page() ) {
-		global $payment;
-
-		// Check conditions.
-		if ( give_should_send_beacon( $payment->ID ) ) {
-			// Save post meta.
-			add_post_meta( $payment->ID, '_give_ga_beacon_sent', true );
-			// Add Payment note.
-			give_insert_payment_note( $payment->ID, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
-		}
-	}
-}
-
-add_action( 'wp_footer', 'give_google_analytics_flag_beacon', 10 );
