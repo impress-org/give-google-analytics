@@ -169,6 +169,8 @@ function give_google_analytics_send_refund_beacon( $donation_id ) {
 
 	$form_id    = give_get_payment_form_id( $donation_id );
 	$form_title = esc_js( html_entity_decode( get_the_title( $form_id ) ) );
+
+	// @todo use measurement protocol to refund donation.
 	?>
 	<script>
 		(function (i, s, o, g, r, a, m) {
