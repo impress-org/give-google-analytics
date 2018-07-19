@@ -15,9 +15,12 @@
  * @param        $new_status
  * @param        $old_status
  *
- * @return string
+ * @return string|bool
  */
 function give_google_analytics_send_donation_success( $donation_id, $new_status, $old_status ) {
+	if( ! give_ga_can_send_event() ) {
+		return false;
+	}
 
 	// Check conditions.
 	$sent_already = get_post_meta( $donation_id, '_give_ga_beacon_sent', true );
@@ -39,6 +42,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 
 		// Set vars.
 		$form_id    = give_get_payment_form_id( $donation_id );
+		$client_id  = give_get_meta( $donation_id, '_give_ga_client_id', true );
 		$form_title = get_the_title( $form_id );
 		$total      = give_donation_amount( $donation_id, array(
 			'currency' => false,
@@ -59,7 +63,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
 			'v'     => 1,
 			'tid'   => $ua_code, // Tracking ID required.
-			'cid'   => give_analytics_gen_uuid(), // Random Client ID. Required.
+			'cid'   => ! empty( $client_id ) ? $client_id : give_analytics_gen_uuid(), // Client ID. Required (Set random if does not find client id ).
 			't'     => 'event', // Event hit type.
 			'ec'    => 'Fundraising', // Event Category. Required.
 			'ea'    => 'Donation Success', // Event Action. Required.
@@ -95,10 +99,37 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 
 add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_success', 110, 3 );
 
+
+/**
+ * Save client id
+ *
+ * @since 2.0.0
+ * @param $payment_id
+ */
+function give_ga_save_client_id( $payment_id ){
+	// Save client session id
+	if(
+		isset( $_COOKIE['_ga'] )
+		&& give_ga_can_send_event()
+	) {
+		$client_id = explode( '.', $_COOKIE['_ga'], 3 );
+		$client_id = array_pop( $client_id );
+
+		add_post_meta( $payment_id, '_give_ga_client_id', $client_id );
+
+		give_insert_payment_note( $payment_id, "Set Google Analytics Client ID {$client_id}" );
+	}
+}
+add_action( 'give_insert_payment', 'give_ga_save_client_id' );
+
+
 /**
  * Flag refund beacon after payment updated to refund status.
  */
 function give_google_analytics_admin_flag_beacon() {
+	if( ! give_ga_can_send_event() ) {
+		return false;
+	}
 
 	// Must be updating payment on the payment details page.
 	if ( ! isset( $_GET['page'] ) || 'give-payment-history' !== $_GET['page'] ) {
@@ -146,6 +177,9 @@ add_action( 'admin_footer', 'give_google_analytics_admin_flag_beacon' );
  * @return bool
  */
 function give_google_analytics_send_refund_beacon( $donation_id ) {
+	if( ! give_ga_can_send_event() ) {
+		return false;
+	}
 
 	// Check for UA code.
 	$ua_code = give_get_option( 'google_analytics_ua_code' );
@@ -222,8 +256,7 @@ function give_google_analytics_donation_form() {
 		return false;
 	}
 
-	// Don't continue if test mode is enabled and test mode tracking is disabled.
-	if ( give_is_test_mode() && ! give_google_analytics_track_testing() ) {
+	if ( ! give_ga_can_send_event() ) {
 		return false;
 	}
 

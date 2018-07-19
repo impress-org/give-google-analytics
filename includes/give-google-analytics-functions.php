@@ -82,3 +82,38 @@ function give_analytics_gen_uuid() {
 		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
 	);
 }
+
+
+/**
+ * Check if tracking is exist or not
+ *
+ * @since 2.0.0
+ * @return bool
+ */
+function give_ga_has_tracking_id() {
+	$tracking_id = give_get_option( 'google_analytics_ua_code', false );
+
+	return ! empty( $tracking_id );
+}
+
+
+/**
+ * Check if plugin can send google vent or not.
+ *
+ * @since 2.0.0
+ *
+ * @return bool
+ */
+function give_ga_can_send_event() {
+	// Don't continue if test mode is enabled and test mode tracking is disabled.
+	if ( give_is_test_mode() && ! give_google_analytics_track_testing() ) {
+		return false;
+	}
+
+	// Must contain non empty tracking id
+	if( ! give_ga_has_tracking_id() ) {
+		return false;
+	}
+
+	return true;
+}
