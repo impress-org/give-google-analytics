@@ -74,6 +74,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 			'cn'    => $campaign,  // Campaign Name.
 			'cs'    => $campaign_source,  // Campaign Source.
 			'cm'    => $cpmpaign_medium,  // Campaign Medium.
+			'cu'    => give_get_payment_currency_code( $donation_id ),  // Currency code.
 			'pal'   => $ga_list,   // Product Action List.
 			'pa'    => 'purchase',
 			'pr1id' => $form_id,  // Product 1 ID. Either ID or name must be set.
@@ -82,6 +83,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 			'pr1br' => 'Fundraising',
 			'pr1qt' => 1, // Product 1 quantity.
 			'pr1pr' => $total, // Product price
+			'tr'    => $total, // Transaction Revenue
 		) );
 
 		$args    = array_map( 'rawurlencode', $args );
