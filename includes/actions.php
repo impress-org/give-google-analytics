@@ -358,8 +358,8 @@ function give_google_analytics_donation_form() {
 
 			/**
 			 * Get specific parameter value from Query string.
-			 * @param string parameter Parameter of query string.
-			 * @param object data Set of data.
+			 * @param {string} parameter Parameter of query string.
+			 * @param {object} data Set of data.
 			 * @return bool
 			 */
 			function get_parameter(parameter, data) {
