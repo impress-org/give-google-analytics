@@ -284,7 +284,7 @@ function give_google_analytics_donation_form() {
 
 				document.cookie = 'give_source=' + get_parameter('utm_source');
 				document.cookie = 'give_medium=' + get_parameter('utm_medium');
-				document.cookie = 'give_campaign=' + get_parameter('utm_source');
+				document.cookie = 'give_campaign=' + get_parameter('utm_campaign');
 
 				// If ga function is ready. Let's proceed.
 				if ('function' === typeof ga) {
