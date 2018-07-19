@@ -128,6 +128,7 @@ function give_ga_preserve_google_session_data( $payment_id ){
 		add_post_meta( $payment_id, '_give_ga_campaign_source', $campaign_medium );
 		add_post_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
 
+		// @todo record only for testing purpose
 		give_insert_payment_note( $payment_id, "Set Google Analytics Data: {$client_id} {$campaign_source} {$campaign_medium}" );
 	}
 }
