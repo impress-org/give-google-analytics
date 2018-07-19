@@ -51,8 +51,9 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 			),
 		) );
 
-		$campaign_source = empty( $_COOKIE['give_source'] ) ? 'undefined' : $_COOKIE['give_source'];
-		$cpmpaign_medium = empty( $_COOKIE['give_medium'] ) ? 'undefined' : $_COOKIE['give_medium'];
+		$campaign        = give_get_meta( $donation_id, '_give_ga_campaign', true );
+		$campaign_source = give_get_meta( $donation_id, '_give_ga_campaign_source', true );
+		$cpmpaign_medium = give_get_meta( $donation_id, '_give_ga_campaign_medium', true );
 
 		$affiliation = give_get_option( 'google_analytics_affiliate' );
 
@@ -70,6 +71,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 			'el'    => $form_title, // Event Label.
 			'ti'    => $donation_id, // Transaction ID.
 			'ta'    => $affiliation,  // Affiliation.
+			'cn'    => $campaign,  // Campaign Name.
 			'cs'    => $campaign_source,  // Campaign Source.
 			'cm'    => $cpmpaign_medium,  // Campaign Medium.
 			'pal'   => $ga_list,   // Product Action List.
@@ -101,12 +103,13 @@ add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_s
 
 
 /**
- * Save client id
+ * Save google analytic session data
  *
  * @since 2.0.0
- * @param $payment_id
+ *
+ * @param int $payment_id Donation ID.
  */
-function give_ga_save_client_id( $payment_id ){
+function give_ga_preserve_google_session_data( $payment_id ){
 	// Save client session id
 	if(
 		isset( $_COOKIE['_ga'] )
@@ -117,10 +120,18 @@ function give_ga_save_client_id( $payment_id ){
 
 		add_post_meta( $payment_id, '_give_ga_client_id', $client_id );
 
-		give_insert_payment_note( $payment_id, "Set Google Analytics Client ID {$client_id}" );
+		$campaign        = empty( $_COOKIE['give_campaign'] ) ? 'undefined' : $_COOKIE['give_campaign'];
+		$campaign_source = empty( $_COOKIE['give_source'] ) ? 'undefined' : $_COOKIE['give_source'];
+		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? 'undefined' : $_COOKIE['give_medium'];
+
+		add_post_meta( $payment_id, '_give_ga_campaign', $campaign );
+		add_post_meta( $payment_id, '_give_ga_campaign_source', $campaign_medium );
+		add_post_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
+
+		give_insert_payment_note( $payment_id, "Set Google Analytics Data: {$client_id} {$campaign_source} {$campaign_medium}" );
 	}
 }
-add_action( 'give_insert_payment', 'give_ga_save_client_id' );
+add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
 
 
 /**
