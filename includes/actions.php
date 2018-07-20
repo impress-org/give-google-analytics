@@ -154,7 +154,7 @@ function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $o
 		$ua_code   = give_get_option( 'google_analytics_ua_code' );
 		$client_id = give_get_meta( $donation_id, '_give_ga_client_id', true );
 
-		$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', array(
+		$args = array(
 			'v'   => 1,
 			'tid' => $ua_code, // Tracking ID required.
 			'cid' => ! empty( $client_id ) ? $client_id : give_analytics_gen_uuid(), // Client ID. Required (Set random if does not find client id ).
@@ -164,7 +164,7 @@ function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $o
 			'ti'  => $donation_id, // Transaction ID.
 			'pa'  => 'refund',
 			'ni'  => '1',
-		) );
+		);
 
 		$args    = array_map( 'rawurlencode', $args );
 		$url     = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
