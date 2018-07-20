@@ -121,7 +121,7 @@ function give_ga_preserve_google_session_data( $payment_id ){
 		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? 'undefined' : $_COOKIE['give_medium'];
 
 		add_post_meta( $payment_id, '_give_ga_campaign', $campaign );
-		add_post_meta( $payment_id, '_give_ga_campaign_source', $campaign_medium );
+		add_post_meta( $payment_id, '_give_ga_campaign_source', $campaign_source );
 		add_post_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
 	}
 }
