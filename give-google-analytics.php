@@ -3,7 +3,7 @@
  * Plugin Name:     Give - Google Analytics Donation Tracking
  * Plugin URI:      https://givewp.com/addons/google-analytics/
  * Description:     Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
- * Version:         1.1.4
+ * Version:         2.0.0
  * Author:          WordImpress
  * Author URI:      https://wordimpress.com
  * Text Domain:     give-google-analytics
@@ -15,12 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '1.1.4' );
+	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '2.0.0' );
 }
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '1.8.12' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.1.9' );
 }
 
 // Plugin File.
@@ -89,6 +89,8 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 		private function includes() {
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/class-give-google-analytics-settings.php';
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/give-google-analytics-functions.php';
+			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/filters.php';
+			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/actions.php';
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/give-google-analytics-activation.php';
 		}
 
@@ -171,15 +173,17 @@ function give_google_analytics_check_environment() {
 	// Check to see if Give is activated, if it isn't deactivate and show a banner
 	if ( current_user_can( 'activate_plugins' ) && ! $is_give_active ) {
 		add_action( 'admin_notices', 'give_google_analytics_activation_notice' );
-		add_action( 'admin_init', 'give_google_analytics_deactivate_self' );
 
 		return false;
 	}
 
 	// Check minimum Give version.
-	if ( defined( 'GIVE_VERSION' ) && version_compare( GIVE_VERSION, GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION, '<' ) ) {
+	if (
+		defined( 'GIVE_VERSION' )
+		&& version_compare( GIVE_VERSION, GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION, '<' )
+	) {
+
 		add_action( 'admin_notices', 'give_google_analytics_min_version_notice' );
-		add_action( 'admin_init', 'give_google_analytics_deactivate_self' );
 
 		return false;
 	}
@@ -189,25 +193,25 @@ function give_google_analytics_check_environment() {
 }
 
 /**
- * Deactivate self. Must be hooked with admin_init.
- *
- * Currently hooked via give_google_analytics_check_environment()
- */
-function give_google_analytics_deactivate_self() {
-	deactivate_plugins( GIVE_GOOGLE_ANALYTICS_BASENAME );
-	if ( isset( $_GET['activate'] ) ) {
-		unset( $_GET['activate'] );
-	}
-}
-
-
-/**
  * Notice for No Core Activation
  *
  * @since 1.0
  */
 function give_google_analytics_activation_notice() {
-	echo '<div class="error"><p>' . __( '<strong>Activation Error:</strong> You must have the <a href="https://givewp.com/" target="_blank">Give</a> plugin installed and activated for the Google Analytics add-on to activate.', 'give-google-analytics' ) . '</p></div>';
+
+	// Show admin notice.
+	$message = sprintf(
+		'<strong>%1$s</strong> %2$s <a href="%3$s" target="_blank">%4$s</a> %5$s',
+		__( 'Activation Error:', 'give-tributes' ),
+		__( 'You must have the', 'give-tributes' ),
+		esc_url( 'https://givewp.com' ),
+		__( 'Give', 'give-tributes' ),
+		__( 'plugin installed and activated to use the Google Analytics Donation Tracking add-on.', 'give-tributes' )
+	);
+
+	$class = 'notice notice-error';
+	printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
+
 }
 
 /**
@@ -216,6 +220,20 @@ function give_google_analytics_activation_notice() {
  * @since 1.0
  */
 function give_google_analytics_min_version_notice() {
-	echo '<div class="error"><p>' . sprintf( __( '<strong>Activation Error:</strong> You must have <a href="%1$s" target="_blank">Give</a> version %2$s+ for the Google Analytics add-on to activate.', 'give-google-analytics' ), 'https://givewp.com', GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION ) . '</p></div>';
+
+	/* Min. Give. plugin version. */
+	// Show admin notice.
+	$message = sprintf(
+		'<strong>%1$s</strong> %2$s <a href="%3$s" target="_blank">%4$s</a> %5$s',
+		__( 'Activation Error:', 'give-tributes' ),
+		__( 'You must have', 'give-tributes' ),
+		esc_url( 'https://givewp.com' ),
+		__( 'Give', 'give-tributes' ),
+		sprintf( __( 'core version %1$s+ for the Google Analytics Donation Tracking add-on to activate.', 'give-tributes' ), GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION )
+	);
+
+	$class = 'notice notice-error';
+	printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
+
 }
 
