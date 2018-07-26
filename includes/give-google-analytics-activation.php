@@ -24,7 +24,7 @@ function give_google_analytics_activation_banner() {
 
 	// Check for activation banner inclusion.
 	if ( ! class_exists( 'Give_Addon_Activation_Banner' )
-	     && file_exists( GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php' )
+		 && file_exists( GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php' )
 	) {
 
 		include GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php';
@@ -33,7 +33,7 @@ function give_google_analytics_activation_banner() {
 	// Initialize activation welcome banner.
 	if ( class_exists( 'Give_Addon_Activation_Banner' ) ) {
 
-		//Only runs on admin
+		// Only runs on admin
 		$args = array(
 			'file'              => __FILE__,
 			'name'              => esc_html__( 'Google Analytics', 'give-google-analytics' ),
@@ -41,7 +41,7 @@ function give_google_analytics_activation_banner() {
 			'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=google-analytics' ),
 			'documentation_url' => 'https://givewp.com/documentation/add-ons/google-analytics/',
 			'support_url'       => 'https://givewp.com/support/',
-			'testing'           => false //Never leave as TRUE!
+			'testing'           => false, // Never leave as TRUE!
 		);
 
 		new Give_Addon_Activation_Banner( $args );
@@ -96,21 +96,27 @@ function give_google_analytics_ecommerce_tracking_plugin_row_meta( $plugin_meta,
 	$new_meta_links = array(
 		sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
-			esc_url( add_query_arg( array(
-					'utm_source'   => 'plugins-page',
-					'utm_medium'   => 'plugin-row',
-					'utm_campaign' => 'admin',
-				), 'https://givewp.com/documentation/add-ons/google-analytics-ecommerce-tracking/' )
+			esc_url(
+				add_query_arg(
+					array(
+						'utm_source'   => 'plugins-page',
+						'utm_medium'   => 'plugin-row',
+						'utm_campaign' => 'admin',
+					), 'https://givewp.com/documentation/add-ons/google-analytics-ecommerce-tracking/'
+				)
 			),
 			esc_html__( 'Documentation', 'give-google-analytics' )
 		),
 		sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
-			esc_url( add_query_arg( array(
-					'utm_source'   => 'plugins-page',
-					'utm_medium'   => 'plugin-row',
-					'utm_campaign' => 'admin',
-				), 'https://givewp.com/addons/' )
+			esc_url(
+				add_query_arg(
+					array(
+						'utm_source'   => 'plugins-page',
+						'utm_medium'   => 'plugin-row',
+						'utm_campaign' => 'admin',
+					), 'https://givewp.com/addons/'
+				)
 			),
 			esc_html__( 'Add-ons', 'give-google-analytics' )
 		),

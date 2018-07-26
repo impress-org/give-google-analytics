@@ -221,7 +221,8 @@ function give_google_analytics_activation_notice() {
  */
 function give_google_analytics_min_version_notice() {
 
-	/* Min. Give. plugin version. */
+	/*
+	 Min. Give. plugin version. */
 	// Show admin notice.
 	$message = sprintf(
 		'<strong>%1$s</strong> %2$s <a href="%3$s" target="_blank">%4$s</a> %5$s',

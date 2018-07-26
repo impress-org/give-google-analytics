@@ -66,7 +66,8 @@ function give_google_analytics_track_testing() {
  * @return string
  */
 function give_analytics_gen_uuid() {
-	return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+	return sprintf(
+		'%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 		// 32 bits for "time_low"
 		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
 		// 16 bits for "time_mid"
@@ -111,7 +112,7 @@ function give_ga_can_send_event() {
 	}
 
 	// Must contain non empty tracking id
-	if( ! give_ga_has_tracking_id() ) {
+	if ( ! give_ga_has_tracking_id() ) {
 		return false;
 	}
 

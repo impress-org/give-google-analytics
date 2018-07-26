@@ -117,7 +117,7 @@ class Give_Google_Analytics_Settings {
 				'type'        => 'text',
 				'attributes'  => array( 'placeholder' => 'UA-XXXXXXXX-XX' ),
 				'row_classes' => 'give-ga-tracking-id',
-				'desc'        => sprintf(__( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/'),
+				'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
 			),
 			array(
 				'name' => '',
@@ -134,7 +134,7 @@ class Give_Google_Analytics_Settings {
 				'options' => array(
 					'enabled'  => __( 'Enabled', 'give-google-analytics' ),
 					'disabled' => __( 'Disabled', 'give-google-analytics' ),
-				)
+				),
 			),
 			array(
 				'name'    => __( 'Track Refunds', 'give-google-analytics' ),
@@ -154,8 +154,8 @@ class Give_Google_Analytics_Settings {
 				'desc'    => __( 'Adjust some of the values sent to Google Analytics Enhanced Ecommerce.', 'give-google-analytics' ),
 				'default' => 'default',
 				'options' => array(
-					'customized'  => __( 'Customize', 'give-google-analytics' ),
-					'default' => __( 'Default', 'give-google-analytics' ),
+					'customized' => __( 'Customize', 'give-google-analytics' ),
+					'default'    => __( 'Default', 'give-google-analytics' ),
 				),
 			),
 			array(
@@ -206,7 +206,8 @@ class Give_Google_Analytics_Settings {
 				<img src="<?php echo GIVE_GOOGLE_ANALYTICS_URL . 'assets/img/ga-logo-small.png'; ?>"></p>
 		</div>
 
-	<?php }
+	<?php
+	}
 
 }
 
