@@ -104,7 +104,7 @@ add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_s
 /**
  * Save google analytic session data
  *
- * @since 2.0.0
+ * @since 1.2.0
  *
  * @param int $payment_id Donation ID.
  */

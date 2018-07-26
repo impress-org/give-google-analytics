@@ -16,12 +16,36 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: give-google-analytics.php:210
-msgid "<strong>Activation Error:</strong> You must have the <a href=\"https://givewp.com/\" target=\"_blank\">Give</a> plugin installed and activated for the Google Analytics add-on to activate."
+#: give-google-analytics.php:205, give-google-analytics.php:229
+msgid "Activation Error:"
 msgstr ""
 
-#: give-google-analytics.php:219
-msgid "<strong>Activation Error:</strong> You must have <a href=\"%1$s\" target=\"_blank\">Give</a> version %2$s+ for the Google Analytics add-on to activate."
+#: give-google-analytics.php:206
+msgid "You must have the"
+msgstr ""
+
+#: give-google-analytics.php:208, give-google-analytics.php:232
+msgid "Give"
+msgstr ""
+
+#: give-google-analytics.php:209
+msgid "plugin installed and activated to use the Google Analytics Donation Tracking add-on."
+msgstr ""
+
+#: give-google-analytics.php:230
+msgid "You must have"
+msgstr ""
+
+#: give-google-analytics.php:233
+msgid "core version %1$s+ for the Google Analytics Donation Tracking add-on to activate."
+msgstr ""
+
+#: includes/actions.php:95
+msgid "Google Analytics ecommerce tracking beacon sent."
+msgstr ""
+
+#: includes/actions.php:183
+msgid "Google Analytics donation refund tracking beacon sent."
 msgstr ""
 
 #: includes/class-give-google-analytics-settings.php:52, includes/class-give-google-analytics-settings.php:109, includes/give-google-analytics-activation.php:39
@@ -112,30 +136,18 @@ msgstr ""
 msgid "Google Analytics Add-on Documentation"
 msgstr ""
 
+#: includes/filters.php:27
+msgid "Google Analytics refund tracking beacon could not send because the UA code is missing in Give's settings"
+msgstr ""
+
 #: includes/give-google-analytics-activation.php:71
 msgid "Settings"
 msgstr ""
 
-#: includes/give-google-analytics-activation.php:105
+#: includes/give-google-analytics-activation.php:108
 msgid "Documentation"
 msgstr ""
 
-#: includes/give-google-analytics-activation.php:115
+#: includes/give-google-analytics-activation.php:121
 msgid "Add-ons"
-msgstr ""
-
-#: includes/give-google-analytics-functions.php:181, includes/give-google-analytics-functions.php:467
-msgid "Google Analytics ecommerce tracking beacon sent."
-msgstr ""
-
-#: includes/give-google-analytics-functions.php:250
-msgid "Google Analytics refund tracking beacon could not send because the UA code is missing in Give's settings"
-msgstr ""
-
-#: includes/give-google-analytics-functions.php:321
-msgid "Google Analytics donation refund tracking beacon sent."
-msgstr ""
-
-#: includes/give-google-analytics-functions.php:413
-msgid "Google Analytics donation tracking beacon could not send due to missing GA Tracking ID."
 msgstr ""

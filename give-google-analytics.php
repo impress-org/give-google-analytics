@@ -3,7 +3,7 @@
  * Plugin Name:     Give - Google Analytics Donation Tracking
  * Plugin URI:      https://givewp.com/addons/google-analytics/
  * Description:     Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
- * Version:         2.0.0
+ * Version:         1.2.0
  * Author:          WordImpress
  * Author URI:      https://wordimpress.com
  * Text Domain:     give-google-analytics
@@ -15,12 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '2.0.0' );
+	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '1.2.0' );
 }
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.1.9' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.1.7' );
 }
 
 // Plugin File.
@@ -202,11 +202,11 @@ function give_google_analytics_activation_notice() {
 	// Show admin notice.
 	$message = sprintf(
 		'<strong>%1$s</strong> %2$s <a href="%3$s" target="_blank">%4$s</a> %5$s',
-		__( 'Activation Error:', 'give-tributes' ),
-		__( 'You must have the', 'give-tributes' ),
+		__( 'Activation Error:', 'give-google-analytics' ),
+		__( 'You must have the', 'give-google-analytics' ),
 		esc_url( 'https://givewp.com' ),
-		__( 'Give', 'give-tributes' ),
-		__( 'plugin installed and activated to use the Google Analytics Donation Tracking add-on.', 'give-tributes' )
+		__( 'Give', 'give-google-analytics' ),
+		__( 'plugin installed and activated to use the Google Analytics Donation Tracking add-on.', 'give-google-analytics' )
 	);
 
 	$class = 'notice notice-error';
@@ -226,11 +226,11 @@ function give_google_analytics_min_version_notice() {
 	// Show admin notice.
 	$message = sprintf(
 		'<strong>%1$s</strong> %2$s <a href="%3$s" target="_blank">%4$s</a> %5$s',
-		__( 'Activation Error:', 'give-tributes' ),
-		__( 'You must have', 'give-tributes' ),
+		__( 'Activation Error:', 'give-google-analytics' ),
+		__( 'You must have', 'give-google-analytics' ),
 		esc_url( 'https://givewp.com' ),
-		__( 'Give', 'give-tributes' ),
-		sprintf( __( 'core version %1$s+ for the Google Analytics Donation Tracking add-on to activate.', 'give-tributes' ), GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION )
+		__( 'Give', 'give-google-analytics' ),
+		sprintf( __( 'core version %1$s+ for the Google Analytics Donation Tracking add-on to activate.', 'give-google-analytics' ), GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION )
 	);
 
 	$class = 'notice notice-error';

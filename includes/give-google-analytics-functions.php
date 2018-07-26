@@ -88,7 +88,7 @@ function give_analytics_gen_uuid() {
 /**
  * Check if tracking is exist or not
  *
- * @since 2.0.0
+ * @since 1.2
  * @return bool
  */
 function give_ga_has_tracking_id() {
@@ -101,7 +101,7 @@ function give_ga_has_tracking_id() {
 /**
  * Check if plugin can send google vent or not.
  *
- * @since 2.0.0
+ * @since 1.2.0
  *
  * @return bool
  */
