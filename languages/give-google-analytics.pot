@@ -40,11 +40,11 @@ msgstr ""
 msgid "core version %1$s+ for the Google Analytics Donation Tracking add-on to activate."
 msgstr ""
 
-#: includes/actions.php:95
+#: includes/actions.php:88
 msgid "Google Analytics ecommerce tracking beacon sent."
 msgstr ""
 
-#: includes/actions.php:183
+#: includes/actions.php:176
 msgid "Google Analytics donation refund tracking beacon sent."
 msgstr ""
 
