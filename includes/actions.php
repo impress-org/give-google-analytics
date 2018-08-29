@@ -237,17 +237,6 @@ function give_google_analytics_donation_form() {
 
 				// If ga function is ready. Let's proceed.
 				if ('function' === typeof ga) {
-
-					// Save campaign source for donation completion page.
-					// It's sent serverside via stored cookie.
-					ga(function (tracker) {
-						var campaignSource = tracker.get('campaignSource');
-						document.cookie = 'give_source=' + campaignSource;
-
-						var campaignMedium = tracker.get('campaignMedium');
-						document.cookie = 'give_medium=' + campaignMedium;
-					});
-
 					// Load the Ecommerce plugin.
 					ga('require', 'ec');
 
