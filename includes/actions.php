@@ -38,14 +38,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		$form_id    = give_get_payment_form_id( $donation_id );
 		$client_id  = give_get_meta( $donation_id, '_give_ga_client_id', true );
 		$form_title = get_the_title( $form_id );
-		$total      = give_donation_amount(
-			$donation_id, array(
-				'currency' => false,
-				'amount'   => array(
-					'decimal' => true,
-				),
-			)
-		);
+		$total      = give_donation_amount( $donation_id, false );
 
 		$campaign        = give_get_meta( $donation_id, '_give_ga_campaign', true );
 		$campaign_source = give_get_meta( $donation_id, '_give_ga_campaign_source', true );
