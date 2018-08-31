@@ -4,8 +4,8 @@
  * Plugin URI:      https://givewp.com/addons/google-analytics/
  * Description:     Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
  * Version:         1.2.1
- * Author:          WordImpress
- * Author URI:      https://wordimpress.com
+ * Author:          GiveWP
+ * Author URI:      https://givewp.com
  * Text Domain:     give-google-analytics
  */
 
@@ -20,7 +20,7 @@ if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.1.7' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.2.0' );
 }
 
 // Plugin File.

@@ -1,9 +1,9 @@
 === Give - Google Analytics Donation Tracking ===
-Contributors: wordimpress, givewp
+Contributors: givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.8
 Tested up to: 4.9
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -37,6 +37,10 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 1.2.1: August, 2018 =
+* Fix: Prevent donations more than $1,000 from recording incorrectly in GA.
+* Fix: Ensure source and medium are being captured correctly for donations.
 
 = 1.2.0: July 26th, 2018 =
 * Fix: Properly send the client ID rather than a random one when sending transactions and refunds to Google Analytics.
