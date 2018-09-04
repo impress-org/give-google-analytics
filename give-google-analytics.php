@@ -63,6 +63,15 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 		private static $instance;
 
 		/**
+		 * Notices (array)
+		 *
+		 * @since 1.2.2
+		 *
+		 * @var array
+		 */
+		public $notices = array();
+
+		/**
 		 * Get active instance.
 		 *
 		 * @access      public
@@ -71,22 +80,43 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 		 */
 		public static function instance() {
 			if ( ! self::$instance ) {
-				self::$instance = new Give_Google_Analytics();
-				self::$instance->load_textdomain();
-				self::$instance->includes();
+				self::$instance = new self();
+				self::$instance->setup();
 			}
 
 			return self::$instance;
 		}
 
 		/**
+		 * Setup Give Google Analytics.
+		 *
+		 * @since 1.2.2
+		 * @access private
+		 */
+		private function setup() {
+			// Give init hook.
+			add_action( 'give_init', array( $this, 'init' ), 10 );
+			add_action( 'admin_init', array( $this, 'check_environment' ), 999 );
+			add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
+		}
+
+		/**
 		 * Include necessary files.
 		 *
 		 * @access      private
-		 * @since       1.0
+		 * @since 1.2.2
 		 * @return      void
 		 */
-		private function includes() {
+		public function init() {
+
+			if ( ! $this->get_environment_warning() ) {
+				return;
+			}
+
+			$this->licensing();
+			$this->load_textdomain();
+			$this->activation_banner();
+
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/class-give-google-analytics-settings.php';
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/give-google-analytics-functions.php';
 			require_once GIVE_GOOGLE_ANALYTICS_DIR . 'includes/filters.php';
@@ -127,114 +157,172 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 			}
 		}
 
+		/**
+		 * Check plugin environment.
+		 *
+		 * @since 1.2.2
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public function check_environment() {
+			// Flag to check whether plugin file is loaded or not.
+			$is_working = true;
+
+			// Load plugin helper functions.
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				require_once ABSPATH . '/wp-admin/includes/plugin.php';
+			}
+
+			/* Check to see if Give is activated, if it isn't deactivate and show a banner. */
+			// Check for if give plugin activate or not.
+			$is_give_active = defined( 'GIVE_PLUGIN_BASENAME' ) ? is_plugin_active( GIVE_PLUGIN_BASENAME ) : false;
+
+			if ( empty( $is_give_active ) ) {
+				// Show admin notice.
+				$this->add_admin_notice( 'prompt_give_activate', 'error', sprintf( __( '<strong>Activation Error:</strong> You must have the <a href="%s" target="_blank">Give</a> plugin installed and activated for Google Analytics Donation Tracking to activate.', 'give-google-analytics' ), 'https://givewp.com' ) );
+				$is_working = false;
+			}
+
+			return $is_working;
+		}
+
+		/**
+		 * Check plugin for Give environment.
+		 *
+		 * @since 1.2.2
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public function get_environment_warning() {
+			// Flag to check whether plugin file is loaded or not.
+			$is_working = true;
+
+			// Verify dependency cases.
+			if (
+				defined( 'GIVE_VERSION' )
+				&& version_compare( GIVE_VERSION, GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION, '<' )
+			) {
+
+				/* Min. Give. plugin version. */
+				// Show admin notice.
+				$this->add_admin_notice( 'prompt_give_incompatible', 'error', sprintf( __( '<strong>Activation Error:</strong> You must have the <a href="%s" target="_blank">Give</a> core version %s for the Google Analytics Donation Tracking add-on to activate.', 'give-google-analytics' ), 'https://givewp.com', GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION ) );
+
+				$is_working = false;
+			}
+
+			return $is_working;
+		}
+
+		/**
+		 * Allow this class and other classes to add notices.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param $slug
+		 * @param $class
+		 * @param $message
+		 */
+		public function add_admin_notice( $slug, $class, $message ) {
+			$this->notices[ $slug ] = array(
+				'class'   => $class,
+				'message' => $message,
+			);
+		}
+
+		/**
+		 * Display admin notices.
+		 *
+		 * @since 1.2.2
+		 */
+		public function admin_notices() {
+
+			$allowed_tags = array(
+				'a'      => array(
+					'href'  => array(),
+					'title' => array(),
+					'class' => array(),
+					'id'    => array(),
+				),
+				'br'     => array(),
+				'em'     => array(),
+				'span'   => array(
+					'class' => array(),
+				),
+				'strong' => array(),
+			);
+
+			foreach ( (array) $this->notices as $notice_key => $notice ) {
+				echo "<div class='" . esc_attr( $notice['class'] ) . "'><p>";
+				echo wp_kses( $notice['message'], $allowed_tags );
+				echo '</p></div>';
+			}
+
+		}
+
+		/**
+		 * Implement Give Licensing for Give Google Analytics Add On.
+		 *
+		 * @since 1.2.2
+		 * @access private
+		 */
+		private function licensing() {
+			if ( class_exists( 'Give_License' ) ) {
+				new Give_License( GIVE_GOOGLE_ANALYTICS_DIR, 'Google Analytics Donation Tracking', GIVE_GOOGLE_ANALYTICS_VERSION, 'WordImpress' );
+			}
+		}
+
+		/**
+		 * Give Google Analytics Ecommerce Tracking Activation Banner
+		 *
+		 * Includes and initializes Give activation banner class.
+		 *
+		 * @since 1.2.2
+		 */
+		public function activation_banner() {
+
+			// Check for activation banner inclusion.
+			if ( ! class_exists( 'Give_Addon_Activation_Banner' )
+			     && file_exists( GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php' )
+			) {
+
+				include GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php';
+			}
+
+			// Initialize activation welcome banner.
+			if ( class_exists( 'Give_Addon_Activation_Banner' ) ) {
+
+				// Only runs on admin
+				$args = array(
+					'file'              => __FILE__,
+					'name'              => esc_html__( 'Google Analytics', 'give-google-analytics' ),
+					'version'           => GIVE_GOOGLE_ANALYTICS_VERSION,
+					'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=google-analytics' ),
+					'documentation_url' => 'https://givewp.com/documentation/add-ons/google-analytics/',
+					'support_url'       => 'https://givewp.com/support/',
+					'testing'           => false, // Never leave as TRUE!
+				);
+
+				new Give_Addon_Activation_Banner( $args );
+
+			}
+
+			return false;
+
+		}
 	}
-}
 
-/**
- * Google Analytics Load.
- *
- * @return object|bool Give_Google_Analytics
- */
-function give_google_analytics_load() {
-
-	if ( give_google_analytics_check_environment() ) {
+	/**
+	 * Returns class object instance.
+	 *
+	 * @since 1.2.2
+	 *
+	 * @return Give_Google_Analytics bool|object
+	 */
+	function Give_Google_Analytics() {
 		return Give_Google_Analytics::instance();
 	}
 
-	return false;
+	Give_Google_Analytics();
 }
-
-add_action( 'plugins_loaded', 'give_google_analytics_load' );
-
-/**
- * Give - GA Add-on Licensing
- */
-function give_add_google_analytics_licensing() {
-
-	if ( class_exists( 'Give_License' ) ) {
-		new Give_License( GIVE_GOOGLE_ANALYTICS_DIR, 'Google Analytics Donation Tracking', GIVE_GOOGLE_ANALYTICS_VERSION, 'WordImpress' );
-	}
-}
-
-add_action( 'plugins_loaded', 'give_add_google_analytics_licensing' );
-
-/**
- * Check the environment before starting up.
- *
- * @since 1.0
- *
- * @return bool
- */
-function give_google_analytics_check_environment() {
-
-	// Check for if give plugin activate or not.
-	$is_give_active = defined( 'GIVE_PLUGIN_BASENAME' ) ? true : false;
-
-	// Check to see if Give is activated, if it isn't deactivate and show a banner
-	if ( current_user_can( 'activate_plugins' ) && ! $is_give_active ) {
-		add_action( 'admin_notices', 'give_google_analytics_activation_notice' );
-
-		return false;
-	}
-
-	// Check minimum Give version.
-	if (
-		defined( 'GIVE_VERSION' )
-		&& version_compare( GIVE_VERSION, GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION, '<' )
-	) {
-
-		add_action( 'admin_notices', 'give_google_analytics_min_version_notice' );
-
-		return false;
-	}
-
-	return true;
-
-}
-
-/**
- * Notice for No Core Activation
- *
- * @since 1.0
- */
-function give_google_analytics_activation_notice() {
-
-	// Show admin notice.
-	$message = sprintf(
-		'<strong>%1$s</strong> %2$s <a href="%3$s" target="_blank">%4$s</a> %5$s',
-		__( 'Activation Error:', 'give-google-analytics' ),
-		__( 'You must have the', 'give-google-analytics' ),
-		esc_url( 'https://givewp.com' ),
-		__( 'Give', 'give-google-analytics' ),
-		__( 'plugin installed and activated to use the Google Analytics Donation Tracking add-on.', 'give-google-analytics' )
-	);
-
-	$class = 'notice notice-error';
-	printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
-
-}
-
-/**
- * Notice for No Core Activation
- *
- * @since 1.0
- */
-function give_google_analytics_min_version_notice() {
-
-	/*
-	 Min. Give. plugin version. */
-	// Show admin notice.
-	$message = sprintf(
-		'<strong>%1$s</strong> %2$s <a href="%3$s" target="_blank">%4$s</a> %5$s',
-		__( 'Activation Error:', 'give-google-analytics' ),
-		__( 'You must have', 'give-google-analytics' ),
-		esc_url( 'https://givewp.com' ),
-		__( 'Give', 'give-google-analytics' ),
-		sprintf( __( 'core version %1$s+ for the Google Analytics Donation Tracking add-on to activate.', 'give-google-analytics' ), GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION )
-	);
-
-	$class = 'notice notice-error';
-	printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
-
-}
-
