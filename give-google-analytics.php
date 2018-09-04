@@ -40,7 +40,7 @@ if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_URL' ) ) {
 
 // Basename.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_BASENAME' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_BASENAME', plugin_basename( GIVE_GOOGLE_ANALYTICS_DIR ) );
+	define( 'GIVE_GOOGLE_ANALYTICS_BASENAME', plugin_basename( GIVE_GOOGLE_ANALYTICS_PLUGIN_FILE ) );
 }
 
 /**
