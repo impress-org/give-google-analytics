@@ -14,47 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give Google Analytics Ecommerce Tracking Activation Banner
- *
- * Includes and initializes Give activation banner class.
- *
- * @since 1.0
- */
-function give_google_analytics_activation_banner() {
-
-	// Check for activation banner inclusion.
-	if ( ! class_exists( 'Give_Addon_Activation_Banner' )
-		 && file_exists( GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php' )
-	) {
-
-		include GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php';
-	}
-
-	// Initialize activation welcome banner.
-	if ( class_exists( 'Give_Addon_Activation_Banner' ) ) {
-
-		// Only runs on admin
-		$args = array(
-			'file'              => __FILE__,
-			'name'              => esc_html__( 'Google Analytics', 'give-google-analytics' ),
-			'version'           => GIVE_GOOGLE_ANALYTICS_VERSION,
-			'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=general&section=google-analytics' ),
-			'documentation_url' => 'https://givewp.com/documentation/add-ons/google-analytics/',
-			'support_url'       => 'https://givewp.com/support/',
-			'testing'           => false, // Never leave as TRUE!
-		);
-
-		new Give_Addon_Activation_Banner( $args );
-
-	}
-	return false;
-
-}
-
-add_action( 'admin_init', 'give_google_analytics_activation_banner' );
-
-
-/**
  * Plugins row action links
  *
  * @since 1.0
