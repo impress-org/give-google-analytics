@@ -11,14 +11,14 @@
  *
  * @since 1.1
  *
- * @param string     $donation_id The donation payment ID.
+ * @param string $donation_id The donation payment ID.
  * @param        $new_status
  * @param        $old_status
  *
  * @return string|bool
  */
 function give_google_analytics_send_donation_success( $donation_id, $new_status, $old_status ) {
-	if ( ! give_ga_can_send_event() ) {
+	if( ! give_ga_can_send_event() ) {
 		return false;
 	}
 
@@ -42,7 +42,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 
 		$campaign        = give_get_meta( $donation_id, '_give_ga_campaign', true );
 		$campaign_source = give_get_meta( $donation_id, '_give_ga_campaign_source', true );
-		$cpmpaign_medium = give_get_meta( $donation_id, '_give_ga_campaign_medium', true );
+		$campaign_medium = give_get_meta( $donation_id, '_give_ga_campaign_medium', true );
 
 		$affiliation = give_get_option( 'google_analytics_affiliate' );
 
@@ -114,13 +114,13 @@ add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_s
 /**
  * Save google analytic session data
  *
- * @since 1.2.0
+ * @since 2.0.0
  *
  * @param int $payment_id Donation ID.
  */
-function give_ga_preserve_google_session_data( $payment_id ) {
+function give_ga_preserve_google_session_data( $payment_id ){
 	// Save client session id
-	if (
+	if(
 		isset( $_COOKIE['_ga'] )
 		&& give_ga_can_send_event()
 	) {
@@ -129,23 +129,22 @@ function give_ga_preserve_google_session_data( $payment_id ) {
 
 		add_post_meta( $payment_id, '_give_ga_client_id', $client_id );
 
-		$campaign        = empty( $_COOKIE['give_campaign'] ) ? 'undefined' : $_COOKIE['give_campaign'];
-		$campaign_source = empty( $_COOKIE['give_source'] ) ? 'undefined' : $_COOKIE['give_source'];
-		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? 'undefined' : $_COOKIE['give_medium'];
+		$campaign        = empty( $_COOKIE['give_campaign'] ) ? '' : $_COOKIE['give_campaign'];
+		$campaign_source = empty( $_COOKIE['give_source'] ) ? '' : $_COOKIE['give_source'];
+		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? '' : $_COOKIE['give_medium'];
 
 		add_post_meta( $payment_id, '_give_ga_campaign', $campaign );
 		add_post_meta( $payment_id, '_give_ga_campaign_source', $campaign_source );
 		add_post_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
 	}
 }
-
 add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
 
 
 /**
  * Track refund donations within GA.
  *
- * @param int    $donation_id
+ * @param int $donation_id
  * @param string $new_status
  * @param string $old_status
  *
