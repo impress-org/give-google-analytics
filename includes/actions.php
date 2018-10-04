@@ -90,6 +90,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		/**
 		 * Filter the google analatic query params
 		 *
+		 * @since 1.0.0
 		 */
 		$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', $args );
 
