@@ -11,14 +11,14 @@
  *
  * @since 1.1
  *
- * @param string     $donation_id The donation payment ID.
+ * @param string $donation_id The donation payment ID.
  * @param        $new_status
  * @param        $old_status
  *
  * @return string|bool
  */
 function give_google_analytics_send_donation_success( $donation_id, $new_status, $old_status ) {
-	if ( ! give_ga_can_send_event() ) {
+	if( ! give_ga_can_send_event() ) {
 		return false;
 	}
 
@@ -42,7 +42,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 
 		$campaign        = give_get_meta( $donation_id, '_give_ga_campaign', true );
 		$campaign_source = give_get_meta( $donation_id, '_give_ga_campaign_source', true );
-		$cpmpaign_medium = give_get_meta( $donation_id, '_give_ga_campaign_medium', true );
+		$campaign_medium = give_get_meta( $donation_id, '_give_ga_campaign_medium', true );
 
 		$affiliation = give_get_option( 'google_analytics_affiliate' );
 
@@ -50,44 +50,62 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		$ga_categories = give_get_option( 'google_analytics_category', 'Donations' );
 		$ga_list       = give_get_option( 'google_analytics_list' );
 
-		$args = apply_filters(
-			'give_google_analytics_record_offsite_payment_hit_args', array(
-				'v'     => 1,
-				'tid'   => $ua_code, // Tracking ID required.
-				'cid'   => ! empty( $client_id ) ? $client_id : give_analytics_gen_uuid(), // Client ID. Required (Set random if does not find client id ).
-				't'     => 'event', // Event hit type.
-				'ec'    => 'Fundraising', // Event Category. Required.
-				'ea'    => 'Donation Success', // Event Action. Required.
-				'el'    => $form_title, // Event Label.
-				'ti'    => $donation_id, // Transaction ID.
-				'ta'    => $affiliation,  // Affiliation.
-				'cn'    => $campaign,  // Campaign Name.
-				'cs'    => $campaign_source,  // Campaign Source.
-				'cm'    => $cpmpaign_medium,  // Campaign Medium.
-				'cu'    => give_get_payment_currency_code( $donation_id ),  // Currency code.
-				'pal'   => $ga_list,   // Product Action List.
-				'pa'    => 'purchase',
-				'pr1id' => $form_id,  // Product 1 ID. Either ID or name must be set.
-				'pr1nm' => $form_title, // Product 1 name. Either ID or name must be set.
-				'pr1ca' => $ga_categories, // Product 1 category.
-				'pr1br' => 'Fundraising',
-				'pr1qt' => 1, // Product 1 quantity.
-				'pr1pr' => $total, // Product price
-				'tr'    => $total, // Transaction Revenue
-			)
+		$args = array(
+			'v'     => 1,
+			'tid'   => $ua_code, // Tracking ID required.
+			'cid'   => ! empty( $client_id ) ? $client_id : give_analytics_gen_uuid(), // Client ID. Required (Set random if does not find client id ).
+			't'     => 'event', // Event hit type.
+			'ec'    => 'Fundraising', // Event Category. Required.
+			'ea'    => 'Donation Success', // Event Action. Required.
+			'el'    => $form_title, // Event Label.
+			'ti'    => $donation_id, // Transaction ID.
+			'ta'    => $affiliation,  // Affiliation.
+			'cu'    => give_get_payment_currency_code( $donation_id ),  // Currency code.
+			'pal'   => $ga_list,   // Product Action List.
+			'pa'    => 'purchase',
+			'pr1id' => $form_id,  // Product 1 ID. Either ID or name must be set.
+			'pr1nm' => $form_title, // Product 1 name. Either ID or name must be set.
+			'pr1ca' => $ga_categories, // Product 1 category.
+			'pr1br' => 'Fundraising',
+			'pr1qt' => 1, // Product 1 quantity.
+			'pr1pr' => $total, // Product price
+			'tr'    => $total, // Transaction Revenue
 		);
+
+		// Campaign Name.
+		if ( $campaign ) {
+			$args['cn'] = $campaign;
+		}
+
+		// Campaign Source.
+		if ( $campaign_source ) {
+			$args['cs'] = $campaign_source;
+		}
+
+		// Campaign Medium
+		if ( $campaign_medium ) {
+			$args['cm'] = $campaign_medium;
+		}
+
+		/**
+		 * Filter the google analatic query params
+		 *
+		 * @since 1.0.0
+		 */
+		$args = apply_filters( 'give_google_analytics_record_offsite_payment_hit_args', $args );
 
 		$args    = array_map( 'rawurlencode', $args );
 		$url     = add_query_arg( $args, 'https://www.google-analytics.com/collect' );
 		$request = wp_remote_post( $url );
 
 		// Check if beacon sent successfully.
-		if ( ! is_wp_error( $request ) || 200 === wp_remote_retrieve_response_code( $request ) ) {
+		if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
 
 			add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
 			give_insert_payment_note( $donation_id, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
 		}
-	} // End if().
+
+	}// End if().
 
 }
 
@@ -97,13 +115,13 @@ add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_s
 /**
  * Save google analytic session data
  *
- * @since 1.2.0
+ * @since 2.0.0
  *
  * @param int $payment_id Donation ID.
  */
-function give_ga_preserve_google_session_data( $payment_id ) {
+function give_ga_preserve_google_session_data( $payment_id ){
 	// Save client session id
-	if (
+	if(
 		isset( $_COOKIE['_ga'] )
 		&& give_ga_can_send_event()
 	) {
@@ -112,23 +130,22 @@ function give_ga_preserve_google_session_data( $payment_id ) {
 
 		add_post_meta( $payment_id, '_give_ga_client_id', $client_id );
 
-		$campaign        = empty( $_COOKIE['give_campaign'] ) ? 'undefined' : $_COOKIE['give_campaign'];
-		$campaign_source = empty( $_COOKIE['give_source'] ) ? 'undefined' : $_COOKIE['give_source'];
-		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? 'undefined' : $_COOKIE['give_medium'];
+		$campaign        = empty( $_COOKIE['give_campaign'] ) ? '' : $_COOKIE['give_campaign'];
+		$campaign_source = empty( $_COOKIE['give_source'] ) ? '' : $_COOKIE['give_source'];
+		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? '' : $_COOKIE['give_medium'];
 
 		add_post_meta( $payment_id, '_give_ga_campaign', $campaign );
 		add_post_meta( $payment_id, '_give_ga_campaign_source', $campaign_source );
 		add_post_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
 	}
 }
-
 add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
 
 
 /**
  * Track refund donations within GA.
  *
- * @param int    $donation_id
+ * @param int $donation_id
  * @param string $new_status
  * @param string $old_status
  *
