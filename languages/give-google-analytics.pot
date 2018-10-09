@@ -16,40 +16,24 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: give-google-analytics.php:205, give-google-analytics.php:229
-msgid "Activation Error:"
+#: give-google-analytics.php:183
+msgid "<strong>Activation Error:</strong> You must have the <a href=\"%s\" target=\"_blank\">Give</a> plugin installed and activated for Google Analytics Donation Tracking to activate."
 msgstr ""
 
-#: give-google-analytics.php:206
-msgid "You must have the"
+#: give-google-analytics.php:210
+msgid "<strong>Activation Error:</strong> You must have the <a href=\"%s\" target=\"_blank\">Give</a> core version %s for the Google Analytics Donation Tracking add-on to activate."
 msgstr ""
 
-#: give-google-analytics.php:208, give-google-analytics.php:232
-msgid "Give"
+#: give-google-analytics.php:299, includes/class-give-google-analytics-settings.php:52, includes/class-give-google-analytics-settings.php:109
+msgid "Google Analytics"
 msgstr ""
 
-#: give-google-analytics.php:209
-msgid "plugin installed and activated to use the Google Analytics Donation Tracking add-on."
-msgstr ""
-
-#: give-google-analytics.php:230
-msgid "You must have"
-msgstr ""
-
-#: give-google-analytics.php:233
-msgid "core version %1$s+ for the Google Analytics Donation Tracking add-on to activate."
-msgstr ""
-
-#: includes/actions.php:88
+#: includes/actions.php:105
 msgid "Google Analytics ecommerce tracking beacon sent."
 msgstr ""
 
-#: includes/actions.php:176
+#: includes/actions.php:193
 msgid "Google Analytics donation refund tracking beacon sent."
-msgstr ""
-
-#: includes/class-give-google-analytics-settings.php:52, includes/class-give-google-analytics-settings.php:109, includes/give-google-analytics-activation.php:39
-msgid "Google Analytics"
 msgstr ""
 
 #: includes/class-give-google-analytics-settings.php:115
@@ -140,14 +124,14 @@ msgstr ""
 msgid "Google Analytics refund tracking beacon could not send because the UA code is missing in Give's settings"
 msgstr ""
 
-#: includes/give-google-analytics-activation.php:71
+#: includes/give-google-analytics-activation.php:30
 msgid "Settings"
 msgstr ""
 
-#: includes/give-google-analytics-activation.php:108
+#: includes/give-google-analytics-activation.php:67
 msgid "Documentation"
 msgstr ""
 
-#: includes/give-google-analytics-activation.php:121
+#: includes/give-google-analytics-activation.php:80
 msgid "Add-ons"
 msgstr ""
