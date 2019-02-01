@@ -155,14 +155,22 @@ function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $o
 		return false;
 	}
 
+	// Check if the DONATION beacon has been sent (successful "purchase").
+	// If it hasn't then return false; only send refunds for donations tracked in GA.
+	$donation_beacon_sent = give_get_meta( $donation_id, '_give_ga_beacon_sent', true );
+	if ( empty( $donation_beacon_sent ) ) {
+		return false;
+	}
+
+	// Check if the REFUND beacon has already been sent.
+	// If it hasn't proceed.
+	$refund_beacon_sent = give_get_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
+	if ( ! empty( $refund_beacon_sent ) ) {
+		return false;
+	}
+
 	// Bailout.
 	if ( 'refunded' === $new_status || 'publish' === $old_status ) {
-		// Check if the beacon has already been sent.
-		$beacon_sent = give_get_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
-
-		if ( ! empty( $beacon_sent ) ) {
-			return false;
-		}
 
 		$ua_code   = give_get_option( 'google_analytics_ua_code' );
 		$client_id = give_get_meta( $donation_id, '_give_ga_client_id', true );
@@ -329,7 +337,6 @@ function give_google_analytics_donation_form() {
 				} else {
 					return '';
 				}
-				;
 			}
 
 		})(jQuery); //
