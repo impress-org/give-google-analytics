@@ -23,7 +23,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 	}
 
 	// Check conditions.
-	$sent_already = get_post_meta( $donation_id, '_give_ga_beacon_sent', true );
+	$sent_already = give_get_meta( $donation_id, '_give_ga_beacon_sent', true );
 
 	if ( ! empty( $sent_already ) ) {
 		return false;
@@ -88,7 +88,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		}
 
 		/**
-		 * Filter the google analatic query params
+		 * Filter the google analytics query params.
 		 *
 		 * @since 1.0.0
 		 */
@@ -101,7 +101,7 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		// Check if beacon sent successfully.
 		if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
 
-			add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
+			give_update_payment_meta( $donation_id, '_give_ga_beacon_sent', true );
 			give_insert_payment_note( $donation_id, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
 		}
 	}// End if().
@@ -112,9 +112,9 @@ add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_s
 
 
 /**
- * Save google analytic session data
+ * Save Google Analytic session data
  *
- * @since 2.0.0
+ * @since 1.2.2
  *
  * @param int $payment_id Donation ID.
  */
@@ -127,15 +127,15 @@ function give_ga_preserve_google_session_data( $payment_id ) {
 		$client_id = explode( '.', $_COOKIE['_ga'], 3 );
 		$client_id = array_pop( $client_id );
 
-		add_post_meta( $payment_id, '_give_ga_client_id', $client_id );
+		give_update_payment_meta( $payment_id, '_give_ga_client_id', $client_id );
 
 		$campaign        = empty( $_COOKIE['give_campaign'] ) ? '' : $_COOKIE['give_campaign'];
 		$campaign_source = empty( $_COOKIE['give_source'] ) ? '' : $_COOKIE['give_source'];
 		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? '' : $_COOKIE['give_medium'];
 
-		add_post_meta( $payment_id, '_give_ga_campaign', $campaign );
-		add_post_meta( $payment_id, '_give_ga_campaign_source', $campaign_source );
-		add_post_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
+		give_update_payment_meta( $payment_id, '_give_ga_campaign', $campaign );
+		give_update_payment_meta( $payment_id, '_give_ga_campaign_source', $campaign_source );
+		give_update_payment_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
 	}
 }
 add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
@@ -155,14 +155,22 @@ function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $o
 		return false;
 	}
 
+	// Check if the DONATION beacon has been sent (successful "purchase").
+	// If it hasn't then return false; only send refunds for donations tracked in GA.
+	$donation_beacon_sent = give_get_meta( $donation_id, '_give_ga_beacon_sent', true );
+	if ( empty( $donation_beacon_sent ) ) {
+		return false;
+	}
+
+	// Check if the REFUND beacon has already been sent.
+	// If it hasn't proceed.
+	$refund_beacon_sent = give_get_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
+	if ( ! empty( $refund_beacon_sent ) ) {
+		return false;
+	}
+
 	// Bailout.
 	if ( 'refunded' === $new_status || 'publish' === $old_status ) {
-		// Check if the beacon has already been sent.
-		$beacon_sent = get_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
-
-		if ( ! empty( $beacon_sent ) ) {
-			return false;
-		}
 
 		$ua_code   = give_get_option( 'google_analytics_ua_code' );
 		$client_id = give_get_meta( $donation_id, '_give_ga_client_id', true );
@@ -186,7 +194,7 @@ function give_google_analytics_send_refund_beacon( $donation_id, $new_status, $o
 		// Check if beacon sent successfully.
 		if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
 
-			add_post_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
+			give_update_payment_meta( $donation_id, '_give_ga_refund_beacon_sent', true );
 
 			// All is well, sent beacon.
 			give_insert_payment_note( $donation_id, __( 'Google Analytics donation refund tracking beacon sent.', 'give-google-analytics' ) );
@@ -329,7 +337,6 @@ function give_google_analytics_donation_form() {
 				} else {
 					return '';
 				}
-				;
 			}
 
 		})(jQuery); //

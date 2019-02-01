@@ -16,8 +16,15 @@ function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_s
 		return $do_change;
 	}
 
-	// Check if refund tracking is enabled.
+	// Check if refund tracking is enabled. If not, return original change.
 	if ( ! give_is_setting_enabled( give_get_option( 'google_analytics_refunds_option' ) ) ) {
+		return $do_change;
+	}
+
+	// Only send refund if initial donation was sent to GA.
+	// For instance, a donation may have been added manually.
+	$beacon_sent = give_get_meta( $donation_id, '_give_ga_beacon_sent', true );
+	if ( empty( $beacon_sent ) ) {
 		return $do_change;
 	}
 
@@ -30,7 +37,7 @@ function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_s
 	}
 
 	// Important to always return.
-	return $do_change;
+	return apply_filters( 'give_google_analytics_refund_tracking_beacon', $do_change, $donation_id );
 
 }
 
