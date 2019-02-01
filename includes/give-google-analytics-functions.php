@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Helper function to check conditions for triggering GA tracking code.
  *
+ * @TODO: this function is not in use and is a near duplicate of give_ga_can_send_event() below. Either this should be removed or used.
+ *
  * @since 1.1
  *
  * @param $payment_id
@@ -19,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_should_send_beacon( $payment_id ) {
 
-	$sent_already = get_post_meta( $payment_id, '_give_ga_beacon_sent', true );
+	$sent_already = give_get_meta( $payment_id, '_give_ga_beacon_sent', true );
 
 	// Check meta beacon flag.
 	if ( ! empty( $sent_already ) ) {
@@ -28,6 +30,11 @@ function give_should_send_beacon( $payment_id ) {
 
 	// Don't track site admins.
 	if ( is_user_logged_in() && current_user_can( 'administrator' ) ) {
+		return false;
+	}
+
+	// Don't track manual donations.
+	if ( isset( $_GET['page'] ) && 'give-manual-donation' === $_GET['page'] ) {
 		return false;
 	}
 
@@ -97,7 +104,6 @@ function give_ga_has_tracking_id() {
 	return ! empty( $tracking_id );
 }
 
-
 /**
  * Check if plugin can send google vent or not.
  *
@@ -106,6 +112,12 @@ function give_ga_has_tracking_id() {
  * @return bool
  */
 function give_ga_can_send_event() {
+
+	// Don't track manual donations.
+	if ( isset( $_GET['page'] ) && 'give-manual-donation' === $_GET['page'] ) {
+		return false;
+	}
+
 	// Don't continue if test mode is enabled and test mode tracking is disabled.
 	if ( give_is_test_mode() && ! give_google_analytics_track_testing() ) {
 		return false;
