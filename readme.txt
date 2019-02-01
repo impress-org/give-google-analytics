@@ -2,8 +2,8 @@
 Contributors: givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.8
-Tested up to: 4.9
-Stable tag: 1.2.2
+Tested up to: 5.0
+Stable tag: 1.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -37,6 +37,9 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 1.2.3: February 1st, 2019 =
+* Fix: Donations added using the Manual Donations add-on are no longer being tracked in Google Analytics.
 
 = 1.2.2: October 8th, 2018 =
 * fix: Revised how the source and medium are captured for donations.

@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Give-Google-Analytics
+# Copyright (C) 2019 Give-Google-Analytics
 # This file is distributed under the same license as the Give-Google-Analytics package.
 msgid ""
 msgstr ""
@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Language-Team: GiveWP <info@givewp.com>\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Google Analytics ecommerce tracking beacon sent."
 msgstr ""
 
-#: includes/actions.php:193
+#: includes/actions.php:200
 msgid "Google Analytics donation refund tracking beacon sent."
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 msgid "Google Analytics Add-on Documentation"
 msgstr ""
 
-#: includes/filters.php:27
+#: includes/filters.php:34
 msgid "Google Analytics refund tracking beacon could not send because the UA code is missing in Give's settings"
 msgstr ""
 
