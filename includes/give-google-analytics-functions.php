@@ -111,7 +111,7 @@ function give_ga_can_send_event() {
 		return false;
 	}
 
-	// Must contain non empty tracking id
+	// Must contain non empty tracking id.
 	if ( ! give_ga_has_tracking_id() ) {
 		return false;
 	}

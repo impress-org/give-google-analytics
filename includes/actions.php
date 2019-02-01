@@ -11,14 +11,14 @@
  *
  * @since 1.1
  *
- * @param string $donation_id The donation payment ID.
+ * @param string     $donation_id The donation payment ID.
  * @param        $new_status
  * @param        $old_status
  *
  * @return string|bool
  */
 function give_google_analytics_send_donation_success( $donation_id, $new_status, $old_status ) {
-	if( ! give_ga_can_send_event() ) {
+	if ( ! give_ga_can_send_event() ) {
 		return false;
 	}
 
@@ -104,7 +104,6 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 			add_post_meta( $donation_id, '_give_ga_beacon_sent', true );
 			give_insert_payment_note( $donation_id, __( 'Google Analytics ecommerce tracking beacon sent.', 'give-google-analytics' ) );
 		}
-
 	}// End if().
 
 }
@@ -119,9 +118,9 @@ add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_s
  *
  * @param int $payment_id Donation ID.
  */
-function give_ga_preserve_google_session_data( $payment_id ){
+function give_ga_preserve_google_session_data( $payment_id ) {
 	// Save client session id
-	if(
+	if (
 		isset( $_COOKIE['_ga'] )
 		&& give_ga_can_send_event()
 	) {
@@ -145,7 +144,7 @@ add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
 /**
  * Track refund donations within GA.
  *
- * @param int $donation_id
+ * @param int    $donation_id
  * @param string $new_status
  * @param string $old_status
  *
