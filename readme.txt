@@ -2,7 +2,7 @@
 Contributors: givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.8
-Tested up to: 5.0
+Tested up to: 5.2
 Stable tag: 1.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
