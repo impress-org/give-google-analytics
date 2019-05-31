@@ -1,5 +1,17 @@
 <?php
+/**
+ * Give Google Analytics - Settings
+ *
+ * @package    Give
+ * @copyright  Copyright (c) 2019, GiveWP
+ * @license    https://opensource.org/licenses/gpl-license GNU Public License
+ * @since      1.2.4
+ */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Class Give_Google_Analytics_Settings
  *
@@ -52,8 +64,8 @@ class Give_Google_Analytics_Settings {
 		$this->section_label = __( 'Google Analytics', 'give-google-analytics' );
 
 		// Add settings.
-		add_filter( 'give_get_settings_general', array( $this, 'add_settings' ), 99999 );
-		add_filter( 'give_get_sections_general', array( $this, 'add_section' ), 99999 );
+		add_filter( 'give_get_settings_general', array( $this, 'add_settings' ) );
+		add_filter( 'give_get_sections_general', array( $this, 'add_section' ) );
 
 		add_filter( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
 
@@ -105,6 +117,10 @@ class Give_Google_Analytics_Settings {
 		}
 
 		$give_ga__settings = array(
+			array(
+				'id'   => 'give_title_google_analytics',
+				'type' => 'title',
+			),
 			array(
 				'name' => __( 'Google Analytics', 'give-google-analytics' ),
 				'desc' => '',
@@ -188,6 +204,10 @@ class Give_Google_Analytics_Settings {
 				'url'   => esc_url( 'http://docs.givewp.com/addon-google-analytics' ),
 				'title' => __( 'Google Analytics Add-on Documentation', 'give-google-analytics' ),
 				'type'  => 'give_docs_link',
+			),
+			array(
+				'id'   => 'give_title_google_analytics',
+				'type' => 'sectionend',
 			),
 		);
 
