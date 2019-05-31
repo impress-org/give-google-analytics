@@ -64,8 +64,8 @@ class Give_Google_Analytics_Settings {
 		$this->section_label = __( 'Google Analytics', 'give-google-analytics' );
 
 		// Add settings.
-		add_filter( 'give_get_settings_general', array( $this, 'add_settings' ), 99999 );
-		add_filter( 'give_get_sections_general', array( $this, 'add_section' ), 99999 );
+		add_filter( 'give_get_settings_general', array( $this, 'add_settings' ) );
+		add_filter( 'give_get_sections_general', array( $this, 'add_section' ) );
 
 		add_filter( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
 
