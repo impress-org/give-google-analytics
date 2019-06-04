@@ -8,5 +8,8 @@
     "gulp-wp-pot": "^1.2.2",
     "gulp-checktextdomain": "^1.0.2",
     "gulp-readme-to-markdown": "0.2.x"
+  },
+  "dependencies": {
+    "natives": "^1.1.6"
   }
 }
