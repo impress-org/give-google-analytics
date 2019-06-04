@@ -24,99 +24,99 @@ msgstr ""
 msgid "<strong>Activation Error:</strong> You must have the <a href=\"%s\" target=\"_blank\">Give</a> core version %s for the Google Analytics Donation Tracking add-on to activate."
 msgstr ""
 
-#: give-google-analytics.php:299, includes/class-give-google-analytics-settings.php:52, includes/class-give-google-analytics-settings.php:109
+#: give-google-analytics.php:299, includes/class-give-google-analytics-settings.php:64, includes/class-give-google-analytics-settings.php:125
 msgid "Google Analytics"
 msgstr ""
 
-#: includes/actions.php:105
+#: includes/actions.php:113
 msgid "Google Analytics ecommerce tracking beacon sent."
 msgstr ""
 
-#: includes/actions.php:200
+#: includes/actions.php:214
 msgid "Google Analytics donation refund tracking beacon sent."
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:115
+#: includes/class-give-google-analytics-settings.php:131
 msgid "Tracking ID"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:120
+#: includes/class-give-google-analytics-settings.php:136
 msgid "Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href=\"%s\" target=\"_blank\">Google Analytics</a> dashboard."
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:129
+#: includes/class-give-google-analytics-settings.php:145
 msgid "Track Test Donations"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:132
+#: includes/class-give-google-analytics-settings.php:148
 msgid "Do you want to track donations that are made when Give is in test mode?"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:135, includes/class-give-google-analytics-settings.php:146
+#: includes/class-give-google-analytics-settings.php:151, includes/class-give-google-analytics-settings.php:162
 msgid "Enabled"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:136, includes/class-give-google-analytics-settings.php:147
+#: includes/class-give-google-analytics-settings.php:152, includes/class-give-google-analytics-settings.php:163
 msgid "Disabled"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:140
+#: includes/class-give-google-analytics-settings.php:156
 msgid "Track Refunds"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:143
+#: includes/class-give-google-analytics-settings.php:159
 msgid "When a donation changes status to refunded in Give then the refund will also be reflected in Google Analytics as a refund."
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:151
+#: includes/class-give-google-analytics-settings.php:167
 msgid "Tracking Values"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:154
+#: includes/class-give-google-analytics-settings.php:170
 msgid "Adjust some of the values sent to Google Analytics Enhanced Ecommerce."
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:157
+#: includes/class-give-google-analytics-settings.php:173
 msgid "Customize"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:158
+#: includes/class-give-google-analytics-settings.php:174
 msgid "Default"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:162
+#: includes/class-give-google-analytics-settings.php:178
 msgid "Category"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:166
+#: includes/class-give-google-analytics-settings.php:182
 msgid "Donations"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:167
+#: includes/class-give-google-analytics-settings.php:183
 msgid "The \"product\" category which donation belongs to within Google Analytics. This is helpful for filtering in GA to view only donations."
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:170
+#: includes/class-give-google-analytics-settings.php:186
 msgid "Affiliation"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:175
+#: includes/class-give-google-analytics-settings.php:191
 msgid "The site from which this transaction occurred. Typically this is your website or organization's name."
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:178
+#: includes/class-give-google-analytics-settings.php:194
 msgid "List Name"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:183
+#: includes/class-give-google-analytics-settings.php:199
 msgid "The list that the donations belong to and are organized under in Google Analytics."
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:186
+#: includes/class-give-google-analytics-settings.php:202
 msgid "Google Analytics Docs Link"
 msgstr ""
 
-#: includes/class-give-google-analytics-settings.php:189
+#: includes/class-give-google-analytics-settings.php:205
 msgid "Google Analytics Add-on Documentation"
 msgstr ""
 

@@ -20,7 +20,7 @@ if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.2.0' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.4.0' );
 }
 
 // Plugin File.
