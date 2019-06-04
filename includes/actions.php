@@ -44,6 +44,9 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		$campaign_source = give_get_meta( $donation_id, '_give_ga_campaign_source', true );
 		$campaign_medium = give_get_meta( $donation_id, '_give_ga_campaign_medium', true );
 
+		// utm_content
+		$campaign_content = give_get_meta( $donation_id, '_give_ga_campaign_content', true );
+
 		$affiliation = give_get_option( 'google_analytics_affiliate' );
 
 		// Add the categories.
@@ -85,6 +88,11 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 		// Campaign Medium
 		if ( $campaign_medium ) {
 			$args['cm'] = $campaign_medium;
+		}
+
+		// utm_content
+		if ( $campaign_content ) {
+			$args['cc'] = $campaign_content;
 		}
 
 		/**
@@ -133,9 +141,15 @@ function give_ga_preserve_google_session_data( $payment_id ) {
 		$campaign_source = empty( $_COOKIE['give_source'] ) ? '' : $_COOKIE['give_source'];
 		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? '' : $_COOKIE['give_medium'];
 
+		// utm_content
+		$campaign_content = empty( $_COOKIE['give_content'] ) ? '' : $_COOKIE['give_content'];
+
 		give_update_payment_meta( $payment_id, '_give_ga_campaign', $campaign );
 		give_update_payment_meta( $payment_id, '_give_ga_campaign_source', $campaign_source );
 		give_update_payment_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
+		// utm_content
+		give_update_payment_meta( $payment_id, '_give_ga_campaign_content', $campaign_content );
+
 	}
 }
 add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
@@ -251,6 +265,9 @@ function give_google_analytics_donation_form() {
 				document.cookie = 'give_source=' + get_parameter('utm_source');
 				document.cookie = 'give_medium=' + get_parameter('utm_medium');
 				document.cookie = 'give_campaign=' + get_parameter('utm_campaign');
+
+				//utm_content
+				document.cookie = 'give_content=' + get_parameter('utm_content');
 
 				// If ga function is ready. Let's proceed.
 				if ('function' === typeof ga) {
