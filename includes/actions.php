@@ -363,3 +363,4 @@ function give_google_analytics_donation_form() {
 }
 
 add_action( 'wp_footer', 'give_google_analytics_donation_form', 99999 );
+add_action( 'give_embed_footer', 'give_google_analytics_donation_form', 99999 );
