@@ -2,9 +2,9 @@
 Contributors: givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.8
-Tested up to: 5.2
-Stable tag: 1.2.4
-Requires Give: 2.4.0
+Tested up to: 5.4
+Stable tag: 1.2.5
+Requires Give: 2.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -38,6 +38,9 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 1.2.5: June 15th, 2020 =
+* New: Added support for the upcoming release of GiveWP 2.7.0 and the new donation form template.
 
 = 1.2.4: June 3rd, 2019 =
 * New: Added support for "utm_content" for deeper tracking at the content level, for example which Facebook post, or which email led to a donation.
