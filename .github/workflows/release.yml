@@ -1,0 +1,22 @@
+name: Release to GiveWP.com
+
+on:
+    release:
+        types: [ released ]
+
+jobs:
+    build:
+        uses: impress-org/givewp-github-actions/.github/workflows/givewp-release.yml@master
+        with:
+            plugin_slug: give-google-analytics
+            zip_name: give-google-analytics
+        secrets:
+            GIVEWP_DOWNLOADS_PATH: ${{ secrets.GIVEWP_DOWNLOADS_PATH }}
+            GIVEWP_DOWNLOADS_URI: ${{ secrets.GIVEWP_DOWNLOADS_URI }}
+            GIVEWP_CLOUDFLARE_TOKEN: ${{ secrets.GIVEWP_CLOUDFLARE_TOKEN }}
+            GIVEWP_CLOUDFLARE_ZONE: ${{ secrets.GIVEWP_CLOUDFLARE_ZONE }}
+            WEBSITE_DEPLOY_HOST: ${{ secrets.WEBSITE_DEPLOY_HOST }}
+            WEBSITE_DEPLOY_USER: ${{ secrets.WEBSITE_DEPLOY_USER }}
+            WEBSITE_DEPLOY_PRIVATE_KEY: ${{ secrets.WEBSITE_DEPLOY_PRIVATE_KEY }}
+            EDD_PRODUCT_ID: ${{ secrets.EDD_PRODUCT_ID }}
+            SLACK_ANNOUNCEMENT_WEBHOOK: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
