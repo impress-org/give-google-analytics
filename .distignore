@@ -1,10 +1,8 @@
 /.git
 .gitignore
-.gitattributes
 
 /.idea
 /.github
-/.storybook
 
 /tests
 /node_modules
@@ -14,47 +12,15 @@
 /vendor/composer/installers
 /vendor/**/*.phar
 
-.travis.yml
 .editorconfig
-.babelrc
-.jscrsrc
-.jshintrc
-.eslintignore
-.eslintrc
-.eslintrc.json
-.prettierrc.json
-.prettierignore
-.stylelintrc.json
-.huskyrc.json
-.lintstagedrc.json
-.distignore
-.stylelintignore
-jsconfig.json
-globals.d.ts
-tsconfig.json
-
-sample-data/wordpress.sql
-sample-data/sample-data.numbers
-bower.json
 composer.json
 composer.lock
 package.json
 package-lock.json
-phpunit.xml
-phpunit.xml.dist
 CHANGELOG.md
 README.md
 readme.md
-phpcs.ruleset.xml
-phpcs.xml.dist
-CONTRIBUTING.md
-CODE_OF_CONDUCT.md
-contributing.md
-postcss.config.js
-webpack.config.js
 webpack.mix.js
-docker-compose.yml
-wp-textdomain.js
 
 # GH Action files
 DOCKER_ENV
