@@ -3,5 +3,5 @@ node_modules
 assets/dist
 
 languages/*
-~languages/.gitkeep
+!languages/.gitkeep
 
