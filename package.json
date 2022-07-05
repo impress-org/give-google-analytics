@@ -1,21 +1,14 @@
 {
   "name": "give-google-analytics",
   "private": true,
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "fs-extra": "^1.0.0",
-    "gulp-sort": "^2.0.0",
-    "gulp-wp-pot": "^1.2.2",
-    "gulp-checktextdomain": "^1.0.2",
-    "gulp-readme-to-markdown": "0.2.x"
-  },
-  "dependencies": {
-    "natives": "^1.1.6"
-  },
   "scripts": {
-    "preinstall": "npx npm-force-resolutions"
+    "start": "npm install && npm run watch",
+    "dev": "mix",
+    "production": "mix --production",
+    "build": "mix --production",
+    "watch": "mix watch"
   },
-  "resolutions": {
-    "graceful-fs": "4.2.3"
+  "devDependencies": {
+    "laravel-mix": "^6.0.49"
   }
 }
