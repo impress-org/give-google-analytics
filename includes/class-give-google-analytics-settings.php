@@ -74,6 +74,8 @@ class Give_Google_Analytics_Settings {
 
 	/**
 	 * Add scripts.
+     *
+     * @unreleased Load assets from dist directory
 	 */
 	public function add_scripts( $hook ) {
 
@@ -217,13 +219,15 @@ class Give_Google_Analytics_Settings {
 
 	/**
 	 * Description Field.
+     *
+     * @unreleased Load images from dist directory.
 	 */
 	function description_field() {
 	?>
 
 		<div class="give-ga-settings-description">
 			<p style="margin:20px 0 0;">
-				<img src="<?php echo GIVE_GOOGLE_ANALYTICS_URL . 'assets/img/ga-logo-small.png'; ?>"></p>
+				<img src="<?php echo GIVE_GOOGLE_ANALYTICS_URL . 'assets/dist/img/ga-logo-small.png'; ?>"></p>
 		</div>
 
 	<?php
