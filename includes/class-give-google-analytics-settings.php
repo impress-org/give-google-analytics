@@ -81,10 +81,10 @@ class Give_Google_Analytics_Settings {
 		if ( $hook !== 'give_forms_page_give-settings' ) {
 			return;
 		}
-		wp_register_style( 'give-ga-settings-css', GIVE_GOOGLE_ANALYTICS_URL . 'assets/css/give-ga-settings.css' );
+		wp_register_style( 'give-ga-settings-css', GIVE_GOOGLE_ANALYTICS_URL . 'assets/dist/css/give-ga-settings.css' );
 		wp_enqueue_style( 'give-ga-settings-css' );
 
-		wp_register_script( 'give-ga-settings-js', GIVE_GOOGLE_ANALYTICS_URL . 'assets/js/give-ga-settings.js', array( 'jquery' ), GIVE_GOOGLE_ANALYTICS_VERSION, false );
+		wp_register_script( 'give-ga-settings-js', GIVE_GOOGLE_ANALYTICS_URL . 'assets/dist/js/give-ga-settings.js', array( 'jquery' ), GIVE_GOOGLE_ANALYTICS_VERSION, false );
 		wp_enqueue_script( 'give-ga-settings-js' );
 
 	}
