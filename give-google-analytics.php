@@ -6,6 +6,8 @@
  * Version:         1.2.5
  * Author:          GiveWP
  * Author URI:      https://givewp.com
+ * Requires at least: 5.0
+ * Requires PHP:    7.0
  * Text Domain:     give-google-analytics
  */
 
