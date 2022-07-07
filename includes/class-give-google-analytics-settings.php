@@ -134,6 +134,7 @@ class Give_Google_Analytics_Settings {
                 'id'      => 'google_tracking_mode',
                 'type'    => 'radio_inline',
                 'desc'    => __( 'Which google tracking mode your want to use for analytic tracking?', 'give-google-analytics' ),
+                // We set default value dynamically to support compatibility for existing universal analytics settings.
                 'default' => give_get_option('google_analytics_ua_code', '') ?
                     'universal-analytics' :
                     'google-analytic-4',
