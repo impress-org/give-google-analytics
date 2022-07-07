@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveGoogleAnalytics;
+namespace GiveGoogleAnalytics\Donations\Actions;
 
 /**
  * This class uses to store donor google analytic data when donor process donation.

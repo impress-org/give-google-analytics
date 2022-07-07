@@ -3,7 +3,7 @@
 namespace GiveGoogleAnalytics\Donations;
 
 use Give\Helpers\Hooks;
-use GiveGoogleAnalytics\StoreDonorGoogleAnalyticsData;
+use GiveGoogleAnalytics\Donations\Actions\StoreDonorGoogleAnalyticsData;
 
 /**
  * @unreleased
