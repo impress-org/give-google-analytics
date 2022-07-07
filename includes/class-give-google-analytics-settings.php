@@ -151,6 +151,21 @@ class Give_Google_Analytics_Settings {
 				'row_classes' => 'give-ga-tracking-id',
 				'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
 			),
+            array(
+                'name'        => __( 'Tracking ID', 'give-google-analytics' ),
+                'id'          => 'google_analytics_ga4_measurement_id',
+                'type'        => 'text',
+                'attributes'  => array( 'placeholder' => 'G-XXXXXXXX-XX' ),
+                'row_classes' => 'give-ga4__tracking-id',
+                'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
+            ),
+            array(
+                'name'        => __( 'Measurement Protocol API Secret', 'give-google-analytics' ),
+                'id'          => 'google_analytics_ga4_measurement_protocol_api_secret',
+                'type'        => 'text',
+                'row_classes' => 'give-ga4__measurement-protocol-api-secret',
+                'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
+            ),
 			array(
 				'name' => '',
 				'desc' => '',
