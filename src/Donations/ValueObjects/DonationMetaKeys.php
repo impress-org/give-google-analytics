@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveGoogleAnalytics;
+namespace GiveGoogleAnalytics\Donations\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
 

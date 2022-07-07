@@ -2,6 +2,8 @@
 
 namespace GiveGoogleAnalytics\Donations\Actions;
 
+use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
+
 /**
  * This class uses to store donor google analytic data when donor process donation.
  *
