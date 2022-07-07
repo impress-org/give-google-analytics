@@ -118,6 +118,8 @@ class Give_Google_Analytics_Settings {
 			return $settings;
 		}
 
+        $isSupportUniversalAnalytics = (bool) give_get_option('google_analytics_ua_code', '');
+
 		$give_ga__settings = array(
 			array(
 				'id'   => 'give_title_google_analytics',
@@ -135,7 +137,7 @@ class Give_Google_Analytics_Settings {
                 'type'    => 'radio_inline',
                 'desc'    => __( 'Which google tracking mode your want to use for analytic tracking?', 'give-google-analytics' ),
                 // We set default value dynamically to support compatibility for existing universal analytics settings.
-                'default' => give_get_option('google_analytics_ua_code', '') ?
+                'default' => $isSupportUniversalAnalytics ?
                     'universal-analytics' :
                     'google-analytic-4',
                 'options' => array(
@@ -148,7 +150,9 @@ class Give_Google_Analytics_Settings {
 				'id'          => 'google_analytics_ua_code',
 				'type'        => 'text',
 				'attributes'  => array( 'placeholder' => 'UA-XXXXXXXX-XX' ),
-				'row_classes' => 'give-ga-tracking-id',
+				'wrapper_class' => $isSupportUniversalAnalytics ?
+                    'give-ga-tracking-id':
+                    'give-ga-tracking-id give-hidden',
 				'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
 			),
             array(
@@ -156,14 +160,18 @@ class Give_Google_Analytics_Settings {
                 'id'          => 'google_analytics_ga4_measurement_id',
                 'type'        => 'text',
                 'attributes'  => array( 'placeholder' => 'G-XXXXXXXX-XX' ),
-                'row_classes' => 'give-ga4__tracking-id',
+                'wrapper_class' => $isSupportUniversalAnalytics ?
+                    'give-ga4__tracking-id give-hidden' :
+                    'give-ga4__tracking-id',
                 'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
             ),
             array(
                 'name'        => __( 'Measurement Protocol API Secret', 'give-google-analytics' ),
                 'id'          => 'google_analytics_ga4_measurement_protocol_api_secret',
                 'type'        => 'text',
-                'row_classes' => 'give-ga4__measurement-protocol-api-secret',
+                'wrapper_class' => $isSupportUniversalAnalytics ?
+                    'give-ga4__measurement-protocol-api-secret give-hidden' :
+                    'give-ga4__measurement-protocol-api-secret',
                 'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
             ),
 			array(
