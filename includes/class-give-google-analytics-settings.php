@@ -163,7 +163,7 @@ class Give_Google_Analytics_Settings {
                 'wrapper_class' => $isSupportUniversalAnalytics ?
                     'give-ga4__tracking-id give-hidden' :
                     'give-ga4__tracking-id',
-                'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
+                'desc'        => sprintf( __( 'Please enter your GA4 Measurement ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find measurement id by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and choose <code>Admin > Data Streams > choose your stream > Measurement ID.</code>', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
             ),
             array(
                 'name'        => __( 'Measurement Protocol API Secret', 'give-google-analytics' ),
@@ -172,7 +172,7 @@ class Give_Google_Analytics_Settings {
                 'wrapper_class' => $isSupportUniversalAnalytics ?
                     'give-ga4__measurement-protocol-api-secret give-hidden' :
                     'give-ga4__measurement-protocol-api-secret',
-                'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
+                'desc'        => sprintf( __( 'Please enter your GA4 API secret. You can create api secret by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and Choose <code>Admin > Data Streams > choose your stream > Measurement Protocol > Create</code>.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
             ),
 			array(
 				'name' => '',
