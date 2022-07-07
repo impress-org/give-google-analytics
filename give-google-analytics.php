@@ -328,3 +328,6 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 
 	Give_Google_Analytics();
 }
+
+// Autoloader
+require_once 'vendor/autoload.php';
