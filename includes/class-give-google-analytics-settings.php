@@ -189,7 +189,7 @@ class Give_Google_Analytics_Settings {
                     'give-google-analytics-4 give-ga4__measurement-protocol-api-secret',
                 'desc' => sprintf(
                     __(
-                        'Please enter your GA4 API secret. You can create api secret by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and Choose <code>Admin > Data Streams > choose your stream > Measurement Protocol > Create</code>.',
+                        'Please enter your GA4 measurement protocol API secret. You can create api secret by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and Choose <code>Admin > Data Streams > choose your stream > Measurement Protocol > Create</code>.',
                         'give-google-analytics'
                     ),
                     'https://analytics.google.com/analytics/web/'
