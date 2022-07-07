@@ -125,12 +125,18 @@ class Give_Google_Analytics_Settings {
 				'id'   => 'give_title_google_analytics',
 				'type' => 'title',
 			),
-			array(
-				'name' => __( 'Google Analytics', 'give-google-analytics' ),
-				'desc' => '',
-				'id'   => 'give_google_analytics_title',
-				'type' => 'give_title',
-			),
+            array(
+                'name' => '',
+                'desc' => '',
+                'id' => 'ga_description',
+                'type' => 'ga_description',
+            ),
+            array(
+                'name' => __('Google Analytics', 'give-google-analytics'),
+                'desc' => '',
+                'id' => 'give_google_analytics_title',
+                'type' => 'give_title',
+            ),
             array(
                 'name' => __('Google Tracking Mode', 'give-google-analytics'),
                 'id' => 'google_tracking_mode',
