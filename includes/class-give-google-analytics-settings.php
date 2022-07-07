@@ -132,54 +132,69 @@ class Give_Google_Analytics_Settings {
 				'type' => 'give_title',
 			),
             array(
-                'name'    => __( 'Google Tracking Mode', 'give-google-analytics' ),
-                'id'      => 'google_tracking_mode',
-                'type'    => 'radio_inline',
-                'desc'    => __( 'Which google tracking mode your want to use for analytic tracking?', 'give-google-analytics' ),
+                'name' => __('Google Tracking Mode', 'give-google-analytics'),
+                'id' => 'google_tracking_mode',
+                'type' => 'radio_inline',
+                'desc' => __(
+                    'Which google tracking mode your want to use for analytic tracking?',
+                    'give-google-analytics'
+                ),
                 // We set default value dynamically to support compatibility for existing universal analytics settings.
                 'default' => $isSupportUniversalAnalytics ?
                     'universal-analytics' :
-                    'google-analytic-4',
+                    'google-analytics-4',
                 'options' => array(
-                    'universal-analytics'  => __( 'Universal Analytics', 'give-google-analytics' ),
-                    'google-analytic-4' => __( 'Google Analytics 4', 'give-google-analytics' ),
+                    'google-analytics-4' => __('Google Analytics 4', 'give-google-analytics'),
+                    'universal-analytics' => __('Universal Analytics', 'give-google-analytics')
                 ),
             ),
-			array(
-				'name'        => __( 'Tracking ID', 'give-google-analytics' ),
-				'id'          => 'google_analytics_ua_code',
-				'type'        => 'text',
-				'attributes'  => array( 'placeholder' => 'UA-XXXXXXXX-XX' ),
-				'wrapper_class' => $isSupportUniversalAnalytics ?
-                    'give-ga-tracking-id':
-                    'give-ga-tracking-id give-hidden',
-				'desc'        => sprintf( __( 'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
-			),
             array(
-                'name'        => __( 'Tracking ID', 'give-google-analytics' ),
-                'id'          => 'google_analytics_ga4_measurement_id',
-                'type'        => 'text',
-                'attributes'  => array( 'placeholder' => 'G-XXXXXXXX-XX' ),
+                'name' => __('Tracking ID', 'give-google-analytics'),
+                'id' => 'google_analytics_ua_code',
+                'type' => 'text',
+                'attributes' => array('placeholder' => 'UA-XXXXXXXX-XX'),
                 'wrapper_class' => $isSupportUniversalAnalytics ?
-                    'give-ga4__tracking-id give-hidden' :
-                    'give-ga4__tracking-id',
-                'desc'        => sprintf( __( 'Please enter your GA4 Measurement ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find measurement id by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and choose <code>Admin > Data Streams > choose your stream > Measurement ID.</code>', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
+                    'give-universal-analytics give-ga-tracking-id' :
+                    'give-universal-analytics give-ga-tracking-id give-hidden',
+                'desc' => sprintf(
+                    __(
+                        'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.',
+                        'give-google-analytics'
+                    ),
+                    'https://analytics.google.com/analytics/web/'
+                ),
             ),
             array(
-                'name'        => __( 'Measurement Protocol API Secret', 'give-google-analytics' ),
-                'id'          => 'google_analytics_ga4_measurement_protocol_api_secret',
-                'type'        => 'text',
+                'name' => __('Tracking ID', 'give-google-analytics'),
+                'id' => 'google_analytics_ga4_measurement_id',
+                'type' => 'text',
+                'attributes' => array('placeholder' => 'G-XXXXXXXX-XX'),
                 'wrapper_class' => $isSupportUniversalAnalytics ?
-                    'give-ga4__measurement-protocol-api-secret give-hidden' :
-                    'give-ga4__measurement-protocol-api-secret',
-                'desc'        => sprintf( __( 'Please enter your GA4 API secret. You can create api secret by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and Choose <code>Admin > Data Streams > choose your stream > Measurement Protocol > Create</code>.', 'give-google-analytics' ), 'https://analytics.google.com/analytics/web/' ),
+                    'give-google-analytics-4 give-ga4__tracking-id give-hidden' :
+                    'give-google-analytics-4 give-ga4__tracking-id',
+                'desc' => sprintf(
+                    __(
+                        'Please enter your GA4 Measurement ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find measurement id by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and choose <code>Admin > Data Streams > choose your stream > Measurement ID.</code>',
+                        'give-google-analytics'
+                    ),
+                    'https://analytics.google.com/analytics/web/'
+                ),
             ),
-			array(
-				'name' => '',
-				'desc' => '',
-				'id'   => 'ga_description',
-				'type' => 'ga_description',
-			),
+            array(
+                'name' => __('Measurement Protocol API Secret', 'give-google-analytics'),
+                'id' => 'google_analytics_ga4_measurement_protocol_api_secret',
+                'type' => 'text',
+                'wrapper_class' => $isSupportUniversalAnalytics ?
+                    'give-google-analytics-4 give-ga4__measurement-protocol-api-secret give-hidden' :
+                    'give-google-analytics-4 give-ga4__measurement-protocol-api-secret',
+                'desc' => sprintf(
+                    __(
+                        'Please enter your GA4 API secret. You can create api secret by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and Choose <code>Admin > Data Streams > choose your stream > Measurement Protocol > Create</code>.',
+                        'give-google-analytics'
+                    ),
+                    'https://analytics.google.com/analytics/web/'
+                ),
+            ),
 			array(
 				'name'    => __( 'Track Test Donations', 'give-google-analytics' ),
 				'id'      => 'google_analytics_test_option',
