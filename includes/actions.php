@@ -118,43 +118,6 @@ function give_google_analytics_send_donation_success( $donation_id, $new_status,
 
 add_action( 'give_update_payment_status', 'give_google_analytics_send_donation_success', 110, 3 );
 
-
-/**
- * Save Google Analytic session data
- *
- * @since 1.2.2
- *
- * @param int $payment_id Donation ID.
- */
-function give_ga_preserve_google_session_data( $payment_id ) {
-	// Save client session id
-	if (
-		isset( $_COOKIE['_ga'] )
-		&& give_ga_can_send_event()
-	) {
-		$client_id = explode( '.', $_COOKIE['_ga'], 3 );
-		$client_id = array_pop( $client_id );
-
-		give_update_payment_meta( $payment_id, '_give_ga_client_id', $client_id );
-
-		$campaign        = empty( $_COOKIE['give_campaign'] ) ? '' : $_COOKIE['give_campaign'];
-		$campaign_source = empty( $_COOKIE['give_source'] ) ? '' : $_COOKIE['give_source'];
-		$campaign_medium = empty( $_COOKIE['give_medium'] ) ? '' : $_COOKIE['give_medium'];
-
-		// utm_content
-		$campaign_content = empty( $_COOKIE['give_content'] ) ? '' : $_COOKIE['give_content'];
-
-		give_update_payment_meta( $payment_id, '_give_ga_campaign', $campaign );
-		give_update_payment_meta( $payment_id, '_give_ga_campaign_source', $campaign_source );
-		give_update_payment_meta( $payment_id, '_give_ga_campaign_medium', $campaign_medium );
-		// utm_content
-		give_update_payment_meta( $payment_id, '_give_ga_campaign_content', $campaign_content );
-
-	}
-}
-add_action( 'give_insert_payment', 'give_ga_preserve_google_session_data' );
-
-
 /**
  * Track refund donations within GA.
  *
