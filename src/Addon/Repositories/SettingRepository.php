@@ -12,6 +12,16 @@ use GiveGoogleAnalytics\Addon\ValueObjects\SettingNames;
 class SettingRepository
 {
     /**
+     * This function returns Google Analytics tracking mode.
+     *
+     * @unreleased
+     */
+    public function getTrackingMode(): string
+    {
+        return give_get_option(SettingNames::TRACKING_MODE, '');
+    }
+
+    /**
      * This function returns Google Analytics Web stream measurement id
      *
      * @unreleased
@@ -80,5 +90,25 @@ class SettingRepository
     public function getTrackListName(): string
     {
         return give_get_option(SettingNames::TRACKING_LIST_NAME, '');
+    }
+
+    /**
+     * This function returns boolean value whether add-on track analytics with Universal Analytics.
+     *
+     * @unreleased
+     */
+    public function isSupportTrackingUniversalAnalytics(): bool
+    {
+        return 'universal-analytics' === $this->getTrackingMode();
+    }
+
+    /**
+     * This function returns boolean value whether add-on track analytics with Google Analytics 4.
+     *
+     * @unreleased
+     */
+    public function isSupportTrackingGoogleAnalytics4(): bool
+    {
+        return 'google-analytics-4' === $this->getTrackingMode();
     }
 }

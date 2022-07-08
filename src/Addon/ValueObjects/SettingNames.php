@@ -10,6 +10,7 @@ use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
  *
  * @unreleased
  *
+ * @method static SettingNames TRACKING_MODE()
  * @method static SettingNames TRACKING_ID()
  * @method static SettingNames TRACK_TEST_DONATIONS()
  * @method static SettingNames TRACK_REFUNDS()
@@ -20,6 +21,7 @@ use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
  */
 class SettingNames extends Enum
 {
+    const TRACKING_MODE = 'google_tracking_mode';
     const TRACKING_ID = 'google_analytics_ua_code';
     const TRACK_TEST_DONATIONS = 'google_analytics_test_option';
     const TRACK_REFUNDS = 'google_analytics_refunds_option';
