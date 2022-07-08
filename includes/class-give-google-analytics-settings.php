@@ -120,6 +120,7 @@ class Give_Google_Analytics_Settings {
 			return $settings;
 		}
 
+        // we are using this param to set default "Google Tracking Mode" and toggle specific setting fields.
         $isSupportUniversalAnalytics = (bool) give_get_option('google_analytics_ua_code', '');
 
 		$give_ga__settings = array(
