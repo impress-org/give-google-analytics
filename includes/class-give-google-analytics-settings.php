@@ -9,6 +9,8 @@
  */
 
 // Exit if accessed directly
+use GiveGoogleAnalytics\Addon\ValueObjects\SettingNames;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -139,7 +141,7 @@ class Give_Google_Analytics_Settings {
             ),
             array(
                 'name' => __('Google Tracking Mode', 'give-google-analytics'),
-                'id' => 'google_tracking_mode',
+                'id' => SettingNames::TRACKING_MODE,
                 'type' => 'radio_inline',
                 'desc' => __(
                     'Which google tracking mode your want to use for analytic tracking?',
@@ -156,7 +158,7 @@ class Give_Google_Analytics_Settings {
             ),
             array(
                 'name' => __('Tracking ID', 'give-google-analytics'),
-                'id' => 'google_analytics_ua_code',
+                'id' => SettingNames::UNIVERSAL_ANALYTICS_TRACKING_ID,
                 'type' => 'text',
                 'attributes' => array('placeholder' => 'UA-XXXXXXXX-XX'),
                 'wrapper_class' => $isSupportUniversalAnalytics ?
@@ -171,8 +173,8 @@ class Give_Google_Analytics_Settings {
                 ),
             ),
             array(
-                'name' => __('Tracking ID', 'give-google-analytics'),
-                'id' => 'google_analytics_ga4_measurement_id',
+                'name' => __('Web Stream Measurement ID', 'give-google-analytics'),
+                'id' => SettingNames::GOOGLE_ANALYTICS_4_WEB_STREAM_MEASUREMENT_ID,
                 'type' => 'text',
                 'attributes' => array('placeholder' => 'G-XXXXXXXX-XX'),
                 'wrapper_class' => $isSupportUniversalAnalytics ?
@@ -188,7 +190,7 @@ class Give_Google_Analytics_Settings {
             ),
             array(
                 'name' => __('Measurement Protocol API Secret', 'give-google-analytics'),
-                'id' => 'google_analytics_ga4_measurement_protocol_api_secret',
+                'id' => SettingNames::GOOGLE_ANALYTICS_4_WEB_STREAM_MEASUREMENT_PROTOCOL_API_SECRET,
                 'type' => 'text',
                 'wrapper_class' => $isSupportUniversalAnalytics ?
                     'give-google-analytics-4 give-ga4__measurement-protocol-api-secret give-hidden' :
@@ -203,7 +205,7 @@ class Give_Google_Analytics_Settings {
             ),
 			array(
 				'name'    => __( 'Track Test Donations', 'give-google-analytics' ),
-				'id'      => 'google_analytics_test_option',
+				'id'      => SettingNames::TRACK_TEST_DONATIONS,
 				'type'    => 'radio_inline',
 				'desc'    => __( 'Do you want to track donations that are made when Give is in test mode?', 'give-google-analytics' ),
 				'default' => 'disabled',
@@ -214,7 +216,7 @@ class Give_Google_Analytics_Settings {
 			),
 			array(
 				'name'    => __( 'Track Refunds', 'give-google-analytics' ),
-				'id'      => 'google_analytics_refunds_option',
+				'id'      => SettingNames::TRACK_REFUNDS,
 				'type'    => 'radio_inline',
 				'desc'    => __( 'When a donation changes status to refunded in Give then the refund will also be reflected in Google Analytics as a refund.', 'give-google-analytics' ),
 				'default' => 'disabled',
@@ -225,7 +227,7 @@ class Give_Google_Analytics_Settings {
 			),
 			array(
 				'name'    => __( 'Tracking Values', 'give-google-analytics' ),
-				'id'      => 'google_analytics_tracking_vals',
+				'id'      => SettingNames::TRACK_VALUES,
 				'type'    => 'radio_inline',
 				'desc'    => __( 'Adjust some of the values sent to Google Analytics Enhanced Ecommerce.', 'give-google-analytics' ),
 				'default' => 'default',
@@ -236,7 +238,7 @@ class Give_Google_Analytics_Settings {
 			),
 			array(
 				'name'        => __( 'Category', 'give-google-analytics' ),
-				'id'          => 'google_analytics_category',
+				'id'          => SettingNames::TRACK_CATEGORY,
 				'type'        => 'text',
 				'wrapper_class' => 'give-ga-advanced-field',
 				'default'     => __( 'Donations', 'give-google-analytics' ),
@@ -244,7 +246,7 @@ class Give_Google_Analytics_Settings {
 			),
 			array(
 				'name'        => __( 'Affiliation', 'give-google-analytics' ),
-				'id'          => 'google_analytics_affiliate',
+				'id'          => SettingNames::TRACK_AFFILIATION,
 				'type'        => 'text',
 				'wrapper_class' => 'give-ga-advanced-field',
 				'default'     => get_bloginfo( 'name' ),
@@ -252,7 +254,7 @@ class Give_Google_Analytics_Settings {
 			),
 			array(
 				'name'        => __( 'List Name', 'give-google-analytics' ),
-				'id'          => 'google_analytics_list',
+				'id'          => SettingNames::TRACKING_LIST_NAME,
 				'type'        => 'text',
 				'wrapper_class' => 'give-ga-advanced-field',
 				'default'     => 'Donation Forms',

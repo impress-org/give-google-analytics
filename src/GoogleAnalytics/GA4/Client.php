@@ -3,6 +3,7 @@
 namespace GiveGoogleAnalytics\GA4;
 
 use Give\Framework\Exceptions\Primitives\Exception;
+use GiveGoogleAnalytic\Addon\Repositories\SettingRepository;
 
 /**
  * This class provides the Google Analytics client which uses to post event data.
@@ -12,18 +13,32 @@ use Give\Framework\Exceptions\Primitives\Exception;
 class Client
 {
     /**
+     * @unreleased
+     * @var SettingRepository
+     */
+    private $settingRepository;
+
+    /**
+     * @unreleased
+     */
+    public function __construct(SettingRepository $settingRepository)
+    {
+        $this->settingRepository = $settingRepository;
+    }
+
+    /**
      * This function uses to send event to Google Analytics 4
      * @see https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events?client_type=gtag
      *
      * @return void
      * @throws Exception
      */
-    public static function postEvent($jsonData)
+    public function postEvent($jsonData)
     {
         $googleCollectEventUrl = sprintf(
             'https://www.google-analytics.com/mp/collect?measurement_id=G-%1$s&api_secret=%2$s',
-            give_get_option('google_analytics_ga4_measurement_id'),
-            give_get_option('google_analytics_ga4_measurement_protocol_api_secret')
+            $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId(),
+            $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementProtocolApiSecret()
         );
 
         /* @var \WP_Error|array $response */

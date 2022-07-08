@@ -22,13 +22,33 @@ class SettingRepository
     }
 
     /**
-     * This function returns Google Analytics Web stream measurement id
+     * This function returns Universal Analytics tracking id
      *
      * @unreleased
      */
-    public function getTrackingId(): string
+    public function getUniversalAnalyticsTrackingId(): string
     {
-        return give_get_option(SettingNames::TRACKING_ID, '');
+        return give_get_option(SettingNames::UNIVERSAL_ANALYTICS_TRACKING_ID, '');
+    }
+
+    /**
+     * This function returns Google Analytics 4 Web stream measurement id
+     *
+     * @unreleased
+     */
+    public function getGoogleAnalytics4WebStreamMeasurementId(): string
+    {
+        return give_get_option(SettingNames::GOOGLE_ANALYTICS_4_WEB_STREAM_MEASUREMENT_ID, '');
+    }
+
+    /**
+     * This function returns Google Analytics 4 Web stream measurement protocol api secret
+     *
+     * @unreleased
+     */
+    public function getGoogleAnalytics4WebStreamMeasurementProtocolApiSecret(): string
+    {
+        return give_get_option(SettingNames::GOOGLE_ANALYTICS_4_WEB_STREAM_MEASUREMENT_PROTOCOL_API_SECRET, '');
     }
 
     /**
