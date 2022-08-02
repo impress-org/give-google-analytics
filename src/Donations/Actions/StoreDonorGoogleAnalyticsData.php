@@ -14,6 +14,11 @@ use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
 class StoreDonorGoogleAnalyticsData
 {
     /**
+     * @var SettingRepository
+     */
+    private $settingRepository;
+
+    /**
      * @unreleased
      */
     public function __construct(SettingRepository $settingRepository)
