@@ -3,6 +3,8 @@
 namespace GiveGoogleAnalytics\Donations;
 
 use Give\Helpers\Hooks;
+use GiveGoogleAnalytics\Donations\Actions\RecordDonationInGoogleAnalyticsWithGA4;
+use GiveGoogleAnalytics\Donations\Actions\RefundDonationInGoogleAnalyticsWothGA4;
 use GiveGoogleAnalytics\Donations\Actions\StoreDonorGoogleAnalyticsData;
 
 /**
@@ -27,7 +29,34 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
     {
         Hooks::addAction('give_insert_payment', StoreDonorGoogleAnalyticsData::class);
 
-        Hooks::addAction('wp_footer', RecordGoogleEventWithGA4OnFrontend::class, '__invoke', 99999);
-        Hooks::addAction('give_embed_footer', RecordGoogleEventWithGA4OnFrontend::class, '__invoke', 99999);
+        Hooks::addAction(
+            'wp_footer',
+            RecordGoogleEventWithGA4OnFrontend::class,
+            '__invoke',
+            99999
+        );
+
+        Hooks::addAction(
+            'give_embed_footer',
+            RecordGoogleEventWithGA4OnFrontend::class,
+            '__invoke',
+            99999
+        );
+
+        Hooks::addAction(
+            'give_update_payment_status',
+            RecordDonationInGoogleAnalyticsWithGA4::class,
+            '__invoke',
+            110,
+            2
+        );
+
+        Hooks::addAction(
+            'give_update_payment_status',
+            RefundDonationInGoogleAnalyticsWothGA4::class,
+            '__invoke',
+            10,
+            2
+        );
     }
 }

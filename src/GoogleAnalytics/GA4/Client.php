@@ -30,7 +30,7 @@ class Client
      * This function uses to send event to Google Analytics 4
      * @see https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events?client_type=gtag
      *
-     * @return void
+     * @return array|\WP_Error
      * @throws Exception
      */
     public function postEvent($jsonData)
@@ -58,5 +58,7 @@ class Client
                 )
             );
         }
+
+        return $response;
     }
 }
