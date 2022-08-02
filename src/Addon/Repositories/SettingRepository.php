@@ -138,18 +138,20 @@ class SettingRepository
      *
      * @unreleased
      */
-    public function canSendEvent(): bool
+    public function canSendEvent(string $trackingMode = ''): bool
     {
         // Don't continue if test mode is enabled and test mode tracking is disabled.
         if (give_is_test_mode() && !give_google_analytics_track_testing()) {
             return false;
         }
 
-        if ($this->getTrackingMode() === TrackingMode::UNIVERSAL_ANALYTICS) {
+        $trackingMode = $trackingMode ?? $this->getTrackingMode();
+
+        if ($trackingMode === TrackingMode::UNIVERSAL_ANALYTICS) {
             return (bool)$this->getUniversalAnalyticsTrackingId();
         }
 
-        if ($this->getTrackingMode() === TrackingMode::GOOGLE_ANALYTICS_4) {
+        if ($trackingMode === TrackingMode::GOOGLE_ANALYTICS_4) {
             return (bool)(
                 $this->getGoogleAnalytics4WebStreamMeasurementId() &&
                 $this->getGoogleAnalytics4WebStreamMeasurementProtocolApiSecret()
