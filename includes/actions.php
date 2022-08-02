@@ -226,7 +226,7 @@ function give_google_analytics_donation_form()
         return false;
     }
 
-    if (!give(SettingRepository::class)->canSendEvent(TrackingMode::UNIVERSAL_ANALYTICS) ||) {
+    if (!give(SettingRepository::class)->canSendEvent(TrackingMode::UNIVERSAL_ANALYTICS)) {
         return false;
     }
 
