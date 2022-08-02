@@ -22,4 +22,5 @@ class DonationMetaKeys extends Enum
     const GA_CAMPAIGN_SOURCE = '_give_ga_campaign_source';
     const GA_CAMPAIGN_MEDIUM = '_give_ga_campaign_medium';
     const GA_CAMPAIGN_CONTENT = '_give_ga_campaign_content';
+    const GA_EVENT_SENT = '_give_ga_beacon_sent';
 }
