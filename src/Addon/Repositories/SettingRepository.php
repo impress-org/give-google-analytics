@@ -3,6 +3,7 @@
 namespace GiveGoogleAnalytic\Addon\Repositories;
 
 use GiveGoogleAnalytics\Addon\ValueObjects\SettingNames;
+use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 
 /**
  * This class use to get add-on settings values from database.
@@ -130,5 +131,31 @@ class SettingRepository
     public function isSupportTrackingGoogleAnalytics4(): bool
     {
         return 'google-analytics-4' === $this->getTrackingMode();
+    }
+
+    /**
+     * This function returns whether record google event.
+     *
+     * @unreleased
+     */
+    public function canSendEvent(): bool
+    {
+        // Don't continue if test mode is enabled and test mode tracking is disabled.
+        if (give_is_test_mode() && !give_google_analytics_track_testing()) {
+            return false;
+        }
+
+        if ($this->getTrackingMode() === TrackingMode::UNIVERSAL_ANALYTICS) {
+            return (bool)$this->getUniversalAnalyticsTrackingId();
+        }
+
+        if ($this->getTrackingMode() === TrackingMode::GOOGLE_ANALYTICS_4) {
+            return (bool)(
+                $this->getGoogleAnalytics4WebStreamMeasurementId() &&
+                $this->getGoogleAnalytics4WebStreamMeasurementProtocolApiSecret()
+            );
+        }
+
+        return false;
     }
 }
