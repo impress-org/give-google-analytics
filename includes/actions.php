@@ -161,13 +161,6 @@ function give_google_analytics_send_refund_beacon($donation_id, $new_status, $ol
         return false;
     }
 
-    // Check if the REFUND beacon has already been sent.
-    // If it hasn't proceed.
-    $refund_beacon_sent = give_get_meta($donation_id, '_give_ga_refund_beacon_sent', true);
-    if (!empty($refund_beacon_sent)) {
-        return false;
-    }
-
     // Bailout.
     $ua_code = give_get_option('google_analytics_ua_code');
     $client_id = give_get_meta($donation_id, '_give_ga_client_id', true);
