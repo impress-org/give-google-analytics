@@ -2,6 +2,8 @@
 
 namespace GiveGoogleAnalytics\Donations\Actions;
 
+use Give\Donations\Models\Donation;
+use GiveGoogleAnalytic\Addon\Repositories\SettingRepository;
 use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
 
 /**
@@ -11,9 +13,24 @@ use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
  */
 class StoreDonorGoogleAnalyticsData
 {
+    /**
+     * @unreleased
+     */
+    public function __construct(SettingRepository $settingRepository)
+    {
+        $this->settingRepository = $settingRepository;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function __invoke(int $donationId)
     {
-        if (!$this->canStoreDonorGoogleAnalyticsData()) {
+        $donation = Donation::find($donationId);
+
+        if (!$donation || !$this->canStoreDonorGoogleAnalyticsData($donation)) {
             return;
         }
 
@@ -37,8 +54,10 @@ class StoreDonorGoogleAnalyticsData
      *
      * @unreleased
      */
-    private function canStoreDonorGoogleAnalyticsData(): bool
+    private function canStoreDonorGoogleAnalyticsData(Donation $donation): bool
     {
-        return isset($_COOKIE['_ga']) && give_ga_can_send_event();
+        return isset($_COOKIE['_ga']) &&
+            $donation->gatewayId !== 'manual_donation' &&
+            $this->settingRepository->canSendEvent();
     }
 }
