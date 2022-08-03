@@ -4,7 +4,7 @@ namespace GiveGoogleAnalytics\Donations;
 
 use Give\Helpers\Hooks;
 use GiveGoogleAnalytics\Donations\Actions\RecordDonationInGoogleAnalyticsWithGA4;
-use GiveGoogleAnalytics\Donations\Actions\RefundDonationInGoogleAnalyticsWothGA4;
+use GiveGoogleAnalytics\Donations\Actions\RefundDonationInGoogleAnalyticsWithGA4;
 use GiveGoogleAnalytics\Donations\Actions\StoreDonorGoogleAnalyticsData;
 
 /**
@@ -53,7 +53,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
 
         Hooks::addAction(
             'give_update_payment_status',
-            RefundDonationInGoogleAnalyticsWothGA4::class,
+            RefundDonationInGoogleAnalyticsWithGA4::class,
             '__invoke',
             10,
             2

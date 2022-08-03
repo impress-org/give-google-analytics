@@ -10,7 +10,7 @@ use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\GA4\Client;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 
-class RefundDonationInGoogleAnalyticsWothGA4
+class RefundDonationInGoogleAnalyticsWithGA4
 {
     /**
      * @var Client
