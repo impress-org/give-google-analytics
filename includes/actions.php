@@ -27,7 +27,7 @@ function give_google_analytics_send_donation_success($donation_id, $new_status, 
 {
     if (
         !give(SettingRepository::class)->canSendEvent(TrackingMode::UNIVERSAL_ANALYTICS) ||
-        !give(DonationRepository::class)->isGoogleAnalyticEventSent($donation_id) ||
+        give(DonationRepository::class)->isGoogleAnalyticEventSent($donation_id) ||
         DonationStatus::COMPLETE !== $new_status
     ) {
         return false;

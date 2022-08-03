@@ -49,7 +49,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     {
         if (
             !$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4) ||
-            !$this->donationRepository->isGoogleAnalyticEventSent($donationId) ||
+            $this->donationRepository->isGoogleAnalyticEventSent($donationId) ||
             DonationStatus::COMPLETE !== $newDonationStatus
         ) {
             return;
