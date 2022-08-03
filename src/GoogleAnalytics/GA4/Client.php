@@ -36,7 +36,7 @@ class Client
     public function postEvent($jsonData)
     {
         $googleCollectEventUrl = sprintf(
-            'https://www.google-analytics.com/mp/collect?measurement_id=G-%1$s&api_secret=%2$s',
+            'https://www.google-analytics.com/mp/collect?measurement_id=%1$s&api_secret=%2$s',
             $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId(),
             $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementProtocolApiSecret()
         );
