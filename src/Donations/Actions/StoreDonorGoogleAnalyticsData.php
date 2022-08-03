@@ -52,6 +52,12 @@ class StoreDonorGoogleAnalyticsData
         give_update_payment_meta($donationId, DonationMetaKeys::GA_CAMPAIGN_SOURCE, $campaignSource);
         give_update_payment_meta($donationId, DonationMetaKeys::GA_CAMPAIGN_MEDIUM, $campaignMedium);
         give_update_payment_meta($donationId, DonationMetaKeys::GA_CAMPAIGN_CONTENT, $campaignContent);
+
+        give_update_payment_meta(
+            $donationId,
+            DonationMetaKeys::GA_CLIENT_SESSION_ID,
+            $this->getGoogleAnaluticsClientSession()
+        );
     }
 
     /**
@@ -64,5 +70,18 @@ class StoreDonorGoogleAnalyticsData
         return isset($_COOKIE['_ga']) &&
             $donation->gatewayId !== 'manual_donation' &&
             $this->settingRepository->canSendEvent();
+    }
+
+    /**
+     * @unreleased
+     * @return string
+     */
+    private function getGoogleAnaluticsClientSession()
+    {
+        $webStreamMeasurementId = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
+        $id = str_replace('G-', '', $webStreamMeasurementId);
+        $sessionKeyName = "_ga_$id";
+
+        return !empty($_COOKIE[$sessionKeyName]) ? give_clean($_COOKIE[$sessionKeyName]) : '';
     }
 }
