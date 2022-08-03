@@ -73,7 +73,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
                             [
                                 'name' => 'refund',
                                 'params' => [
-                                    'currency' => $donation->amount->getCurrency(),
+                                    'currency' => $donation->amount->getCurrency()->getCode(),
                                     'value' => $donation->amount->formatToDecimal(),
                                     'transaction_id' => $donation->id,
                                     'items' => [

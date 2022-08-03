@@ -4,6 +4,7 @@ namespace GiveGoogleAnalytics\Addon\Repositories;
 
 use GiveGoogleAnalytics\Addon\DataTransferObjects\CampaignDTO;
 use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
+use GiveGoogleAnalytics\GoogleAnalytics\GA4\DataTransferObjects\GoogleAnalyticsSession;
 
 /**
  * @unreleased
@@ -53,5 +54,13 @@ class DonationRepository
     public function getGoogleAnalyticsClientTrackingId(int $donationId): string
     {
         return give_get_meta($donationId, DonationMetaKeys::GA_CLIENT_ID, true);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGoogleAnalyticsClientSession(int $donationId): GoogleAnalyticsSession
+    {
+        return new GoogleAnalyticsSession(give_get_meta($donationId, DonationMetaKeys::GA_CLIENT_SESSION_ID, true));
     }
 }
