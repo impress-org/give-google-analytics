@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveGoogleAnalytic\Addon\Repositories;
+namespace GiveGoogleAnalytics\Addon\Repositories;
 
 use GiveGoogleAnalytics\Addon\DataTransferObjects\CampaignDTO;
 use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;

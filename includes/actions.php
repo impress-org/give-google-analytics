@@ -1,8 +1,8 @@
 <?php
 
 use Give\Donations\ValueObjects\DonationStatus;
-use GiveGoogleAnalytic\Addon\Repositories\DonationRepository;
-use GiveGoogleAnalytic\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\Addon\Repositories\DonationRepository;
+use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 
 /**

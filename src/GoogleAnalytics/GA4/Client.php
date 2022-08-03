@@ -1,9 +1,9 @@
 <?php
 
-namespace GiveGoogleAnalytics\GA4;
+namespace GiveGoogleAnalytics\GoogleAnalytics\GA4;
 
 use Give\Framework\Exceptions\Primitives\Exception;
-use GiveGoogleAnalytic\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
 
 /**
  * This class provides the Google Analytics client which uses to post event data.

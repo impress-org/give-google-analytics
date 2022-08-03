@@ -3,7 +3,7 @@
 namespace GiveGoogleAnalytics\Donations\Actions;
 
 use Give\Donations\Models\Donation;
-use GiveGoogleAnalytic\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
 use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
 
 /**

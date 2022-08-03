@@ -5,9 +5,9 @@ namespace GiveGoogleAnalytics\Donations\Actions;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
-use GiveGoogleAnalytic\Addon\Repositories\DonationRepository;
-use GiveGoogleAnalytic\Addon\Repositories\SettingRepository;
-use GiveGoogleAnalytics\GA4\Client;
+use GiveGoogleAnalytics\Addon\Repositories\DonationRepository;
+use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\GoogleAnalytics\GA4\Client;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 
 /**

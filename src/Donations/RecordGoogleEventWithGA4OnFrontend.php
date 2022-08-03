@@ -2,7 +2,7 @@
 
 namespace GiveGoogleAnalytics\Donations;
 
-use GiveGoogleAnalytic\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 
 /**
