@@ -44,7 +44,7 @@ class RecordGoogleEventWithGA4OnFrontend
         $ga_list = give_get_option('google_analytics_list');
 
         ?>
-        <script type="text/javascript">
+        <script type="text/javascript" id="give-google-analitics-addon-js">
 
             // GA Enhance Ecommerce tracking.
             (function ($) {
