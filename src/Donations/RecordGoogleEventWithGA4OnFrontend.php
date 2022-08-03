@@ -38,11 +38,6 @@ class RecordGoogleEventWithGA4OnFrontend
         if (give_is_success_page()) {
             return false;
         }
-
-        // Add the categories.
-        $ga_category = give_get_option('google_analytics_category') ?? 'Donations';
-        $ga_list = give_get_option('google_analytics_list');
-
         ?>
         <script type="text/javascript" id="give-google-analitics-addon-js">
 
