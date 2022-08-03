@@ -138,7 +138,7 @@ class SettingRepository
      *
      * @unreleased
      */
-    public function canSendEvent(string $trackingMode = ''): bool
+    public function canSendEvent(string $trackingMode = null): bool
     {
         // Don't continue if test mode is enabled and test mode tracking is disabled.
         if (give_is_test_mode() && !give_google_analytics_track_testing()) {
