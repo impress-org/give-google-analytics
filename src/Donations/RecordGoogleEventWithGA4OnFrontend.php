@@ -50,10 +50,10 @@ class RecordGoogleEventWithGA4OnFrontend
 
                     var gtag = window[window['GoogleAnalyticsObject'] || 'gtag'];
 
-                    document.cookie = 'give_source=' + get_parameter('utm_source');
-                    document.cookie = 'give_medium=' + get_parameter('utm_medium');
-                    document.cookie = 'give_campaign=' + get_parameter('utm_campaign');
-                    document.cookie = 'give_content=' + get_parameter('utm_content');
+                    document.cookie = 'give_source=' + get_parameter('utm_source') + ';path=/';
+                    document.cookie = 'give_medium=' + get_parameter('utm_medium') + ';path=/';
+                    document.cookie = 'give_campaign=' + get_parameter('utm_campaign') + ';path=/';
+                    document.cookie = 'give_content=' + get_parameter('utm_content') + ';path=/';
 
                     // If gtag function is ready. Let's proceed.
                     if ('function' === typeof gtag) {
