@@ -61,6 +61,12 @@ class DonationRepository
      */
     public function getGoogleAnalyticsClientSession(int $donationId): GoogleAnalyticsSession
     {
-        return new GoogleAnalyticsSession(give_get_meta($donationId, DonationMetaKeys::GA_CLIENT_SESSION_ID, true));
+        return GoogleAnalyticsSession::fromDonationMetaDataValue(
+            give_get_meta(
+                $donationId,
+                DonationMetaKeys::GA_CLIENT_SESSION_ID,
+                true
+            )
+        );
     }
 }

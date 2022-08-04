@@ -20,15 +20,21 @@ class GoogleAnalyticsSession
     public $gaSessionNumber = '';
 
     /**
-     * @param string $session
+     * This function modify Google Analytics client session value into predictable object and return object.
+     * This value stores in donation metadata.
+     *
+     * @unreleased
      */
-    public function __construct(string $session)
+    public static function fromDonationMetaDataValue(string $session): self
     {
+        $self = new self();
         $sessionData = explode('.', $session);
 
         if (2 < count($sessionData)) {
-            $this->gaSessionId = $session[2];
-            $this->gaSessionNumber = $session[3];
+            $self->gaSessionId = $session[2];
+            $self->gaSessionNumber = $session[3];
         }
+
+        return $self;
     }
 }
