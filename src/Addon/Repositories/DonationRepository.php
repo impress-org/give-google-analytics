@@ -17,7 +17,7 @@ class DonationRepository
      */
     public function isGoogleAnalyticEventSent(int $donationId): bool
     {
-        return 'true' === give_get_meta($donationId, DonationMetaKeys::GA_EVENT_SENT, true);
+        return '1' === give_get_meta($donationId, DonationMetaKeys::GA_EVENT_SENT, true);
     }
 
     /**
