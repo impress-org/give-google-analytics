@@ -123,6 +123,8 @@ class RecordGoogleEventWithGA4OnFrontend
                                         item_list_name: '<?php echo esc_js(
                                             $this->settingRepository->getTrackListName()
                                         )?>',
+                                        price: donation_amount,
+                                        quantity: 1
                                     }
                                 ]
                             });

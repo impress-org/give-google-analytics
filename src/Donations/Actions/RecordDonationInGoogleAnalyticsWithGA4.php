@@ -81,6 +81,8 @@ class RecordDonationInGoogleAnalyticsWithGA4
                                             'item_category' => $this->settingRepository->getTrackCategory(),
                                             'item_category2' => 'Fundraising',
                                             'item_category3' => $donation->gatewayId,
+                                            'price' => $donation->amount->formatToDecimal(),
+                                            'quantity' => 1
                                         ]
                                     ]
                                 ]
