@@ -23,23 +23,18 @@ class RecordGoogleEventWithGA4OnFrontend
         $this->settingRepository = $settingRepository;
     }
 
-    public function __invoke()
+    /**
+     * @unreleased
+     * @return void
+     */
+    public function handleWpFooter()
     {
-        // Don't track site admins
-        if (is_user_logged_in() && current_user_can('administrator')) {
-            return false;
+        if (!$this->canPrintScript()) {
+            return;
         }
 
-        if (!$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4)) {
-            return false;
-        }
-
-        // Not needed on the success page.
-        if (give_is_success_page()) {
-            return false;
-        }
         ?>
-        <script type="text/javascript" id="give-google-analitics-addon-js">
+        <script type="text/javascript" id="give-google-analitics-addon-wp-footer-js">
 
             // GA Enhance Ecommerce tracking.
             (function ($) {
@@ -129,11 +124,9 @@ class RecordGoogleEventWithGA4OnFrontend
                                 ]
                             });
                         });
-
                     }
 
                 }, false);
-
 
                 /**
                  * Get specific parameter value from Query string.
@@ -166,5 +159,76 @@ class RecordGoogleEventWithGA4OnFrontend
             })(jQuery); //
         </script>
         <?php
+    }
+
+    /**
+     * @unreleased
+     * @return void
+     */
+    public function handleGiveEmbedFooter()
+    {
+        if (!$this->canPrintScript()) {
+            return;
+        }
+        ?>
+        <script type="text/javascript" id="give-google-analitics-addon-give-embed-footer-js">
+            var gtag = window.parent[window.parent['GoogleAnalyticsObject'] || 'gtag'];
+
+            if ('function' === typeof gtag) {
+                var form = document.querySelector('form.give-form')
+                var form_id = form.querySelector('input[name="give-form-id"]').value;
+                var form_title = form.querySelector('input[name="give-form-title"]').value;
+                var decimal_separator = Give.form.fn.getInfo('decimal_separator', form);
+                var currency_code = form.getAttribute('data-currency_code');
+                var default_donation_amount = Give.fn.unFormatCurrency(
+                    form.querySelector('.give-final-total-amount').getAttribute('data-total'),
+                    decimal_separator
+                );
+
+                gtag('event', 'view_item', {
+                    currency: currency_code,
+                    value: default_donation_amount,
+                    items: [
+                        {
+                            item_id: form_id,
+                            item_name: form_title,
+                            affiliation: '<?php echo esc_js(
+                                $this->settingRepository->getTrackAffiliation()
+                            )?>',
+                            item_category: '<?php echo esc_js(
+                                $this->settingRepository->getTrackCategory()
+                            )?>',
+                            item_category2: 'Fundraising',
+                            item_list_name: '<?php echo esc_js(
+                                $this->settingRepository->getTrackListName()
+                            )?>',
+                        }
+                    ]
+                });
+            }
+        </script>
+        <?php
+    }
+
+    /**
+     * @unreleased
+     */
+    private function canPrintScript(): bool
+    {
+        // Don't track site admins
+        if (is_user_logged_in() && current_user_can('administrator')) {
+            return false;
+        }
+
+        if (!$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4)) {
+            return false;
+        }
+
+        // Not needed on the success page.
+        if (give_is_success_page()) {
+            return false;
+        }
+
+        return true;
     }
 }

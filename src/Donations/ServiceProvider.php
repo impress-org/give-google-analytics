@@ -32,14 +32,14 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
         Hooks::addAction(
             'wp_footer',
             RecordGoogleEventWithGA4OnFrontend::class,
-            '__invoke',
+            'handleWpFooter',
             99999
         );
 
         Hooks::addAction(
             'give_embed_footer',
             RecordGoogleEventWithGA4OnFrontend::class,
-            '__invoke',
+            'handleGiveEmbedFooter',
             99999
         );
 
