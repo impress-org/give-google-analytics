@@ -75,17 +75,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
                                 'params' => [
                                     'currency' => $donation->amount->getCurrency()->getCode(),
                                     'value' => $donation->amount->formatToDecimal(),
-                                    'transaction_id' => $donation->id,
-                                    'items' => [
-                                        [
-                                            'item_id' => $donation->formId,
-                                            'item_name' => $donation->formTitle,
-                                            'affiliation' => $this->settingRepository->getTrackAffiliation(),
-                                            'item_category' => $this->settingRepository->getTrackCategory(),
-                                            'item_category2' => 'Fundraising',
-                                            'item_category3' => $donation->gatewayId,
-                                        ]
-                                    ]
+                                    'transaction_id' => $donation->id
                                 ]
                             ]
                         ]
