@@ -176,6 +176,7 @@ class RecordGoogleEventWithGA4OnFrontend
 
             if ('function' === typeof gtag) {
                 var form = document.querySelector('form.give-form')
+
                 var form_id = form.querySelector('input[name="give-form-id"]').value;
                 var form_title = form.querySelector('input[name="give-form-title"]').value;
                 var decimal_separator = Give.form.fn.getInfo('decimal_separator', form);
@@ -204,6 +205,41 @@ class RecordGoogleEventWithGA4OnFrontend
                             )?>',
                         }
                     ]
+                });
+
+                jQuery(form).on('submit', function (event) {
+                    var form = event.target;
+                    var form_gateway = form.querySelector('input[name="give-gateway"]').value;
+                    var decimal_separator = Give.form.fn.getInfo('decimal_separator', form);
+                    var currency_code = form.getAttribute('data-currency_code');
+                    var donation_amount = Give.fn.unFormatCurrency(
+                        form.querySelector('.give-final-total-amount').getAttribute('data-total'),
+                        decimal_separator
+                    );
+
+                    gtag('event', 'begin_checkout', {
+                        currency: currency_code,
+                        value: donation_amount,
+                        items: [
+                            {
+                                item_id: form_id,
+                                item_name: form_title,
+                                affiliation: '<?php echo esc_js(
+                                    $this->settingRepository->getTrackAffiliation()
+                                )?>',
+                                item_category: '<?php echo esc_js(
+                                    $this->settingRepository->getTrackCategory()
+                                )?>',
+                                item_category2: 'Fundraising',
+                                item_category3: form_gateway,
+                                item_list_name: '<?php echo esc_js(
+                                    $this->settingRepository->getTrackListName()
+                                )?>',
+                                price: donation_amount,
+                                quantity: 1
+                            }
+                        ]
+                    });
                 });
             }
         </script>
