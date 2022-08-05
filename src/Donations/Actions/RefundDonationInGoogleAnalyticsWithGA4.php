@@ -49,9 +49,9 @@ class RefundDonationInGoogleAnalyticsWithGA4
     public function __invoke($donationId, $newDonationStatus)
     {
         if (
+            DonationStatus::REFUNDED !== $newDonationStatus ||
             !$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4) ||
-            !$this->settingRepository->canTrackRefunds() ||
-            DonationStatus::REFUNDED !== $newDonationStatus
+            !$this->settingRepository->canTrackRefunds()
         ) {
             return;
         }

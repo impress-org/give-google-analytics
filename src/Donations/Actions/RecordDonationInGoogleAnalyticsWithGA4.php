@@ -48,9 +48,9 @@ class RecordDonationInGoogleAnalyticsWithGA4
     public function __invoke($donationId, $newDonationStatus)
     {
         if (
+            DonationStatus::COMPLETE !== $newDonationStatus ||
             !$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4) ||
-            $this->donationRepository->isGoogleAnalyticEventSent($donationId) ||
-            DonationStatus::COMPLETE !== $newDonationStatus
+            $this->donationRepository->isGoogleAnalyticEventSent($donationId)
         ) {
             return;
         }

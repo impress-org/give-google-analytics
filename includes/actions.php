@@ -26,9 +26,9 @@ use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 function give_google_analytics_send_donation_success($donation_id, $new_status, $old_status)
 {
     if (
+        DonationStatus::COMPLETE !== $new_status ||
         !give(SettingRepository::class)->canSendEvent(TrackingMode::UNIVERSAL_ANALYTICS) ||
-        give(DonationRepository::class)->isGoogleAnalyticEventSent($donation_id) ||
-        DonationStatus::COMPLETE !== $new_status
+        give(DonationRepository::class)->isGoogleAnalyticEventSent($donation_id)
     ) {
         return false;
     }
@@ -149,8 +149,8 @@ add_action('give_update_payment_status', 'give_google_analytics_send_donation_su
 function give_google_analytics_send_refund_beacon($donation_id, $new_status, $old_status)
 {
     if (
-        !give(SettingRepository::class)->canSendEvent(TrackingMode::UNIVERSAL_ANALYTICS) ||
-        DonationStatus::REFUNDED !== $new_status
+        DonationStatus::REFUNDED !== $new_status ||
+        !give(SettingRepository::class)->canSendEvent(TrackingMode::UNIVERSAL_ANALYTICS)
     ) {
         return false;
     }
