@@ -61,36 +61,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
 
         try {
             $response = $this->client->postEvent(
-                json_encode([
-                        'client_id' => $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id),
-                        'events' => [
-                            [
-                                'name' => 'purchase',
-                                'params' => [
-                                    'currency' => $donation->amount->getCurrency()->getCode(),
-                                    'value' => $donation->amount->formatToDecimal(),
-                                    'transaction_id' => $donation->id,
-                                    'engagement_time_msec' => 100,
-                                    'session_id' => $this->donationRepository
-                                        ->getGoogleAnalyticsClientSession($donationId)->gaSessionId,
-                                    'items' => [
-                                        [
-                                            'item_id' => $donation->formId,
-                                            'item_name' => $donation->formTitle,
-                                            'item_brand' => 'Fundraising',
-                                            'affiliation' => $this->settingRepository->getTrackAffiliation(),
-                                            'item_category' => $this->settingRepository->getTrackCategory(),
-                                            'item_category2' => $donation->gatewayId,
-                                            'item_list_name' => $this->settingRepository->getTrackListName(),
-                                            'price' => $donation->amount->formatToDecimal(),
-                                            'quantity' => 1
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                )
+                json_encode($this->getEventData($donation))
             );
 
             // Check if beacon sent successfully.
@@ -108,5 +79,48 @@ class RecordDonationInGoogleAnalyticsWithGA4
             }
         } catch (\Exception $exception) {
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getEventData(Donation $donation): array
+    {
+        $eventData = [
+            'client_id' => $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id),
+            'events' => [
+                [
+                    'name' => 'purchase',
+                    'params' => [
+                        'currency' => $donation->amount->getCurrency()->getCode(),
+                        'value' => $donation->amount->formatToDecimal(),
+                        'transaction_id' => $donation->id,
+                        'engagement_time_msec' => 100,
+                        'session_id' => $this->donationRepository
+                            ->getGoogleAnalyticsClientSession($donationId)->gaSessionId,
+                        'items' => [
+                            [
+                                'item_id' => $donation->formId,
+                                'item_name' => $donation->formTitle,
+                                'item_brand' => 'Fundraising',
+                                'affiliation' => $this->settingRepository->getTrackAffiliation(),
+                                'item_category' => $this->settingRepository->getTrackCategory(),
+                                'item_category2' => $donation->gatewayId,
+                                'item_list_name' => $this->settingRepository->getTrackListName(),
+                                'price' => $donation->amount->formatToDecimal(),
+                                'quantity' => 1
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        /**
+         * Use this filter hooke to add additional data to Google Analytics purchase event.
+         *
+         * @unreleased
+         */
+        return apply_filters('give_google_analytics_ga4_purchase_event_data', $eventData, $donation);
     }
 }
