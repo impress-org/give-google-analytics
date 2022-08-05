@@ -56,7 +56,7 @@ class StoreDonorGoogleAnalyticsData
         give_update_payment_meta(
             $donationId,
             DonationMetaKeys::GA_CLIENT_SESSION_ID,
-            $this->getGoogleAnaluticsClientSession()
+            $this->getGoogleAnalyticsClientSession()
         );
     }
 
@@ -73,10 +73,13 @@ class StoreDonorGoogleAnalyticsData
     }
 
     /**
+     * This function returns session value of client. Session id generates by google Analytics.
+     *
      * @unreleased
+     *
      * @return string
      */
-    private function getGoogleAnaluticsClientSession()
+    private function getGoogleAnalyticsClientSession(): string
     {
         $webStreamMeasurementId = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
         $id = str_replace('G-', '', $webStreamMeasurementId);
