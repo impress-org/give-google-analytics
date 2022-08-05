@@ -67,20 +67,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
 
         try {
             $response = $this->client->postEvent(
-                json_encode([
-                        'client_id' => $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id),
-                        'events' => [
-                            [
-                                'name' => 'refund',
-                                'params' => [
-                                    'currency' => $donation->amount->getCurrency()->getCode(),
-                                    'value' => $donation->amount->formatToDecimal(),
-                                    'transaction_id' => $donation->id
-                                ]
-                            ]
-                        ]
-                    ]
-                )
+                json_encode($this->getEventData($donation))
             );
 
             // Check if beacon sent successfully.
@@ -98,5 +85,32 @@ class RefundDonationInGoogleAnalyticsWithGA4
             }
         } catch (\Exception $exception) {
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getEventData(Donation $donation): array
+    {
+        $eventData = [
+            'client_id' => $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id),
+            'events' => [
+                [
+                    'name' => 'refund',
+                    'params' => [
+                        'currency' => $donation->amount->getCurrency()->getCode(),
+                        'value' => $donation->amount->formatToDecimal(),
+                        'transaction_id' => $donation->id
+                    ]
+                ]
+            ]
+        ];
+
+        /**
+         * Use this filter hooke to add additional data to Google Analytics refund event.
+         *
+         * @unreleased
+         */
+        return apply_filters('give_google_analytics_ga4_refund_event_data', $eventData, $donation);
     }
 }
