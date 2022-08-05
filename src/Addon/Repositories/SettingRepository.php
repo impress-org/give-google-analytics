@@ -90,7 +90,7 @@ class SettingRepository
      */
     public function getTrackCategory(): string
     {
-        return give_get_option(SettingNames::TRACK_CATEGORY, '');
+        return give_get_option(SettingNames::TRACK_CATEGORY, 'Donations');
     }
 
     /**
@@ -100,7 +100,7 @@ class SettingRepository
      */
     public function getTrackAffiliation(): string
     {
-        return give_get_option(SettingNames::TRACK_AFFILIATION, '');
+        return give_get_option(SettingNames::TRACK_AFFILIATION, get_bloginfo('name'));
     }
 
     /**
@@ -110,7 +110,7 @@ class SettingRepository
      */
     public function getTrackListName(): string
     {
-        return give_get_option(SettingNames::TRACKING_LIST_NAME, '');
+        return give_get_option(SettingNames::TRACKING_LIST_NAME, 'Donation Forms');
     }
 
     /**
