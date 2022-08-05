@@ -50,6 +50,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     {
         if (
             !$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4) ||
+            !$this->settingRepository->canTrackRefunds() ||
             DonationStatus::REFUNDED !== $newDonationStatus
         ) {
             return;
