@@ -94,7 +94,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
             );
 
             // Check if beacon sent successfully.
-            if (!is_wp_error($response) || 200 == wp_remote_retrieve_response_code($response)) {
+            if (!is_wp_error($response) || 204 === wp_remote_retrieve_response_code($response)) {
                 $this->donationRepository->setGoogleAnalyticEventSent($donationId);
 
                 DonationNote::create([
