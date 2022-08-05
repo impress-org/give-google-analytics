@@ -193,13 +193,13 @@ class RecordGoogleEventWithGA4OnFrontend
                         {
                             item_id: form_id,
                             item_name: form_title,
+                            item_brand: 'Fundraising',
                             affiliation: '<?php echo esc_js(
                                 $this->settingRepository->getTrackAffiliation()
                             )?>',
                             item_category: '<?php echo esc_js(
                                 $this->settingRepository->getTrackCategory()
                             )?>',
-                            item_category2: 'Fundraising',
                             item_list_name: '<?php echo esc_js(
                                 $this->settingRepository->getTrackListName()
                             )?>',
@@ -224,14 +224,14 @@ class RecordGoogleEventWithGA4OnFrontend
                             {
                                 item_id: form_id,
                                 item_name: form_title,
+                                item_brand: 'Fundraising',
                                 affiliation: '<?php echo esc_js(
                                     $this->settingRepository->getTrackAffiliation()
                                 )?>',
                                 item_category: '<?php echo esc_js(
                                     $this->settingRepository->getTrackCategory()
                                 )?>',
-                                item_category2: 'Fundraising',
-                                item_category3: form_gateway,
+                                item_category2: form_gateway,
                                 item_list_name: '<?php echo esc_js(
                                     $this->settingRepository->getTrackListName()
                                 )?>',

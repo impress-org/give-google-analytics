@@ -77,10 +77,11 @@ class RecordDonationInGoogleAnalyticsWithGA4
                                         [
                                             'item_id' => $donation->formId,
                                             'item_name' => $donation->formTitle,
+                                            'item_brand' => 'Fundraising',
                                             'affiliation' => $this->settingRepository->getTrackAffiliation(),
                                             'item_category' => $this->settingRepository->getTrackCategory(),
-                                            'item_category2' => 'Fundraising',
-                                            'item_category3' => $donation->gatewayId,
+                                            'item_category2' => $donation->gatewayId,
+                                            'item_list_name' => $this->settingRepository->getTrackListName(),
                                             'price' => $donation->amount->formatToDecimal(),
                                             'quantity' => 1
                                         ]
