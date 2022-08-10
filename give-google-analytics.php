@@ -330,7 +330,7 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 }
 
 // Autoloader
-require_once 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 /**
  * Load the Service Providers with Give core. This *must* remain outside of the Give_Google_Analytics class
