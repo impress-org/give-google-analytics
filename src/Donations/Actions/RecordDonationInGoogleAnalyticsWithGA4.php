@@ -97,7 +97,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
                         'transaction_id' => $donation->id,
                         'engagement_time_msec' => 100,
                         'session_id' => $this->donationRepository
-                            ->getGoogleAnalyticsClientSession($donationId)->gaSessionId,
+                            ->getGoogleAnalyticsClientSession($donation->id)->gaSessionId,
                         'items' => [
                             [
                                 'item_id' => $donation->formId,
