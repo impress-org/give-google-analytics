@@ -3,6 +3,7 @@
 namespace GiveGoogleAnalytics\Donations;
 
 use Give\Helpers\Hooks;
+use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use GiveGoogleAnalytics\Donations\Actions\RecordDonationInGoogleAnalyticsWithGA4;
 use GiveGoogleAnalytics\Donations\Actions\RefundDonationInGoogleAnalyticsWithGA4;
 use GiveGoogleAnalytics\Donations\Actions\StoreDonorGoogleAnalyticsData;
@@ -10,7 +11,7 @@ use GiveGoogleAnalytics\Donations\Actions\StoreDonorGoogleAnalyticsData;
 /**
  * @unreleased
  */
-class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
+class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inerhitDoc

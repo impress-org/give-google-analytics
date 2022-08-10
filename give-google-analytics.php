@@ -11,6 +11,8 @@
  * Text Domain:     give-google-analytics
  */
 
+use GiveGoogleAnalytics\Donations\ServiceProvider;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -342,7 +344,7 @@ add_action('before_give_init', function () {
     // Check Give min required version.
     if (Give_Google_Analytics()->get_environment_warning()) {
         $service_providers = [
-            \GiveGoogleAnalytics\Donations\ServiceProvider::class
+            ServiceProvider::class
         ];
 
         foreach ($service_providers as $service_provider) {
