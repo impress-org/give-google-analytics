@@ -157,7 +157,7 @@ class Give_Google_Analytics_Settings
                 'id' => SettingNames::TRACKING_MODE,
                 'type' => 'radio_inline',
                 'desc' => __(
-                    'Which google tracking mode your want to use for analytic tracking?',
+                    'Which Google tracking mode do you want to use for tracking?',
                     'give-google-analytics'
                 ),
                 // We set default value dynamically to support compatibility for existing universal analytics settings.
@@ -179,7 +179,7 @@ class Give_Google_Analytics_Settings
                     'give-universal-analytics give-ga-tracking-id give-hidden',
                 'desc' => sprintf(
                     __(
-                        'Please enter your GA Tracking ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find this code by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.',
+                        'Enter your Tracking ID to track offsite payment gateways and refunds. Find the Tracking ID by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard.',
                         'give-google-analytics'
                     ),
                     'https://analytics.google.com/analytics/web/'
@@ -195,7 +195,7 @@ class Give_Google_Analytics_Settings
                     'give-google-analytics-4 give-ga4__tracking-id',
                 'desc' => sprintf(
                     __(
-                        'Please enter your GA4 Measurement ID to track offsite payment gateways and refunds. Since refunds and some offsite payments are processed on the backend, Give requires your Google Analytics GA code to properly send refund event data to Google. You can find measurement id by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and choose <code>Admin > Data Streams > choose your stream > Measurement ID.</code>',
+                        'Enter your Measurement ID to track offsite payment gateways and refunds. Find the Measurement ID by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and choose <code>Admin > Data Streams > [your stream] > Measurement ID.</code>',
                         'give-google-analytics'
                     ),
                     'https://analytics.google.com/analytics/web/'
@@ -210,7 +210,7 @@ class Give_Google_Analytics_Settings
                     'give-google-analytics-4 give-ga4__measurement-protocol-api-secret',
                 'desc' => sprintf(
                     __(
-                        'Please enter your GA4 measurement protocol API secret. You can create api secret by visiting your <a href="%s" target="_blank">Google Analytics</a> dashboard and Choose <code>Admin > Data Streams > choose your stream > Measurement Protocol > Create</code>.',
+                        'Enter your Measurement Protocol API Secret. Find or create the API Secret by visiting your <a href="%s" target="_blank">Google Analytics dashboard</a> and choose <code>Admin > Data Streams > [your stream] > Measurement Protocol API Secrets </code>.',
                         'give-google-analytics'
                     ),
                     'https://analytics.google.com/analytics/web/'
@@ -221,7 +221,7 @@ class Give_Google_Analytics_Settings
                 'id' => SettingNames::TRACK_TEST_DONATIONS,
                 'type' => 'radio_inline',
                 'desc' => __(
-                    'Do you want to track donations that are made when Give is in test mode?',
+                    'Do you want to track donations that are made when GiveWP is in test mode?',
                     'give-google-analytics'
                 ),
                 'default' => 'disabled',
@@ -235,7 +235,7 @@ class Give_Google_Analytics_Settings
                 'id' => SettingNames::TRACK_REFUNDS,
                 'type' => 'radio_inline',
                 'desc' => __(
-                    'When a donation changes status to refunded in Give then the refund will also be reflected in Google Analytics as a refund.',
+                    'Do you want to track refunds? When a donation is marked as refunded in GiveWP, it will be reflected in Google Analytics.',
                     'give-google-analytics'
                 ),
                 'default' => 'disabled',
@@ -265,7 +265,7 @@ class Give_Google_Analytics_Settings
                 'wrapper_class' => 'give-ga-advanced-field',
                 'default' => __('Donations', 'give-google-analytics'),
                 'desc' => __(
-                    'The "product" category which donation belongs to within Google Analytics. This is helpful for filtering in GA to view only donations.',
+                    'The "product" category within Google Analytics for Donations. This is helpful for filtering in GA to view only donations.',
                     'give-google-analytics'
                 ),
             ],
@@ -276,7 +276,7 @@ class Give_Google_Analytics_Settings
                 'wrapper_class' => 'give-ga-advanced-field',
                 'default' => get_bloginfo('name'),
                 'desc' => __(
-                    'The site from which this transaction occurred. Typically this is your website or organization\'s name.',
+                    'The site where the donation occurred. Typically this is your website or organization\'s name.',
                     'give-google-analytics'
                 ),
             ],
