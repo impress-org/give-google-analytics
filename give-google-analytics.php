@@ -11,6 +11,8 @@
  * Text Domain:     give-google-analytics
  */
 
+use GiveGoogleAnalytics\Donations\ServiceProvider;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,7 +24,7 @@ if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.6.0' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.21.3' );
 }
 
 // Plugin File.
@@ -328,3 +330,25 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 
 	Give_Google_Analytics();
 }
+
+// Autoloader
+require __DIR__ . '/vendor/autoload.php';
+
+/**
+ * Load the Service Providers with Give core. This *must* remain outside of the Give_Google_Analytics class
+ * as it is a completely different bootstrapping system and cannot run inside of the plugins_loaded hook.
+ *
+ * @unreleased
+ */
+add_action('before_give_init', function () {
+    // Check Give min required version.
+    if (Give_Google_Analytics()->get_environment_warning()) {
+        $service_providers = [
+            ServiceProvider::class
+        ];
+
+        foreach ($service_providers as $service_provider) {
+            give()->registerServiceProvider($service_provider);
+        }
+    }
+});

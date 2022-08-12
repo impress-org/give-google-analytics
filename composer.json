@@ -1,0 +1,19 @@
+{
+    "name": "impress-org/give-google-analytics",
+    "type": "wordpress-plugin",
+    "homepage": "https://givewp.com/",
+    "description": "Give - Google Analytics Donation Tracking: Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.",
+    "support": {
+        "issues": "https://github.com/impress-org/give-google-analytics/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "GiveGoogleAnalytics\\": "src/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.0"
+        }
+    }
+}

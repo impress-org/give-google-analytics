@@ -1,4 +1,8 @@
 <?php
+
+use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
+
 /**
  * GA Refund tracking.
  *
@@ -10,6 +14,9 @@
  * @return mixed
  */
 function give_google_analytics_refund_tracking( $do_change, $donation_id, $new_status, $old_status ) {
+    if( TrackingMode::UNIVERSAL_ANALYTICS !== give(SettingRepository::class)->getTrackingMode() ) {
+        return $do_change;
+    }
 
 	// Bailout.
 	if ( 'refunded' !== $new_status ) {
