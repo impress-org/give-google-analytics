@@ -2,8 +2,8 @@
 
 namespace GiveGoogleAnalytics\Addon\Repositories;
 
-use GiveGoogleAnalytics\Addon\DataTransferObjects\CampaignDTO;
 use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
+use GiveGoogleAnalytics\GoogleAnalytics\DataTransferObjects\CampaignDTO;
 use GiveGoogleAnalytics\GoogleAnalytics\GA4\DataTransferObjects\GoogleAnalyticsSession;
 
 /**

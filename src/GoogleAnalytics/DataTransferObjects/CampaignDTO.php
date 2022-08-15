@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveGoogleAnalytics\Addon\DataTransferObjects;
+namespace GiveGoogleAnalytics\GoogleAnalytics\DataTransferObjects;
 
 /**
  * This class object represents campaign data stores in donation meta. Google Analytics supports utm_* data in url.
