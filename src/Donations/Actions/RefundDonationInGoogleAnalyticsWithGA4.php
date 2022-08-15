@@ -5,10 +5,10 @@ namespace GiveGoogleAnalytics\Donations\Actions;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
-use GiveGoogleAnalytics\Addon\Repositories\DonationRepository;
-use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\Donations\Repositories\DonationRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\GA4\Client;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
+use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 class RefundDonationInGoogleAnalyticsWithGA4
 {

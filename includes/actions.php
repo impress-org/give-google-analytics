@@ -1,9 +1,9 @@
 <?php
 
 use Give\Donations\ValueObjects\DonationStatus;
-use GiveGoogleAnalytics\Addon\Repositories\DonationRepository;
-use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\Donations\Repositories\DonationRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
+use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 /**
  * Triggers when a payment is updated from pending to complete.

@@ -1,7 +1,7 @@
 <?php
 
-use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
+use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 /**
  * GA Refund tracking.

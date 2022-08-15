@@ -9,8 +9,8 @@
  */
 
 // Exit if accessed directly
-use GiveGoogleAnalytics\Addon\ValueObjects\SettingNames;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
+use GiveGoogleAnalytics\Settings\ValueObjects\SettingNames;
 
 if (!defined('ABSPATH')) {
     exit;

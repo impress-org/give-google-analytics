@@ -1,9 +1,9 @@
 <?php
 
-namespace GiveGoogleAnalytics\Addon\Repositories;
+namespace GiveGoogleAnalytics\Settings\Repositories;
 
-use GiveGoogleAnalytics\Addon\ValueObjects\SettingNames;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
+use GiveGoogleAnalytics\Settings\ValueObjects\SettingNames;
 
 /**
  * This class use to get add-on settings values from database.

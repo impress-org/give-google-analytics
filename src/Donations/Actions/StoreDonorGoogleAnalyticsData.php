@@ -3,8 +3,8 @@
 namespace GiveGoogleAnalytics\Donations\Actions;
 
 use Give\Donations\Models\Donation;
-use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
 use GiveGoogleAnalytics\Donations\ValueObjects\DonationMetaKeys;
+use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 /**
  * This class uses to store donor google analytic data when donor process donation.

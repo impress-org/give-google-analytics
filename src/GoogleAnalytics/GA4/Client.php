@@ -3,7 +3,7 @@
 namespace GiveGoogleAnalytics\GoogleAnalytics\GA4;
 
 use Give\Framework\Exceptions\Primitives\Exception;
-use GiveGoogleAnalytics\Addon\Repositories\SettingRepository;
+use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 /**
  * This class provides the Google Analytics client which uses to post event data.
