@@ -127,8 +127,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
                         'value' => $donation->amount->formatToDecimal(),
                         'transaction_id' => $donation->id,
                         'engagement_time_msec' => 100,
-                        'session_id' => $this->donationRepository
-                            ->getGoogleAnalyticsClientSession($donation->id)->gaSessionId,
+                        'session_id' => $this->getGoogleAnalyticsClientSession($donation),
                         'items' => [
                             [
                                 'item_id' => $donation->formId,
@@ -173,5 +172,23 @@ class RecordDonationInGoogleAnalyticsWithGA4
         }
 
         return 'One-Time';
+    }
+
+    /**
+     * This function return Google Analytics client session key.
+     *
+     * @unreleased
+     */
+    private function getGoogleAnalyticsClientSession(Donation $donation): string
+    {
+        if ($donation->status->isRenewal()) {
+            return $this->donationRepository
+                ->getGoogleAnalyticsClientSession($donation->parentId)
+                ->gaSessionId;
+        }
+
+        return $this->donationRepository
+            ->getGoogleAnalyticsClientSession($donation->id)
+            ->gaSessionId;
     }
 }
