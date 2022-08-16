@@ -68,6 +68,14 @@ class RecordDonationInGoogleAnalyticsWithGA4
      */
     public function handleRenewal(Give_Payment $givePayment)
     {
+        if (
+            DonationStatus::RENEWAL !== $givePayment->status ||
+            !$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4) ||
+            $this->donationRepository->isGoogleAnalyticEventSent($givePayment->ID)
+        ) {
+            return;
+        }
+
         if ($donation = Donation::find($givePayment->ID)) {
             $this->sendEvent($donation);
         }
