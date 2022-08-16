@@ -2,8 +2,6 @@
 
 namespace GiveGoogleAnalytics\GoogleAnalytics\GA4\DataTransferObjects;
 
-use Give\Log\Log;
-
 /**
  * @unreleased
  */
