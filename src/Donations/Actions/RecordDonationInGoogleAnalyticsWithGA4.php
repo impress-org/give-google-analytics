@@ -48,7 +48,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     public function __invoke($donationId, $newDonationStatus)
     {
         if (
-            DonationStatus::COMPLETE !== $newDonationStatus ||
+            !in_array($newDonationStatus, [DonationStatus::COMPLETE, DonationStatus::RENEWAL], true) ||
             !$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4) ||
             $this->donationRepository->isGoogleAnalyticEventSent($donationId)
         ) {
@@ -106,6 +106,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
                                 'affiliation' => $this->settingRepository->getTrackAffiliation(),
                                 'item_category' => $this->settingRepository->getTrackCategory(),
                                 'item_category2' => $donation->gatewayId,
+                                'item_category3' => $this->getDonationTypeLabel($donation),
                                 'item_list_name' => $this->settingRepository->getTrackListName(),
                                 'price' => $donation->amount->formatToDecimal(),
                                 'quantity' => 1
@@ -122,5 +123,24 @@ class RecordDonationInGoogleAnalyticsWithGA4
          * @unreleased
          */
         return apply_filters('give_google_analytics_ga4_purchase_event_data', $eventData, $donation);
+    }
+
+    /**
+     * This function returns donation type label.
+     * This label used as product category which help to differentiate revenue in Google Analytics Dashboard.
+     *
+     * @unreleased
+     */
+    private function getDonationTypeLabel(Donation $donation): string
+    {
+        if ($donation->status->isRenewal()) {
+            return 'Renewal';
+        }
+
+        if ($donation->subscriptionId) {
+            return 'Subscription';
+        }
+
+        return 'One-Time';
     }
 }
