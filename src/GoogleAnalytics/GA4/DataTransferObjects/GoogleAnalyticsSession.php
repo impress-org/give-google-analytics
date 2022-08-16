@@ -2,6 +2,8 @@
 
 namespace GiveGoogleAnalytics\GoogleAnalytics\GA4\DataTransferObjects;
 
+use Give\Log\Log;
+
 /**
  * @unreleased
  */
@@ -31,8 +33,8 @@ class GoogleAnalyticsSession
         $sessionData = explode('.', $session);
 
         if (2 < count($sessionData)) {
-            $self->gaSessionId = $session[2];
-            $self->gaSessionNumber = $session[3];
+            $self->gaSessionId = $sessionData[2];
+            $self->gaSessionNumber = $sessionData[3];
         }
 
         return $self;
