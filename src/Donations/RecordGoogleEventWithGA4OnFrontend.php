@@ -99,6 +99,7 @@ class RecordGoogleEventWithGA4OnFrontend
                                 $(this).get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
                                 decimal_separator
                             );
+                            var isRecurring = '1' === $(this).find( 'input[name="_give_is_donation_recurring"]' ).val()
 
                             gtag('event', 'begin_checkout', {
                                 currency: currency_code,
@@ -115,6 +116,7 @@ class RecordGoogleEventWithGA4OnFrontend
                                             $this->settingRepository->getTrackCategory()
                                         )?>',
                                         item_category2: form_gateway,
+                                        item_category3: isRecurring ? 'Subscription' : 'One-Time',
                                         item_list_name: '<?php echo esc_js(
                                             $this->settingRepository->getTrackListName()
                                         )?>',
