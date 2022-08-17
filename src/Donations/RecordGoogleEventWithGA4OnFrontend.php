@@ -89,7 +89,7 @@ class RecordGoogleEventWithGA4OnFrontend
 
                         // More code using $ as alias to jQuery
                         give_forms.on('submit', function (event) {
-                            var form = event.target;
+                            var form = jQuery(event.target);
                             var form_id = form.find('input[name="give-form-id"]').val();
                             var form_title = form.find('input[name="give-form-title"]').val();
                             var form_gateway = form.find('input[name="give-gateway"]').val();
@@ -178,7 +178,6 @@ class RecordGoogleEventWithGA4OnFrontend
 
             if ('function' === typeof gtag) {
                 var form = document.querySelector('form.give-form')
-
                 var form_id = form.querySelector('input[name="give-form-id"]').value;
                 var form_title = form.querySelector('input[name="give-form-title"]').value;
                 var decimal_separator = Give.form.fn.getInfo('decimal_separator', form);
