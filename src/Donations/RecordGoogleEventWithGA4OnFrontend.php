@@ -56,10 +56,10 @@ class RecordGoogleEventWithGA4OnFrontend
 
                         // Loop through each form on page and provide an impression.
                         give_forms.each(function (index, form) {
-                            var form_id = $(this).find('input[name="give-form-id"]').val();
-                            var form_title = $(this).find('input[name="give-form-title"]').val();
-                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', $(this).get(0));
-                            var currency_code = $(this).attr('data-currency_code');
+                            var form_id = form.find('input[name="give-form-id"]').val();
+                            var form_title = form.find('input[name="give-form-title"]').val();
+                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', form.get(0));
+                            var currency_code = form.attr('data-currency_code');
                             var default_donation_amount = Give.fn.unFormatCurrency(
                                 form.querySelector('.give-final-total-amount').getAttribute('data-total'),
                                 decimal_separator
