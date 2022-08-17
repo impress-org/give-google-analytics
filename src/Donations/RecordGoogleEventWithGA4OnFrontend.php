@@ -89,17 +89,17 @@ class RecordGoogleEventWithGA4OnFrontend
 
                         // More code using $ as alias to jQuery
                         give_forms.on('submit', function (event) {
-
-                            var form_id = $(this).find('input[name="give-form-id"]').val();
-                            var form_title = $(this).find('input[name="give-form-title"]').val();
-                            var form_gateway = $(this).find('input[name="give-gateway"]').val();
-                            var currency_code = $(this).attr('data-currency_code');
-                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', $(this).get(0));
+                            var form = event.target;
+                            var form_id = form.find('input[name="give-form-id"]').val();
+                            var form_title = form.find('input[name="give-form-title"]').val();
+                            var form_gateway = form.find('input[name="give-gateway"]').val();
+                            var currency_code = form.attr('data-currency_code');
+                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', form.get(0));
                             var donation_amount = Give.fn.unFormatCurrency(
-                                $(this).get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
+                                form.get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
                                 decimal_separator
                             );
-                            var isRecurring = '1' === $(this).find( 'input[name="_give_is_donation_recurring"]' ).val()
+                            var isRecurring = '1' === form.find( 'input[name="_give_is_donation_recurring"]' ).val()
 
                             gtag('event', 'begin_checkout', {
                                 currency: currency_code,
