@@ -65,7 +65,7 @@ class ServiceProvider implements ServiceProviderInterface
             RefundDonationInGoogleAnalyticsWithGA4::class,
             '__invoke',
             10,
-            2
+            3
         );
     }
 }
