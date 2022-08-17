@@ -118,7 +118,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     private function getEventData(Donation $donation): array
     {
         $eventData = [
-            'client_id' => $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id),
+            'client_id' => $this->getGoogleAnalyticsClientTrackingId($donation),
             'events' => [
                 [
                     'name' => 'purchase',
@@ -190,5 +190,19 @@ class RecordDonationInGoogleAnalyticsWithGA4
         return $this->donationRepository
             ->getGoogleAnalyticsClientSession($donation->id)
             ->gaSessionId;
+    }
+
+    /**
+     * This function returns the Google Analytics client id which generates on frontend when donor process/view donation form or which website.
+     *
+     * @unreleased
+     */
+    private function getGoogleAnalyticsClientTrackingId(Donation $donation): string
+    {
+        if ($donation->status->isRenewal()) {
+            return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->parentId);
+        }
+
+        return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id);
     }
 }
