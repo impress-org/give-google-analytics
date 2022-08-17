@@ -126,7 +126,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
                         'currency' => $donation->amount->getCurrency()->getCode(),
                         'value' => $donation->amount->formatToDecimal(),
                         'transaction_id' => $donation->id,
-                        'engagement_time_msec' => 100,
+                        'engagement_time_msec' => 1,
                         'session_id' => $this->getGoogleAnalyticsClientSession($donation),
                         'items' => [
                             [
