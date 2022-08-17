@@ -5,6 +5,7 @@ namespace GiveGoogleAnalytics\Donations\Actions;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Log\Log;
 use Give_Payment;
 use GiveGoogleAnalytics\Donations\Repositories\DonationRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\GA4\Client;
