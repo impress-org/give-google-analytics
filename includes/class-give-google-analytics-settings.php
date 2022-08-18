@@ -83,7 +83,7 @@ class Give_Google_Analytics_Settings
     /**
      * Add scripts.
      *
-     * @unreleased Load assets from dist directory
+     * @since 2.0.0 Load assets from dist directory
      */
     public function add_scripts($hook)
     {
@@ -311,7 +311,7 @@ class Give_Google_Analytics_Settings
     /**
      * Description Field.
      *
-     * @unreleased Load images from dist directory.
+     * @since 2.0.0 Load images from dist directory.
      */
     function description_field()
     {

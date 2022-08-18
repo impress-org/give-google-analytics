@@ -26,7 +26,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     private $settingRepository;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     public function __construct(
         SettingRepository $settingRepository,
@@ -39,7 +39,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      *
      * @param int $donationId
      * @param string $newDonationStatus
@@ -96,7 +96,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     private function getEventData(
         Donation $donation,
@@ -122,7 +122,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
         /**
          * Use this filter hooke to add additional data to Google Analytics refund event.
          *
-         * @unreleased
+         * @since 2.0.0
          */
         return apply_filters('give_google_analytics_ga4_refund_event_data', $eventData, $donation);
     }
@@ -130,7 +130,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     /**
      * This function returns the Google Analytics client id which generates on frontend when donor process/view donation form or which website.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     private function getGoogleAnalyticsClientTrackingId(Donation $donation, bool $isRenewal): string
     {
@@ -144,7 +144,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     /**
      * This function return Google Analytics client session key.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     private function getGoogleAnalyticsClientSession(Donation $donation, bool $isRenewal): string
     {

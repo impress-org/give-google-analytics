@@ -8,18 +8,18 @@ use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 /**
  * This class provides the Google Analytics client which uses to post event data.
  *
- * @unreleased
+ * @since 2.0.0
  */
 class Client
 {
     /**
-     * @unreleased
+     * @since 2.0.0
      * @var SettingRepository
      */
     private $settingRepository;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     public function __construct(SettingRepository $settingRepository)
     {

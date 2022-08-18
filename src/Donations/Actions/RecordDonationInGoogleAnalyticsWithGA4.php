@@ -12,7 +12,7 @@ use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 /**
- * @unreleased
+ * @since 2.0.0
  */
 class RecordDonationInGoogleAnalyticsWithGA4
 {
@@ -30,7 +30,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     private $settingRepository;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     public function __construct(
         SettingRepository $settingRepository,
@@ -43,7 +43,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @return void
      */
     public function __invoke($donationId, $newDonationStatus)
@@ -64,7 +64,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function triggers Google Analytic event for renewal payment.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function handleRenewal(Give_Payment $givePayment)
     {
@@ -84,7 +84,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function sends event data to Google analytics.
      *
-     * @unreleased
+     * @since 2.0.0
      *
      * @return void
      */
@@ -113,7 +113,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     private function getEventData(Donation $donation): array
     {
@@ -150,7 +150,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
         /**
          * Use this filter hooke to add additional data to Google Analytics purchase event.
          *
-         * @unreleased
+         * @since 2.0.0
          */
         return apply_filters('give_google_analytics_ga4_purchase_event_data', $eventData, $donation);
     }
@@ -159,7 +159,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
      * This function returns donation type label.
      * This label used as product category which help to differentiate revenue in Google Analytics Dashboard.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     private function getDonationTypeLabel(Donation $donation): string
     {
@@ -177,7 +177,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function return Google Analytics client session key.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     private function getGoogleAnalyticsClientSession(Donation $donation): string
     {
@@ -195,7 +195,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function returns the Google Analytics client id which generates on frontend when donor process/view donation form or which website.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     private function getGoogleAnalyticsClientTrackingId(Donation $donation): string
     {

@@ -2,8 +2,8 @@
 Contributors: givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 5.0
-Tested up to: 5.4
-Stable tag: 1.2.5
+Tested up to: 6.0
+Stable tag: 2.0.0
 Requires PHP: 7.0
 Requires Give: 2.21.3
 License: GPLv3
@@ -39,6 +39,9 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 2.0.0: August 18th, 2022 =
+* New: Support for Google Analytics 4! Switch within the plugins settings when ready.
 
 = 1.2.5: June 15th, 2020 =
 * New: Added support for the upcoming release of GiveWP 2.7.0 and the new donation form template.

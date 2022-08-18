@@ -9,13 +9,13 @@ use GiveGoogleAnalytics\Donations\Actions\RefundDonationInGoogleAnalyticsWithGA4
 use GiveGoogleAnalytics\Donations\Actions\StoreDonorGoogleAnalyticsData;
 
 /**
- * @unreleased
+ * @since 2.0.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.0.0
      * @return void
      */
     public function register()
@@ -23,7 +23,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @return void
      */
     public function boot()

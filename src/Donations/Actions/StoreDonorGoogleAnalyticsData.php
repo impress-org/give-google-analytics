@@ -9,7 +9,7 @@ use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 /**
  * This class uses to store donor google analytic data when donor process donation.
  *
- * @unreleased
+ * @since 2.0.0
  */
 class StoreDonorGoogleAnalyticsData
 {
@@ -19,7 +19,7 @@ class StoreDonorGoogleAnalyticsData
     private $settingRepository;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     public function __construct(SettingRepository $settingRepository)
     {
@@ -27,7 +27,7 @@ class StoreDonorGoogleAnalyticsData
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      *
      * @return void
      */
@@ -63,7 +63,7 @@ class StoreDonorGoogleAnalyticsData
     /**
      * This function returns flag whether preserve donor Google Analytics data or not.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     private function canStoreDonorGoogleAnalyticsData(Donation $donation): bool
     {
@@ -75,7 +75,7 @@ class StoreDonorGoogleAnalyticsData
     /**
      * This function returns session value of client. Session id generates by google Analytics.
      *
-     * @unreleased
+     * @since 2.0.0
      *
      * @return string
      */

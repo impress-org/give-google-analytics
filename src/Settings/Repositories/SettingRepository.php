@@ -8,14 +8,14 @@ use GiveGoogleAnalytics\Settings\ValueObjects\SettingNames;
 /**
  * This class use to get add-on settings values from database.
  *
- * @unreleased
+ * @since 2.0.0
  */
 class SettingRepository
 {
     /**
      * This function returns Google Analytics tracking mode.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function getTrackingMode(): string
     {
@@ -25,7 +25,7 @@ class SettingRepository
     /**
      * This function returns Universal Analytics tracking id
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function getUniversalAnalyticsTrackingId(): string
     {
@@ -35,7 +35,7 @@ class SettingRepository
     /**
      * This function returns Google Analytics 4 Web stream measurement id
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function getGoogleAnalytics4WebStreamMeasurementId(): string
     {
@@ -45,7 +45,7 @@ class SettingRepository
     /**
      * This function returns Google Analytics 4 Web stream measurement protocol api secret
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function getGoogleAnalytics4WebStreamMeasurementProtocolApiSecret(): string
     {
@@ -55,7 +55,7 @@ class SettingRepository
     /**
      * This function returns flag whether track test donations.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function canTrackTestDonations(): bool
     {
@@ -65,7 +65,7 @@ class SettingRepository
     /**
      * This function returns flag whether track refunded donations.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function canTrackRefunds(): string
     {
@@ -76,7 +76,7 @@ class SettingRepository
      * This function returns flag whether track values.
      * TODO: add explaining about what are tracking values
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function canTrackValues(): string
     {
@@ -86,7 +86,7 @@ class SettingRepository
     /**
      * This function returns track category name.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function getTrackCategory(): string
     {
@@ -96,7 +96,7 @@ class SettingRepository
     /**
      * This function returns track affiliation name.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function getTrackAffiliation(): string
     {
@@ -106,7 +106,7 @@ class SettingRepository
     /**
      * This function returns track list name.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function getTrackListName(): string
     {
@@ -116,7 +116,7 @@ class SettingRepository
     /**
      * This function returns boolean value whether add-on track analytics with Universal Analytics.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function isSupportTrackingUniversalAnalytics(): bool
     {
@@ -126,7 +126,7 @@ class SettingRepository
     /**
      * This function returns boolean value whether add-on track analytics with Google Analytics 4.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function isSupportTrackingGoogleAnalytics4(): bool
     {
@@ -136,7 +136,7 @@ class SettingRepository
     /**
      * This function returns whether record google event.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public function canSendEvent(string $trackingMode = null): bool
     {

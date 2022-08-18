@@ -6,30 +6,30 @@ namespace GiveGoogleAnalytics\GoogleAnalytics\DataTransferObjects;
  * This class object represents campaign data stores in donation meta. Google Analytics supports utm_* data in url.
  * Read more: https://support.google.com/analytics/answer/10917952
  *
- * @unreleased
+ * @since 2.0.0
  */
 class CampaignDTO
 {
     /**
-     * @unreleased
+     * @since 2.0.0
      * @var string
      */
     public $campaignName;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @var string
      */
     public $campaignSource;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @var string
      */
     public $campaignMedium;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @var string
      */
     public $campaignContent;

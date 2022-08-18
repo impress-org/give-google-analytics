@@ -7,7 +7,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * This class represent add-on specific donation meta keys as enum values.
  *
- * @unreleased
+ * @since 2.0.0
  *
  * @method static DonationMetaKeys GA_CLIENT_ID()
  * @method static DonationMetaKeys GA_CAMPAIGN_NAME()

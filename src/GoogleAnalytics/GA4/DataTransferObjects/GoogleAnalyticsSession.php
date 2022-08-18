@@ -3,18 +3,18 @@
 namespace GiveGoogleAnalytics\GoogleAnalytics\GA4\DataTransferObjects;
 
 /**
- * @unreleased
+ * @since 2.0.0
  */
 class GoogleAnalyticsSession
 {
     /**
-     * @unreleased
+     * @since 2.0.0
      * @var string
      */
     public $gaSessionId = '';
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @var string
      */
     public $gaSessionNumber = '';
@@ -23,7 +23,7 @@ class GoogleAnalyticsSession
      * This function modify Google Analytics client session value into predictable object and return object.
      * This value stores in donation metadata.
      *
-     * @unreleased
+     * @since 2.0.0
      */
     public static function fromDonationMetaDataValue(string $session): self
     {

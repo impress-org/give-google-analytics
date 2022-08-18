@@ -5,7 +5,7 @@ namespace GiveGoogleAnalytics\GoogleAnalytics\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 2.0.0
  */
 class TrackingMode extends Enum
 {

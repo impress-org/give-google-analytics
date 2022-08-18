@@ -7,7 +7,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * This class represent add-on specific setting names as enum values.
  *
- * @unreleased
+ * @since 2.0.0
  *
  * @method static SettingNames TRACKING_MODE()
  * @method static SettingNames UNIVERSAL_ANALYTICS_TRACKING_ID()

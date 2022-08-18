@@ -6,7 +6,7 @@ use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 /**
- * @unreleased
+ * @since 2.0.0
  */
 class RecordGoogleEventWithGA4OnFrontend
 {
@@ -16,7 +16,7 @@ class RecordGoogleEventWithGA4OnFrontend
     private $settingRepository;
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     public function __construct(SettingRepository $settingRepository)
     {
@@ -24,7 +24,7 @@ class RecordGoogleEventWithGA4OnFrontend
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @return void
      */
     public function handleWpFooter()
@@ -165,7 +165,7 @@ class RecordGoogleEventWithGA4OnFrontend
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      * @return void
      */
     public function handleGiveEmbedFooter()
@@ -251,7 +251,7 @@ class RecordGoogleEventWithGA4OnFrontend
     }
 
     /**
-     * @unreleased
+     * @since 2.0.0
      */
     private function canPrintScript(): bool
     {
