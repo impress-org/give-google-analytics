@@ -3,11 +3,15 @@
  * Plugin Name:     Give - Google Analytics Donation Tracking
  * Plugin URI:      https://givewp.com/addons/google-analytics/
  * Description:     Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
- * Version:         1.2.5
+ * Version:         2.0.0
  * Author:          GiveWP
  * Author URI:      https://givewp.com
+ * Requires at least: 5.0
+ * Requires PHP:    7.0
  * Text Domain:     give-google-analytics
  */
+
+use GiveGoogleAnalytics\Donations\ServiceProvider;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,12 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '1.2.5' );
+	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '2.0.0' );
 }
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.6.0' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.21.3' );
 }
 
 // Plugin File.
@@ -326,3 +330,25 @@ if ( ! class_exists( 'Give_Google_Analytics' ) ) {
 
 	Give_Google_Analytics();
 }
+
+// Autoloader
+require __DIR__ . '/vendor/autoload.php';
+
+/**
+ * Load the Service Providers with Give core. This *must* remain outside of the Give_Google_Analytics class
+ * as it is a completely different bootstrapping system and cannot run inside of the plugins_loaded hook.
+ *
+ * @since 2.0.0
+ */
+add_action('before_give_init', function () {
+    // Check Give min required version.
+    if (Give_Google_Analytics()->get_environment_warning()) {
+        $service_providers = [
+            ServiceProvider::class
+        ];
+
+        foreach ($service_providers as $service_provider) {
+            give()->registerServiceProvider($service_provider);
+        }
+    }
+});

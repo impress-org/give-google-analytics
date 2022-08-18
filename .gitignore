@@ -1,1 +1,9 @@
 node_modules
+
+vendor
+
+assets/dist
+
+languages/*
+!languages/.gitkeep
+
