@@ -53,11 +53,19 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         Hooks::addAction(
+            'give_recurring_add_subscription_payment',
+            RecordDonationInGoogleAnalyticsWithGA4::class,
+            'handleRenewal',
+            110,
+            1
+        );
+
+        Hooks::addAction(
             'give_update_payment_status',
             RefundDonationInGoogleAnalyticsWithGA4::class,
             '__invoke',
             10,
-            2
+            3
         );
     }
 }

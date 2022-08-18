@@ -56,12 +56,13 @@ class RecordGoogleEventWithGA4OnFrontend
 
                         // Loop through each form on page and provide an impression.
                         give_forms.each(function (index, form) {
-                            var form_id = $(this).find('input[name="give-form-id"]').val();
-                            var form_title = $(this).find('input[name="give-form-title"]').val();
-                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', $(this).get(0));
-                            var currency_code = $(this).attr('data-currency_code');
+                            form  = jQuery(form);
+                            var form_id = form.find('input[name="give-form-id"]').val();
+                            var form_title = form.find('input[name="give-form-title"]').val();
+                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', form.get(0));
+                            var currency_code = form.attr('data-currency_code');
                             var default_donation_amount = Give.fn.unFormatCurrency(
-                                form.querySelector('.give-final-total-amount').getAttribute('data-total'),
+                                form.get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
                                 decimal_separator
                             );
 
@@ -72,13 +73,13 @@ class RecordGoogleEventWithGA4OnFrontend
                                     {
                                         item_id: form_id,
                                         item_name: form_title,
+                                        item_brand: 'Fundraising',
                                         affiliation: '<?php echo esc_js(
                                             $this->settingRepository->getTrackAffiliation()
                                         )?>',
                                         item_category: '<?php echo esc_js(
                                             $this->settingRepository->getTrackCategory()
                                         )?>',
-                                        item_category2: 'Fundraising',
                                         item_list_name: '<?php echo esc_js(
                                             $this->settingRepository->getTrackListName()
                                         )?>',
@@ -89,16 +90,17 @@ class RecordGoogleEventWithGA4OnFrontend
 
                         // More code using $ as alias to jQuery
                         give_forms.on('submit', function (event) {
-
-                            var form_id = $(this).find('input[name="give-form-id"]').val();
-                            var form_title = $(this).find('input[name="give-form-title"]').val();
-                            var form_gateway = $(this).find('input[name="give-gateway"]').val();
-                            var currency_code = $(this).attr('data-currency_code');
-                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', $(this).get(0));
+                            var form = jQuery(event.target);
+                            var form_id = form.find('input[name="give-form-id"]').val();
+                            var form_title = form.find('input[name="give-form-title"]').val();
+                            var form_gateway = form.find('input[name="give-gateway"]').val();
+                            var currency_code = form.attr('data-currency_code');
+                            var decimal_separator = Give.form.fn.getInfo('decimal_separator', form.get(0));
                             var donation_amount = Give.fn.unFormatCurrency(
-                                $(this).get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
+                                form.get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
                                 decimal_separator
                             );
+                            var isRecurring = '1' === form.find( 'input[name="_give_is_donation_recurring"]' ).val()
 
                             gtag('event', 'begin_checkout', {
                                 currency: currency_code,
@@ -107,14 +109,15 @@ class RecordGoogleEventWithGA4OnFrontend
                                     {
                                         item_id: form_id,
                                         item_name: form_title,
+                                        item_brand: 'Fundraising',
                                         affiliation: '<?php echo esc_js(
                                             $this->settingRepository->getTrackAffiliation()
                                         )?>',
                                         item_category: '<?php echo esc_js(
                                             $this->settingRepository->getTrackCategory()
                                         )?>',
-                                        item_category2: 'Fundraising',
-                                        item_category3: form_gateway,
+                                        item_category2: form_gateway,
+                                        item_category3: isRecurring ? 'Subscription' : 'One-Time',
                                         item_list_name: '<?php echo esc_js(
                                             $this->settingRepository->getTrackListName()
                                         )?>',
@@ -176,7 +179,6 @@ class RecordGoogleEventWithGA4OnFrontend
 
             if ('function' === typeof gtag) {
                 var form = document.querySelector('form.give-form')
-
                 var form_id = form.querySelector('input[name="give-form-id"]').value;
                 var form_title = form.querySelector('input[name="give-form-title"]').value;
                 var decimal_separator = Give.form.fn.getInfo('decimal_separator', form);
@@ -216,6 +218,7 @@ class RecordGoogleEventWithGA4OnFrontend
                         form.querySelector('.give-final-total-amount').getAttribute('data-total'),
                         decimal_separator
                     );
+                    var isRecurring = '1' === jQuery(form).find( 'input[name="_give_is_donation_recurring"]' ).val()
 
                     gtag('event', 'begin_checkout', {
                         currency: currency_code,
@@ -232,6 +235,7 @@ class RecordGoogleEventWithGA4OnFrontend
                                     $this->settingRepository->getTrackCategory()
                                 )?>',
                                 item_category2: form_gateway,
+                                item_category3: isRecurring ? 'Subscription' : 'One-Time',
                                 item_list_name: '<?php echo esc_js(
                                     $this->settingRepository->getTrackListName()
                                 )?>',

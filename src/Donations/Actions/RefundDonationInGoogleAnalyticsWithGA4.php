@@ -46,7 +46,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
      *
      * @return void
      */
-    public function __invoke($donationId, $newDonationStatus)
+    public function __invoke($donationId, $newDonationStatus, $oldDonationStatus)
     {
         if (
             DonationStatus::REFUNDED !== $newDonationStatus ||
@@ -67,8 +67,15 @@ class RefundDonationInGoogleAnalyticsWithGA4
         }
 
         try {
+            $isRenewal = $oldDonationStatus === DonationStatus::RENEWAL;
             $response = $this->client->postEvent(
-                json_encode($this->getEventData($donation))
+                json_encode(
+                    $this->getEventData(
+                        $donation,
+                        $this->getGoogleAnalyticsClientTrackingId($donation, $isRenewal),
+                        $this->getGoogleAnalyticsClientSession($donation, $isRenewal)
+                    )
+                )
             );
 
             // Check if beacon sent successfully.
@@ -91,17 +98,22 @@ class RefundDonationInGoogleAnalyticsWithGA4
     /**
      * @unreleased
      */
-    private function getEventData(Donation $donation): array
-    {
+    private function getEventData(
+        Donation $donation,
+        string $clientId,
+        string $sessionId
+    ): array {
         $eventData = [
-            'client_id' => $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id),
+            'client_id' => $clientId,
             'events' => [
                 [
                     'name' => 'refund',
                     'params' => [
                         'currency' => $donation->amount->getCurrency()->getCode(),
                         'value' => $donation->amount->formatToDecimal(),
-                        'transaction_id' => $donation->id
+                        'transaction_id' => $donation->id,
+                        'engagement_time_msec' => 1,
+                        'session_id' => $sessionId,
                     ]
                 ]
             ]
@@ -113,5 +125,37 @@ class RefundDonationInGoogleAnalyticsWithGA4
          * @unreleased
          */
         return apply_filters('give_google_analytics_ga4_refund_event_data', $eventData, $donation);
+    }
+
+    /**
+     * This function returns the Google Analytics client id which generates on frontend when donor process/view donation form or which website.
+     *
+     * @unreleased
+     */
+    private function getGoogleAnalyticsClientTrackingId(Donation $donation, bool $isRenewal): string
+    {
+        if ($isRenewal) {
+            return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->parentId);
+        }
+
+        return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id);
+    }
+
+    /**
+     * This function return Google Analytics client session key.
+     *
+     * @unreleased
+     */
+    private function getGoogleAnalyticsClientSession(Donation $donation, bool $isRenewal): string
+    {
+        if ($isRenewal) {
+            return $this->donationRepository
+                ->getGoogleAnalyticsClientSession($donation->parentId)
+                ->gaSessionId;
+        }
+
+        return $this->donationRepository
+            ->getGoogleAnalyticsClientSession($donation->id)
+            ->gaSessionId;
     }
 }
