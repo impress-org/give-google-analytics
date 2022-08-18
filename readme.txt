@@ -42,6 +42,8 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 = 2.0.0: August 18th, 2022 =
 * New: Support for Google Analytics 4! Switch within the plugins settings when ready.
+* New: Subscription renewals are now sent to GA (only GA4)
+* New: The "category 3" in GA is now the recurrence of the donation — one-time, subscription, or renewal (only GA4)
 
 = 1.2.5: June 15th, 2020 =
 * New: Added support for the upcoming release of GiveWP 2.7.0 and the new donation form template.
