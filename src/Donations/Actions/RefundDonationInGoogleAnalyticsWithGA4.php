@@ -2,12 +2,14 @@
 
 namespace GiveGoogleAnalytics\Donations\Actions;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use GiveGoogleAnalytics\Donations\Repositories\DonationRepository;
 use GiveGoogleAnalytics\GoogleAnalytics\GA4\Client;
 use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
+use GiveGoogleAnalytics\Log\Log;
 use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 class RefundDonationInGoogleAnalyticsWithGA4
@@ -67,13 +69,12 @@ class RefundDonationInGoogleAnalyticsWithGA4
         }
 
         try {
-            $isRenewal = $oldDonationStatus === DonationStatus::RENEWAL;
             $response = $this->client->postEvent(
                 json_encode(
                     $this->getEventData(
                         $donation,
-                        $this->getGoogleAnalyticsClientTrackingId($donation, $isRenewal),
-                        $this->getGoogleAnalyticsClientSession($donation, $isRenewal)
+                        $this->getGoogleAnalyticsClientTrackingId($donation, $donation->type->isRenewal()),
+                        $this->getGoogleAnalyticsClientSession($donation, $donation->type->isRenewal())
                     )
                 )
             );
@@ -91,7 +92,11 @@ class RefundDonationInGoogleAnalyticsWithGA4
                     ]
                 );
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
+            Log::error('Google Analytics refund beacon failed to send.', [
+                'donationId' => $donationId,
+                'exception' => $exception,
+            ]);
         }
     }
 
@@ -135,7 +140,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     private function getGoogleAnalyticsClientTrackingId(Donation $donation, bool $isRenewal): string
     {
         if ($isRenewal) {
-            return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->parentId);
+            return $this->donationRepository->getGoogleAnalyticsClientTrackingId(give()->subscriptions->getInitialDonationId($donation->subscriptionId));
         }
 
         return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id);
@@ -150,7 +155,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     {
         if ($isRenewal) {
             return $this->donationRepository
-                ->getGoogleAnalyticsClientSession($donation->parentId)
+                ->getGoogleAnalyticsClientSession(give()->subscriptions->getInitialDonationId($donation->subscriptionId))
                 ->gaSessionId;
         }
 
