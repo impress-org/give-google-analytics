@@ -64,6 +64,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function triggers Google Analytic event for renewal payment.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     public function handleRenewal(Give_Payment $givePayment)
@@ -160,6 +161,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
      * This function returns donation type label.
      * This label used as product category which help to differentiate revenue in Google Analytics Dashboard.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     private function getDonationTypeLabel(Donation $donation): string
@@ -178,6 +180,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function return Google Analytics client session key.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     private function getGoogleAnalyticsClientSession(Donation $donation): string
@@ -196,6 +199,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function returns the Google Analytics client id which generates on frontend when donor process/view donation form or which website.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     private function getGoogleAnalyticsClientTrackingId(Donation $donation): string

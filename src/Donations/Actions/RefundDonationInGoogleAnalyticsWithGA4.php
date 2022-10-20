@@ -41,6 +41,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     }
 
     /**
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      *
      * @param int $donationId
@@ -135,6 +136,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     /**
      * This function returns the Google Analytics client id which generates on frontend when donor process/view donation form or which website.
      *
+     * @unreleased switch to new method for retrieving initial donation
      * @since 2.0.0
      */
     private function getGoogleAnalyticsClientTrackingId(Donation $donation, bool $isRenewal): string
@@ -149,6 +151,7 @@ class RefundDonationInGoogleAnalyticsWithGA4
     /**
      * This function return Google Analytics client session key.
      *
+     * @unreleased switch to new method for retrieving initial donation
      * @since 2.0.0
      */
     private function getGoogleAnalyticsClientSession(Donation $donation, bool $isRenewal): string
