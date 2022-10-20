@@ -2,10 +2,10 @@
 Contributors: givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 5.0
-Tested up to: 6.0
-Stable tag: 2.0.0
+Tested up to: 6.1
+Stable tag: 2.1.0
 Requires PHP: 7.0
-Requires Give: 2.21.3
+Requires Give: 2.23.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,10 +19,9 @@ Also, This plugin assumes that you have already added Google analytics tracking 
 
 = Minimum Requirements =
 
-* WordPress 4.8 or greater
-* PHP version 5.3 or greater
-* MySQL version 5.0 or greater
-* Some payment gateways require fsockopen support (for IPN access)
+* WordPress 5.0 or greater
+* PHP version 7.0 or greater
+* MySQL version 5.7 or greater
 
 = Automatic installation =
 
@@ -39,6 +38,8 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+= 2.1.0: October 20th, 2022 =
+* Enhancement: Under the hood improvements to how recurring donations are handled
 
 = 2.0.0: August 18th, 2022 =
 * New: Support for Google Analytics 4! Switch within the plugins settings when ready.
