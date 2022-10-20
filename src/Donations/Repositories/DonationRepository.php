@@ -73,12 +73,4 @@ class DonationRepository
             )
         );
     }
-
-    /**
-     * @since 2.0.0
-     */
-    public function isParentSubscription(int $donationId): bool
-    {
-        return '1' === give()->payment_meta->get_meta($donationId, '_give_subscription_payment', true);
-    }
 }

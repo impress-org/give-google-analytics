@@ -64,19 +64,21 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function triggers Google Analytic event for renewal payment.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     public function handleRenewal(Give_Payment $givePayment)
     {
         if (
-            DonationStatus::RENEWAL !== $givePayment->status ||
             !$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4) ||
             $this->donationRepository->isGoogleAnalyticEventSent($givePayment->ID)
         ) {
             return;
         }
 
-        if ($donation = Donation::find($givePayment->ID)) {
+        $donation = Donation::find($givePayment->ID);
+
+        if ($donation !== null && $donation->type->isRenewal()) {
             $this->sendEvent($donation);
         }
     }
@@ -104,7 +106,7 @@ class RecordDonationInGoogleAnalyticsWithGA4
                         'content' => esc_html__(
                             'Google Analytics ecommerce tracking beacon sent.',
                             'give-google-analytics'
-                        )
+                        ),
                     ]
                 );
             }
@@ -139,12 +141,12 @@ class RecordDonationInGoogleAnalyticsWithGA4
                                 'item_category3' => $this->getDonationTypeLabel($donation),
                                 'item_list_name' => $this->settingRepository->getTrackListName(),
                                 'price' => $donation->amount->formatToDecimal(),
-                                'quantity' => 1
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'quantity' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         /**
@@ -159,15 +161,16 @@ class RecordDonationInGoogleAnalyticsWithGA4
      * This function returns donation type label.
      * This label used as product category which help to differentiate revenue in Google Analytics Dashboard.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     private function getDonationTypeLabel(Donation $donation): string
     {
-        if ($donation->status->isRenewal()) {
+        if ($donation->type->isRenewal()) {
             return 'Renewal';
         }
 
-        if (give(DonationRepository::class)->isParentSubscription($donation->id)) {
+        if ($donation->type->isSubscription()) {
             return 'Subscription';
         }
 
@@ -177,13 +180,14 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function return Google Analytics client session key.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     private function getGoogleAnalyticsClientSession(Donation $donation): string
     {
-        if ($donation->status->isRenewal()) {
+        if ($donation->type->isRenewal()) {
             return $this->donationRepository
-                ->getGoogleAnalyticsClientSession($donation->parentId)
+                ->getGoogleAnalyticsClientSession(give()->subscriptions->getInitialDonationId($donation->subscriptionId))
                 ->gaSessionId;
         }
 
@@ -195,12 +199,13 @@ class RecordDonationInGoogleAnalyticsWithGA4
     /**
      * This function returns the Google Analytics client id which generates on frontend when donor process/view donation form or which website.
      *
+     * @unreleased use the new donation type property to identify renewals
      * @since 2.0.0
      */
     private function getGoogleAnalyticsClientTrackingId(Donation $donation): string
     {
-        if ($donation->status->isRenewal()) {
-            return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->parentId);
+        if ($donation->type->isRenewal()) {
+            return $this->donationRepository->getGoogleAnalyticsClientTrackingId(give()->subscriptions->getInitialDonationId($donation->subscriptionId));
         }
 
         return $this->donationRepository->getGoogleAnalyticsClientTrackingId($donation->id);
