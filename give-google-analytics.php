@@ -3,7 +3,7 @@
  * Plugin Name:     Give - Google Analytics Donation Tracking
  * Plugin URI:      https://givewp.com/addons/google-analytics/
  * Description:     Add Google Analytics Enhanced eCommerce tracking functionality to Give to track donations.
- * Version:         2.0.0
+ * Version:         2.1.0
  * Author:          GiveWP
  * Author URI:      https://givewp.com
  * Requires at least: 5.0
@@ -19,12 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '2.0.0' );
+	define( 'GIVE_GOOGLE_ANALYTICS_VERSION', '2.1.0' );
 }
 
 // Min. Give version.
 if ( ! defined( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.21.3' );
+	define( 'GIVE_GOOGLE_ANALYTICS_MIN_GIVE_VERSION', '2.23.0' );
 }
 
 // Plugin File.
