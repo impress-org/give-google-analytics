@@ -251,6 +251,10 @@ class RecordGoogleEventWithGA4OnFrontend
     }
 
     public function recordPageViewInGoogleAnalyticsWithGA4(){
+        if (!$this->canPrintScript()) {
+            return;
+        }
+        
         $tracking_id = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
         $script = "
         window.dataLayer = window.dataLayer || [];
