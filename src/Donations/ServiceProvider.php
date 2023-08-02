@@ -45,7 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         Hooks::addAction(
-            'givewp_render_donation_form',
+            'givewp_donation_form_enqueue_scripts',
             RecordGoogleEventWithGA4OnFrontend::class,
             'recordPageViewInGoogleAnalyticsWithGA4',
             99999
