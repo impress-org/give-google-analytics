@@ -250,6 +250,27 @@ class RecordGoogleEventWithGA4OnFrontend
         <?php
     }
 
+    public function recordPageViewInGoogleAnalyticsWithGA4(){
+        $tracking_id = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
+        $script = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '$tracking_id');";
+        $script .= "
+        gtag('event', 'page_view', {
+            'page_path': window.location.pathname,
+            'page_title': document.title,
+        });
+    ";
+
+        wp_enqueue_script(
+            'google-analytics',
+            'https://www.googletagmanager.com/gtag/js?id=' . $tracking_id,
+            [],
+            null,
+            false
+        );
+
+        wp_add_inline_script('google-analytics', $script);
+    }
+
     /**
      * @since 2.0.0
      */
