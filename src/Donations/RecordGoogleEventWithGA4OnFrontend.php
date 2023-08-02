@@ -255,8 +255,8 @@ class RecordGoogleEventWithGA4OnFrontend
         $script = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '$tracking_id');";
         $script .= "
         gtag('event', 'page_view', {
-            'page_path': window.location.pathname,
-            'page_title': document.title,
+            'page_path': window.document.location.pathname,
+            'page_title': window.document.title,
         });
     ";
 
