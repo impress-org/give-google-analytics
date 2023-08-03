@@ -259,11 +259,13 @@ class RecordGoogleEventWithGA4OnFrontend
         }
 
         $tracking_id = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
+        $encoded_tracking_id = base64_encode($tracking_id);
+
         $script = "
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '$tracking_id');
+        gtag('config', '$encoded_tracking_id');
         gtag('event', 'page_view', {
             'page_path': window.parent.location.pathname,
             'page_title': window.parent.document.title
@@ -271,7 +273,7 @@ class RecordGoogleEventWithGA4OnFrontend
     ";
         wp_enqueue_script(
             'google-analytics',
-            'https://www.googletagmanager.com/gtag/js?id=' . $tracking_id,
+            'https://www.googletagmanager.com/gtag/js?id=' . $encoded_tracking_id,
             [],
             null,
             false
