@@ -253,33 +253,74 @@ class RecordGoogleEventWithGA4OnFrontend
     /**
      * @unreleased
      */
-    public function recordPageViewInGoogleAnalyticsWithGA4(){
-        if (!$this->canPrintScript()) {
-            return;
-        }
+    function handleFrontendEventsOnV3Forms() {
+//        if (!$this->canPrintScript()) {
+//            return;
+//        }
 
-        $tracking_id = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
-        $encoded_tracking_id = base64_encode($tracking_id);
+        $tracking_id   = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
+        $affiliation   = $this->settingRepository->getTrackAffiliation();
+        $trackCategory = $this->settingRepository->getTrackCategory();
+        $trackListName = $this->settingRepository->getTrackListName();
+        ?>
 
-        $script = "
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '$encoded_tracking_id');
-        gtag('event', 'page_view', {
-            'page_path': window.parent.location.pathname,
-            'page_title': window.parent.document.title
-        });
-    ";
-        wp_enqueue_script(
-            'google-analytics',
-            'https://www.googletagmanager.com/gtag/js?id=' . $encoded_tracking_id,
-            [],
-            null,
-            false
-        );
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<?esc_js($tracking_id)?>"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments)}
+            gtag('js', new Date());
+            gtag('config', '<?php echo esc_js($tracking_id)?>');
+            gtag('event', 'page_view', {
+                'page_path': window.parent.location.pathname,
+                'page_title': window.parent.document.title
+            });
 
-        wp_add_inline_script('google-analytics', $script);
+
+            window.addEventListener('DOMContentLoaded', function() {
+                var form = document.querySelector('#give-next-gen');
+                var donationAmount = form.querySelector('[name="amount"]').value;
+                var submitButton = form.querySelector('[type="submit"]');
+                var {currency, name} =  window.givewpDonationFormExports.form;
+
+
+                gtag('event', 'view_item', {
+                    currency: currency,
+                    value: donationAmount,
+                    items: [
+                        {
+                            item_id: form.id,
+                            item_name: name,
+                            item_brand: 'Fundraising',
+                            affiliation: '<? echo esc_js($affiliation)?>',
+                            item_category: `<? echo esc_js($trackCategory)?>`,
+                            item_list_name: `<? echo esc_js($trackListName)?>`,
+                        }
+                    ]
+                })
+
+                submitButton.addEventListener('submit', function(){
+                    gtag('event', 'begin_checkout', {
+                        currency: currency,
+                        value: donationAmount,
+                        items: [
+                            {
+                                item_id: form.id,
+                                item_name: name,
+                                item_brand: 'Fundraising',
+                                affiliation: '<? echo esc_js($this->settingRepository->getTrackAffiliation())?>',
+                                item_category: '<? echo esc_js($this->settingRepository->getTrackCategory())?>',
+                                item_category2: "form_gateway",
+                                item_category3: isRecurring ? 'Subscription' : 'One-Time',
+                                item_list_name: '<? echo esc_js($this->settingRepository->getTrackListName())?>',
+                                price: donationAmount,
+                                quantity: 1
+                            }
+                        ]
+                    });
+                })
+            });
+        </script>
+        <?php
     }
 
     /**
