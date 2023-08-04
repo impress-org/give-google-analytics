@@ -254,9 +254,9 @@ class RecordGoogleEventWithGA4OnFrontend
      * @unreleased
      */
     function handleFrontendEventsOnV3Forms() {
-//        if (!$this->canPrintScript()) {
-//            return;
-//        }
+        if (!$this->canPrintScript()) {
+            return;
+        }
 
         $tracking_id   = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
         $affiliation   = $this->settingRepository->getTrackAffiliation();
@@ -270,25 +270,23 @@ class RecordGoogleEventWithGA4OnFrontend
             function gtag(){dataLayer.push(arguments)}
             gtag('js', new Date());
             gtag('config', '<?php echo esc_js($tracking_id)?>');
-            gtag('event', 'page_view', {
-                'page_path': window.parent.location.pathname,
-                'page_title': window.parent.document.title
-            });
-
 
             window.addEventListener('DOMContentLoaded', function() {
                 var form = document.querySelector('#give-next-gen');
                 var donationAmount = form.querySelector('[name="amount"]').value;
+                var formId = form.querySelector('[name="formId"]').value;
+                var donationType = form.querySelector('[name="donationType"]').value;
                 var submitButton = form.querySelector('[type="submit"]');
+                var gateway = form.querySelector('input[name="gatewayId"]:checked').value;
+
                 var {currency, name} =  window.givewpDonationFormExports.form;
-
-
+                
                 gtag('event', 'view_item', {
                     currency: currency,
                     value: donationAmount,
                     items: [
                         {
-                            item_id: form.id,
+                            item_id: formId,
                             item_name: name,
                             item_brand: 'Fundraising',
                             affiliation: '<? echo esc_js($affiliation)?>',
@@ -304,13 +302,13 @@ class RecordGoogleEventWithGA4OnFrontend
                         value: donationAmount,
                         items: [
                             {
-                                item_id: form.id,
+                                item_id: formId,
                                 item_name: name,
                                 item_brand: 'Fundraising',
                                 affiliation: '<? echo esc_js($this->settingRepository->getTrackAffiliation())?>',
                                 item_category: '<? echo esc_js($this->settingRepository->getTrackCategory())?>',
-                                item_category2: "form_gateway",
-                                item_category3: isRecurring ? 'Subscription' : 'One-Time',
+                                item_category2: gateway,
+                                item_category3: donationType,
                                 item_list_name: '<? echo esc_js($this->settingRepository->getTrackListName())?>',
                                 price: donationAmount,
                                 quantity: 1
