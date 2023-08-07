@@ -273,17 +273,15 @@ class RecordGoogleEventWithGA4OnFrontend
 
             window.addEventListener('DOMContentLoaded', function() {
                 var form = document.querySelector('#give-next-gen');
-                var donationAmount = form.querySelector('[name="amount"]').value;
+                var defaultDonationAmount = form.querySelector('input[name="amount"]').value;
                 var formId = form.querySelector('[name="formId"]').value;
-                var donationType = form.querySelector('[name="donationType"]').value;
-                var submitButton = form.querySelector('[type="submit"]');
-                var gateway = form.querySelector('input[name="gatewayId"]:checked').value;
+                var submitButton = form.querySelector('button[type="submit"]');
 
                 var {currency, name} =  window.givewpDonationFormExports.form;
-                
+
                 gtag('event', 'view_item', {
                     currency: currency,
-                    value: donationAmount,
+                    value: defaultDonationAmount,
                     items: [
                         {
                             item_id: formId,
@@ -297,8 +295,13 @@ class RecordGoogleEventWithGA4OnFrontend
                 })
 
                 submitButton.addEventListener('submit', function(){
+                    var donationAmount = form.querySelector('input[name="amount"]').value;
+                    var gateway = form.querySelector('input[name="gatewayId"]:checked').value;
+                    var donationType = form.querySelector('input[name="donationType"]').value;
+                    var selectedCurrency = form.querySelector('input[name="currency"]').value;
+
                     gtag('event', 'begin_checkout', {
-                        currency: currency,
+                        currency: selectedCurrency,
                         value: donationAmount,
                         items: [
                             {
@@ -310,7 +313,7 @@ class RecordGoogleEventWithGA4OnFrontend
                                 item_category2: gateway,
                                 item_category3: donationType,
                                 item_list_name: '<? echo esc_js($this->settingRepository->getTrackListName())?>',
-                                price: donationAmount,
+                                price: donationAmount ,
                                 quantity: 1
                             }
                         ]
