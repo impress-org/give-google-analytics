@@ -270,6 +270,7 @@ class RecordGoogleEventWithGA4OnFrontend
             function gtag(){dataLayer.push(arguments)}
             gtag('js', new Date());
             gtag('config', '<?php echo esc_js($tracking_id)?>',{
+                'debug_mode': true,
                 'page_title': window.parent.document.title
             });
 
