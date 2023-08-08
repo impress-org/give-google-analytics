@@ -254,9 +254,9 @@ class RecordGoogleEventWithGA4OnFrontend
      * @unreleased
      */
     function handleFrontendEventsOnV3Forms() {
-//        if (!$this->canPrintScript()) {
-//            return;
-//        }
+        if (!$this->canPrintScript()) {
+            return;
+        }
 
         $tracking_id   = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
         $affiliation   = $this->settingRepository->getTrackAffiliation();
@@ -270,7 +270,7 @@ class RecordGoogleEventWithGA4OnFrontend
             function gtag(){dataLayer.push(arguments)}
             gtag('js', new Date());
             gtag('config', '<?php echo esc_js($tracking_id)?>',{
-                'page_title': 'window.parent.document.title'
+                'page_title': window.parent.document.title
             });
 
 
