@@ -315,8 +315,6 @@ class RecordGoogleEventWithGA4OnFrontend
                                 item_category: '<? echo esc_js($this->settingRepository->getTrackCategory())?>',
                                 item_category2: gateway,
                                 item_category3: donationType,
-                                item_category4: donationType,
-                                item_category5: donationType,
                                 item_list_name: '<? echo esc_js($this->settingRepository->getTrackListName())?>',
                                 price: donationAmount ,
                                 quantity: 1
