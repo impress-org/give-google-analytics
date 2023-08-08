@@ -254,9 +254,9 @@ class RecordGoogleEventWithGA4OnFrontend
      * @unreleased
      */
     function handleFrontendEventsOnV3Forms() {
-        if (!$this->canPrintScript()) {
-            return;
-        }
+//        if (!$this->canPrintScript()) {
+//            return;
+//        }
 
         $tracking_id   = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
         $affiliation   = $this->settingRepository->getTrackAffiliation();
@@ -269,7 +269,10 @@ class RecordGoogleEventWithGA4OnFrontend
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments)}
             gtag('js', new Date());
-            gtag('config', '<?php echo esc_js($tracking_id)?>');
+            gtag('config', '<?php echo esc_js($tracking_id)?>',{
+                'page_title': 'window.parent.document.title'
+            });
+
 
             window.addEventListener('DOMContentLoaded', function() {
                 var form = document.querySelector('#give-next-gen');
@@ -312,6 +315,8 @@ class RecordGoogleEventWithGA4OnFrontend
                                 item_category: '<? echo esc_js($this->settingRepository->getTrackCategory())?>',
                                 item_category2: gateway,
                                 item_category3: donationType,
+                                item_category4: donationType,
+                                item_category5: donationType,
                                 item_list_name: '<? echo esc_js($this->settingRepository->getTrackListName())?>',
                                 price: donationAmount ,
                                 quantity: 1
