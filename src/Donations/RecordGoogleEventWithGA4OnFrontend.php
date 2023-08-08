@@ -270,7 +270,6 @@ class RecordGoogleEventWithGA4OnFrontend
             function gtag(){dataLayer.push(arguments)}
             gtag('js', new Date());
             gtag('config', '<?php echo esc_js($tracking_id)?>',{
-                'debug_mode': true,
                 'page_title': window.parent.document.title
             });
 
@@ -279,7 +278,6 @@ class RecordGoogleEventWithGA4OnFrontend
                 var form = document.querySelector('#give-next-gen');
                 var defaultDonationAmount = form.querySelector('input[name="amount"]').value;
                 var formId = form.querySelector('[name="formId"]').value;
-                var submitButton = form.querySelector('button[type="submit"]');
 
                 var {currency, name} =  window.givewpDonationFormExports.form;
 
@@ -298,7 +296,7 @@ class RecordGoogleEventWithGA4OnFrontend
                     ]
                 })
 
-                submitButton.addEventListener('submit', function(){
+                form.addEventListener('submit', function(){
                     var donationAmount = form.querySelector('input[name="amount"]').value;
                     var gateway = form.querySelector('input[name="gatewayId"]:checked').value;
                     var donationType = form.querySelector('input[name="donationType"]').value;
