@@ -12,6 +12,7 @@
  */
 
 use GiveGoogleAnalytics\Donations\ServiceProvider;
+use GiveGoogleAnalytics\FormExtension\ServiceProvider as FormExtensionServiceProvider;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -344,7 +345,8 @@ add_action('before_give_init', function () {
     // Check Give min required version.
     if (Give_Google_Analytics()->get_environment_warning()) {
         $service_providers = [
-            ServiceProvider::class
+            ServiceProvider::class,
+            FormExtensionServiceProvider::class
         ];
 
         foreach ($service_providers as $service_provider) {

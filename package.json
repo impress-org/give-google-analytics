@@ -1,17 +1,26 @@
 {
-  "name": "give-google-analytics",
-  "private": true,
-  "scripts": {
-    "start": "npm install && npm run watch",
-    "dev": "mix",
-    "production": "mix --production",
-    "build": "mix --production",
-    "watch": "mix watch"
-  },
-  "devDependencies": {
-    "laravel-mix": "^6.0.49",
-    "sass": "^1.53.0",
-    "sass-loader": "^12.6.0",
-    "webpack-rtl-plugin": "^2.0.0"
-  }
+    "name": "give-google-analytics",
+    "private": true,
+    "scripts": {
+        "start": "npm install && npm run watch",
+        "dev": "mix",
+        "production": "mix --production",
+        "build": "mix --production",
+        "watch": "mix watch",
+        "dev:form-extension": "wp-scripts build",
+        "watch:form-extension": "wp-scripts start",
+        "build:form-extension": "wp-scripts build"
+    },
+    "devDependencies": {
+        "@wordpress/scripts": "^26.9.0",
+        "laravel-mix": "^6.0.49",
+        "sass": "^1.53.0",
+        "sass-loader": "^12.6.0",
+        "webpack-rtl-plugin": "^2.0.0"
+    },
+    "dependencies": {
+        "@wordpress/blocks": "^12.15.0",
+        "@wordpress/i18n": "^4.38.0",
+        "ga-gtag": "^1.1.7"
+    }
 }
