@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { gtag, install as loadGoogleTag } from "ga-gtag";
+import { install as loadGoogleTag } from "ga-gtag";
+import { trackBeginCheckout, trackPageView, trackViewItem } from "./Utilities";
 
 interface GoogleAnalyticsFieldProps {
     trackingId: string;
@@ -20,7 +21,11 @@ export default function GoogleAnalyticsField({
 }: GoogleAnalyticsFieldProps) {
     const { useFormContext } = window.givewp.form.hooks;
     const { formTitle } = window.givewp.form.hooks.useDonationFormSettings();
-    const shouldEnableTracking = !administrator || !trackingMode;
+    const shouldDisableTracking = administrator || !trackingMode;
+
+    if (shouldDisableTracking) {
+        return false;
+    }
 
     const {
         formState: {
@@ -31,56 +36,33 @@ export default function GoogleAnalyticsField({
     } = useFormContext();
 
     useEffect(() => {
-        if (shouldEnableTracking) {
-            loadGoogleTag(trackingId);
+        loadGoogleTag(trackingId);
+        trackPageView();
 
-            gtag("event", "page_view", {
-                page_title: window.parent.document.title,
-            });
-
-            gtag("event", "view_item", {
-                currency: currency,
-                value: amount,
-                items: [
-                    {
-                        item_id: formId,
-                        item_name: formTitle,
-                        item_brand: "Fundraising",
-                        affiliation: affiliation,
-                        item_category: trackCategory,
-                        item_list_name: trackListName,
-                    },
-                ],
-            });
-        }
+        trackViewItem(
+            formId,
+            formTitle,
+            amount,
+            currency,
+            affiliation,
+            trackCategory,
+            trackListName
+        );
     }, []);
 
     useEffect(() => {
         if (isSubmitting) {
             const submittedValues = getValues();
-            const { amount, currency, donationType, gatewayId } =
-                submittedValues;
-
-            gtag("event", "begin_checkout", {
-                currency: currency,
-                value: amount,
-                items: [
-                    {
-                        item_id: formId,
-                        item_name: formTitle,
-                        item_brand: "Fundraising",
-                        affiliation: affiliation,
-                        item_category: trackCategory,
-                        item_category2: gatewayId,
-                        item_category3: donationType,
-                        item_list_name: trackListName,
-                        price: amount,
-                        quantity: 1,
-                    },
-                ],
-            });
+            trackBeginCheckout(
+                submittedValues,
+                formId,
+                formTitle,
+                affiliation,
+                trackCategory,
+                trackListName
+            );
         }
-    }, [isSubmitting]);
+    }, [isSubmitting, getValues]);
 
     return <div id={"givewp-google-analytics-hidden-element"}>test</div>;
 }
