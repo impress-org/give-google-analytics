@@ -29,7 +29,7 @@ class RecordGoogleEventWithGA4OnFrontend
      */
     public function handleWpFooter()
     {
-        if (!$this->canPrintScript()) {
+        if ( ! $this->canPrintScript()) {
             return;
         }
 
@@ -56,14 +56,14 @@ class RecordGoogleEventWithGA4OnFrontend
 
                         // Loop through each form on page and provide an impression.
                         give_forms.each(function (index, form) {
-                            form  = jQuery(form);
+                            form = jQuery(form);
                             var form_id = form.find('input[name="give-form-id"]').val();
                             var form_title = form.find('input[name="give-form-title"]').val();
                             var decimal_separator = Give.form.fn.getInfo('decimal_separator', form.get(0));
                             var currency_code = form.attr('data-currency_code');
                             var default_donation_amount = Give.fn.unFormatCurrency(
                                 form.get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
-                                decimal_separator
+                                decimal_separator,
                             );
 
                             gtag('event', 'view_item', {
@@ -83,8 +83,8 @@ class RecordGoogleEventWithGA4OnFrontend
                                         item_list_name: '<?php echo esc_js(
                                             $this->settingRepository->getTrackListName()
                                         )?>',
-                                    }
-                                ]
+                                    },
+                                ],
                             });
                         });
 
@@ -98,9 +98,9 @@ class RecordGoogleEventWithGA4OnFrontend
                             var decimal_separator = Give.form.fn.getInfo('decimal_separator', form.get(0));
                             var donation_amount = Give.fn.unFormatCurrency(
                                 form.get(0).querySelector('.give-final-total-amount').getAttribute('data-total'),
-                                decimal_separator
+                                decimal_separator,
                             );
-                            var isRecurring = '1' === form.find( 'input[name="_give_is_donation_recurring"]' ).val()
+                            var isRecurring = '1' === form.find('input[name="_give_is_donation_recurring"]').val();
 
                             gtag('event', 'begin_checkout', {
                                 currency: currency_code,
@@ -122,9 +122,9 @@ class RecordGoogleEventWithGA4OnFrontend
                                             $this->settingRepository->getTrackListName()
                                         )?>',
                                         price: donation_amount,
-                                        quantity: 1
-                                    }
-                                ]
+                                        quantity: 1,
+                                    },
+                                ],
                             });
                         });
                     }
@@ -170,7 +170,7 @@ class RecordGoogleEventWithGA4OnFrontend
      */
     public function handleGiveEmbedFooter()
     {
-        if (!$this->canPrintScript()) {
+        if ( ! $this->canPrintScript()) {
             return;
         }
         ?>
@@ -178,14 +178,14 @@ class RecordGoogleEventWithGA4OnFrontend
             var gtag = window.parent[window.parent['GoogleAnalyticsObject'] || 'gtag'];
 
             if ('function' === typeof gtag) {
-                var form = document.querySelector('form.give-form')
+                var form = document.querySelector('form.give-form');
                 var form_id = form.querySelector('input[name="give-form-id"]').value;
                 var form_title = form.querySelector('input[name="give-form-title"]').value;
                 var decimal_separator = Give.form.fn.getInfo('decimal_separator', form);
                 var currency_code = form.getAttribute('data-currency_code');
                 var default_donation_amount = Give.fn.unFormatCurrency(
                     form.querySelector('.give-final-total-amount').getAttribute('data-total'),
-                    decimal_separator
+                    decimal_separator,
                 );
 
                 gtag('event', 'view_item', {
@@ -205,8 +205,8 @@ class RecordGoogleEventWithGA4OnFrontend
                             item_list_name: '<?php echo esc_js(
                                 $this->settingRepository->getTrackListName()
                             )?>',
-                        }
-                    ]
+                        },
+                    ],
                 });
 
                 jQuery(form).on('submit', function (event) {
@@ -216,9 +216,9 @@ class RecordGoogleEventWithGA4OnFrontend
                     var currency_code = form.getAttribute('data-currency_code');
                     var donation_amount = Give.fn.unFormatCurrency(
                         form.querySelector('.give-final-total-amount').getAttribute('data-total'),
-                        decimal_separator
+                        decimal_separator,
                     );
-                    var isRecurring = '1' === jQuery(form).find( 'input[name="_give_is_donation_recurring"]' ).val()
+                    var isRecurring = '1' === jQuery(form).find('input[name="_give_is_donation_recurring"]').val();
 
                     gtag('event', 'begin_checkout', {
                         currency: currency_code,
@@ -240,9 +240,9 @@ class RecordGoogleEventWithGA4OnFrontend
                                     $this->settingRepository->getTrackListName()
                                 )?>',
                                 price: donation_amount,
-                                quantity: 1
-                            }
-                        ]
+                                quantity: 1,
+                            },
+                        ],
                     });
                 });
             }
@@ -250,81 +250,6 @@ class RecordGoogleEventWithGA4OnFrontend
         <?php
     }
 
-    /**
-     * @unreleased
-     */
-    function handleFrontendEventsOnV3Forms() {
-        if (!$this->canPrintScript()) {
-            return;
-        }
-
-        $tracking_id   = $this->settingRepository->getGoogleAnalytics4WebStreamMeasurementId();
-        $affiliation   = $this->settingRepository->getTrackAffiliation();
-        $trackCategory = $this->settingRepository->getTrackCategory();
-        $trackListName = $this->settingRepository->getTrackListName();
-        ?>
-
-        <script async src="https://www.googletagmanager.com/gtag/js?id=<?esc_js($tracking_id)?>"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments)}
-            gtag('js', new Date());
-            gtag('config', '<?php echo esc_js($tracking_id)?>',{
-                'page_title': window.parent.document.title
-            });
-
-
-            window.addEventListener('DOMContentLoaded', function() {
-                var form = document.querySelector('#give-next-gen');
-                var defaultDonationAmount = form.querySelector('input[name="amount"]').value;
-                var formId = form.querySelector('[name="formId"]').value;
-
-                var {currency, name} =  window.givewpDonationFormExports.form;
-
-                gtag('event', 'view_item', {
-                    currency: currency,
-                    value: defaultDonationAmount,
-                    items: [
-                        {
-                            item_id: formId,
-                            item_name: name,
-                            item_brand: 'Fundraising',
-                            affiliation: '<? echo esc_js($affiliation)?>',
-                            item_category: `<? echo esc_js($trackCategory)?>`,
-                            item_list_name: `<? echo esc_js($trackListName)?>`,
-                        }
-                    ]
-                })
-
-                form.addEventListener('submit', function(){
-                    var donationAmount = form.querySelector('input[name="amount"]').value;
-                    var gateway = form.querySelector('input[name="gatewayId"]:checked').value;
-                    var donationType = form.querySelector('input[name="donationType"]').value;
-                    var selectedCurrency = form.querySelector('input[name="currency"]').value;
-
-                    gtag('event', 'begin_checkout', {
-                        currency: selectedCurrency,
-                        value: donationAmount,
-                        items: [
-                            {
-                                item_id: formId,
-                                item_name: name,
-                                item_brand: 'Fundraising',
-                                affiliation: '<? echo esc_js($this->settingRepository->getTrackAffiliation())?>',
-                                item_category: '<? echo esc_js($this->settingRepository->getTrackCategory())?>',
-                                item_category2: gateway,
-                                item_category3: donationType,
-                                item_list_name: '<? echo esc_js($this->settingRepository->getTrackListName())?>',
-                                price: donationAmount ,
-                                quantity: 1
-                            }
-                        ]
-                    });
-                })
-            });
-        </script>
-        <?php
-    }
 
     /**
      * @since 2.0.0
@@ -336,7 +261,7 @@ class RecordGoogleEventWithGA4OnFrontend
             return false;
         }
 
-        if (!$this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4)) {
+        if ( ! $this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4)) {
             return false;
         }
 

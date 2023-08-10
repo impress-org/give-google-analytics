@@ -24,7 +24,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @unreleased Add frontend events for v3 forms.
-     * @since 2.0.0
+     * @since      2.0.0
      * @return void
      */
     public function boot()
@@ -42,13 +42,6 @@ class ServiceProvider implements ServiceProviderInterface
             'give_embed_footer',
             RecordGoogleEventWithGA4OnFrontend::class,
             'handleGiveEmbedFooter',
-            99999
-        );
-
-        Hooks::addAction(
-            'givewp_donation_form_enqueue_scripts',
-            RecordGoogleEventWithGA4OnFrontend::class,
-            'handleFrontendEventsOnV3Forms',
             99999
         );
 
