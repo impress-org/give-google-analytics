@@ -17,6 +17,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var ga_gtag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ga-gtag */ "./node_modules/ga-gtag/lib/index.js");
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Utilities */ "./src/FormExtension/DonationForm/Templates/Utilities.ts");
+
 
 
 
@@ -34,7 +36,10 @@ function GoogleAnalyticsField({
   const {
     formTitle
   } = window.givewp.form.hooks.useDonationFormSettings();
-  const shouldEnableTracking = !administrator || !trackingMode;
+  const shouldDisableTracking = administrator || !trackingMode;
+  if (shouldDisableTracking) {
+    return false;
+  }
   const {
     formState: {
       defaultValues: {
@@ -47,55 +52,79 @@ function GoogleAnalyticsField({
     getValues
   } = useFormContext();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (shouldEnableTracking) {
-      (0,ga_gtag__WEBPACK_IMPORTED_MODULE_2__.install)(trackingId);
-      (0,ga_gtag__WEBPACK_IMPORTED_MODULE_2__.gtag)("event", "page_view", {
-        page_title: window.parent.document.title
-      });
-      (0,ga_gtag__WEBPACK_IMPORTED_MODULE_2__.gtag)("event", "view_item", {
-        currency: currency,
-        value: amount,
-        items: [{
-          item_id: formId,
-          item_name: formTitle,
-          item_brand: "Fundraising",
-          affiliation: affiliation,
-          item_category: trackCategory,
-          item_list_name: trackListName
-        }]
-      });
-    }
+    (0,ga_gtag__WEBPACK_IMPORTED_MODULE_2__.install)(trackingId);
+    (0,_Utilities__WEBPACK_IMPORTED_MODULE_3__.trackPageView)();
+    (0,_Utilities__WEBPACK_IMPORTED_MODULE_3__.trackViewItem)(formId, formTitle, amount, currency, affiliation, trackCategory, trackListName);
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (isSubmitting) {
       const submittedValues = getValues();
-      const {
-        amount,
-        currency,
-        donationType,
-        gatewayId
-      } = submittedValues;
-      (0,ga_gtag__WEBPACK_IMPORTED_MODULE_2__.gtag)("event", "begin_checkout", {
-        currency: currency,
-        value: amount,
-        items: [{
-          item_id: formId,
-          item_name: formTitle,
-          item_brand: "Fundraising",
-          affiliation: affiliation,
-          item_category: trackCategory,
-          item_category2: gatewayId,
-          item_category3: donationType,
-          item_list_name: trackListName,
-          price: amount,
-          quantity: 1
-        }]
-      });
+      (0,_Utilities__WEBPACK_IMPORTED_MODULE_3__.trackBeginCheckout)(submittedValues, formId, formTitle, affiliation, trackCategory, trackListName);
     }
-  }, [isSubmitting]);
+  }, [isSubmitting, getValues]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     id: "givewp-google-analytics-hidden-element"
-  }, "test");
+  });
+}
+
+/***/ }),
+
+/***/ "./src/FormExtension/DonationForm/Templates/Utilities.ts":
+/*!***************************************************************!*\
+  !*** ./src/FormExtension/DonationForm/Templates/Utilities.ts ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "trackBeginCheckout": () => (/* binding */ trackBeginCheckout),
+/* harmony export */   "trackPageView": () => (/* binding */ trackPageView),
+/* harmony export */   "trackViewItem": () => (/* binding */ trackViewItem)
+/* harmony export */ });
+/* harmony import */ var ga_gtag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ga-gtag */ "./node_modules/ga-gtag/lib/index.js");
+
+function trackPageView() {
+  (0,ga_gtag__WEBPACK_IMPORTED_MODULE_0__.gtag)("event", "page_view", {
+    page_title: window.parent.document.title
+  });
+}
+function trackViewItem(formId, formTitle, amount, currency, affiliation, trackCategory, trackListName) {
+  (0,ga_gtag__WEBPACK_IMPORTED_MODULE_0__.gtag)("event", "view_item", {
+    currency: currency,
+    value: amount,
+    items: [{
+      item_id: formId,
+      item_name: formTitle,
+      item_brand: "Fundraising",
+      affiliation: affiliation,
+      item_category: trackCategory,
+      item_list_name: trackListName
+    }]
+  });
+}
+function trackBeginCheckout(submittedValues, formId, formTitle, affiliation, trackCategory, trackListName) {
+  const {
+    amount,
+    currency,
+    donationType,
+    gatewayId
+  } = submittedValues;
+  (0,ga_gtag__WEBPACK_IMPORTED_MODULE_0__.gtag)("event", "begin_checkout", {
+    currency: currency,
+    value: amount,
+    items: [{
+      item_id: formId,
+      item_name: formTitle,
+      item_brand: "Fundraising",
+      affiliation: affiliation,
+      item_category: trackCategory,
+      item_category2: gatewayId,
+      item_category3: donationType,
+      item_list_name: trackListName,
+      price: amount,
+      quantity: 1
+    }]
+  });
 }
 
 /***/ }),

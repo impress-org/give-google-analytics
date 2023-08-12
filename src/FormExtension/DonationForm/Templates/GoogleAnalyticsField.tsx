@@ -64,5 +64,5 @@ export default function GoogleAnalyticsField({
         }
     }, [isSubmitting, getValues]);
 
-    return <div id={"givewp-google-analytics-hidden-element"}></div>;
+    return <div id={"givewp-google-analytics-hidden-element"} />;
 }

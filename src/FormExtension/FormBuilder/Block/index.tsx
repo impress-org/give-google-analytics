@@ -1,14 +1,14 @@
 import type { BlockConfiguration } from "@wordpress/blocks";
 import metadata from "./metadata";
+import index from "./edit";
 
 const { name } = metadata;
-const edit = () => null;
 const save = () => null;
 
 const settings = {
     ...metadata,
     save,
-    edit,
+    edit: index,
 };
 
 const googleAnalytics: { name: string; settings: BlockConfiguration } = {
