@@ -12,6 +12,7 @@ class DonationFormScriptsEnqueue
     /**
      * Enqueues the Google Analytic donation form extension scripts and styles.
      *
+     * @unreleased
      * @return void
      */
     public function __invoke()
@@ -25,6 +26,5 @@ class DonationFormScriptsEnqueue
             false,
             true
         );
-
     }
 }

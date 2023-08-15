@@ -3,8 +3,8 @@
 namespace GiveGoogleAnalytics\FormExtension\DonationForm\Actions;
 
 use Give\Framework\FieldsAPI\DonationForm as DonationFormNode;
-use GiveGoogleAnalytics\Donations\Actions\RecordDonationInGoogleAnalyticsWithGA4;
 use GiveGoogleAnalytics\FormExtension\DonationForm\Fields\GoogleAnalytics;
+use GiveGoogleAnalytics\GoogleAnalytics\ValueObjects\TrackingMode;
 use GiveGoogleAnalytics\Settings\Repositories\SettingRepository;
 
 class ConvertGoogleAnalyticOptionsToField
@@ -22,15 +22,17 @@ class ConvertGoogleAnalyticOptionsToField
         $this->settingRepository = $settingRepository;
     }
 
+
     /**
-     * Add the Google Analytic field to the form.
+     * Add Google Analytic field to the form.
+     * @unreleased
      */
     public function __invoke(DonationFormNode $form)
     {
-        $canPrintScript = RecordDonationInGoogleAnalyticsWithGA4::class->canPrintScript();
+        $canPrintScript = $this->canPrintScript();
 
         if ( ! $canPrintScript) {
-            return false;
+            return;
         }
 
         $googleAnalyticsField = GoogleAnalytics::make('googleAnalytics')
@@ -43,6 +45,9 @@ class ConvertGoogleAnalyticOptionsToField
         $lastSection->append($googleAnalyticsField);
     }
 
+    /**
+     * @unreleased
+     */
     private function setGlobalAttributes(GoogleAnalytics $field)
     {
         $field
@@ -50,6 +55,23 @@ class ConvertGoogleAnalyticOptionsToField
             ->affiliation($this->settingRepository->getTrackAffiliation())
             ->trackCategory($this->settingRepository->getTrackCategory())
             ->trackListName($this->settingRepository->getTrackListName());
+    }
+
+    /**
+     * @unreleased
+     */
+    private function canPrintScript(): bool
+    {
+        // Don't track site admins
+        if (is_user_logged_in() && current_user_can('administrator')) {
+            return false;
+        }
+
+        if ( ! $this->settingRepository->canSendEvent(TrackingMode::GOOGLE_ANALYTICS_4)) {
+            return false;
+        }
+
+        return true;
     }
 }
 
