@@ -7,8 +7,6 @@ interface GoogleAnalyticsFieldProps {
     affiliation: string;
     trackCategory: string;
     trackListName: string;
-    trackingMode: boolean;
-    administrator: boolean;
 }
 
 export default function GoogleAnalyticsField({
@@ -16,16 +14,9 @@ export default function GoogleAnalyticsField({
     affiliation,
     trackCategory,
     trackListName,
-    trackingMode,
-    administrator,
 }: GoogleAnalyticsFieldProps) {
     const { useFormContext } = window.givewp.form.hooks;
     const { formTitle } = window.givewp.form.hooks.useDonationFormSettings();
-    const shouldDisableTracking = administrator || !trackingMode;
-
-    if (shouldDisableTracking) {
-        return false;
-    }
 
     const {
         formState: {
