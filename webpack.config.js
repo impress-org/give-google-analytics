@@ -1,12 +1,12 @@
 /**
  * External Dependencies
  */
-const path = require('path');
+const path = require("path");
 
 /**
  * WordPress Dependencies
  */
-const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
+const defaultConfig = require("@wordpress/scripts/config/webpack.config.js");
 
 /**
  * Custom config
@@ -14,8 +14,9 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
 module.exports = {
     ...defaultConfig,
     entry: {
-       googleAnalyticsFormBuilderExtension: srcPath('FormExtension/FormBuilder/index.ts'),
-        googleAnalyticsDonationFormExtension: srcPath('FormExtension/DonationForm/index.ts'),
+        googleAnalyticsDonationFormExtension: srcPath(
+            "FormExtension/DonationForm/index.ts"
+        ),
     },
 };
 
@@ -26,5 +27,5 @@ module.exports = {
  * @returns {string}
  */
 function srcPath(relativePath) {
-    return path.resolve(process.cwd(), 'src', relativePath);
+    return path.resolve(process.cwd(), "src", relativePath);
 }
