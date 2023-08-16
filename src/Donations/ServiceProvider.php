@@ -23,7 +23,8 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 2.0.0
+     * @unreleased Add frontend events for v3 forms.
+     * @since      2.0.0
      * @return void
      */
     public function boot()
