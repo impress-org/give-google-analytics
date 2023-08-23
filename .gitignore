@@ -2,7 +2,9 @@ node_modules
 
 vendor
 
+# Assets
 assets/dist
+build
 
 languages/*
 !languages/.gitkeep
