@@ -5,14 +5,14 @@ namespace GiveGoogleAnalytics\FormExtension\Hooks;
 /**
  * Class DonationFormScriptsEnqueue
  *
- * @unreleased
+ * @since 3.0
  */
 class DonationFormScriptsEnqueue
 {
     /**
      * Enqueues the Google Analytic donation form extension scripts and styles.
      *
-     * @unreleased
+     * @since 3.0
      * @return void
      */
     public function __invoke()

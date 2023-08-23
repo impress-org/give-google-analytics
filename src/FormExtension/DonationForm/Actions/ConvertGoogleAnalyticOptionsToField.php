@@ -15,7 +15,7 @@ class ConvertGoogleAnalyticOptionsToField
     private $settingRepository;
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function __construct(SettingRepository $settingRepository)
     {
@@ -25,7 +25,7 @@ class ConvertGoogleAnalyticOptionsToField
 
     /**
      * Add Google Analytic field to the form.
-     * @unreleased
+     * @since 3.0
      */
     public function __invoke(DonationFormNode $form)
     {
@@ -46,7 +46,7 @@ class ConvertGoogleAnalyticOptionsToField
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     private function setGlobalAttributes(GoogleAnalytics $field)
     {
@@ -58,7 +58,7 @@ class ConvertGoogleAnalyticOptionsToField
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     private function canPrintScript(): bool
     {

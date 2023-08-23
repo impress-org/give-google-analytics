@@ -23,7 +23,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Add frontend events for v3 forms.
+     * @since 3.0 Add frontend events for v3 forms.
      * @since      2.0.0
      * @return void
      */

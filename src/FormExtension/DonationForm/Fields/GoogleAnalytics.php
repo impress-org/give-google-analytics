@@ -16,7 +16,7 @@ class GoogleAnalytics extends Element
     const TYPE = 'googleAnalytics';
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function trackingId(string|null $trackingId): GoogleAnalytics
     {
@@ -26,7 +26,7 @@ class GoogleAnalytics extends Element
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function affiliation(string|null $affiliation): GoogleAnalytics
     {
@@ -36,7 +36,7 @@ class GoogleAnalytics extends Element
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function trackCategory(string|null $trackCategory): GoogleAnalytics
     {
@@ -46,7 +46,7 @@ class GoogleAnalytics extends Element
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function trackListName(string|null $trackListName): GoogleAnalytics
     {
@@ -56,7 +56,7 @@ class GoogleAnalytics extends Element
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function trackingMode(string|null $trackingMode): GoogleAnalytics
     {
@@ -66,7 +66,7 @@ class GoogleAnalytics extends Element
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function administrator(string|null $administrator): GoogleAnalytics
     {

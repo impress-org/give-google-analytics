@@ -12,19 +12,19 @@ use GiveGoogleAnalytics\FormExtension\Hooks\GoogleTagScripts;
  * Class ServiceProvider
  *
  * @package GiveGoogleAnalytics
- * @unreleased
+ * @since 3.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function register()
     {
     }
 
     /**
-     * @unreleased
+     * @since 3.0
      */
     public function boot()
     {
