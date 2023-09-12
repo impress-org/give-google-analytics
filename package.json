@@ -5,7 +5,7 @@
         "start": "npm install && npm run watch",
         "dev": "mix",
         "production": "mix --production",
-        "build": "mix --production",
+        "build": "mix --production && npm run build:form-extension",
         "watch": "mix watch",
         "dev:form-extension": "wp-scripts build",
         "watch:form-extension": "wp-scripts start",
