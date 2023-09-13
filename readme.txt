@@ -3,7 +3,7 @@ Contributors: givewp
 Tags: donation analytics, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 5.0
 Tested up to: 6.3
-Stable tag: 3.0
+Stable tag: 3.0.1
 Requires PHP: 7.0
 Requires Give: 2.23.0
 License: GPLv3
@@ -38,6 +38,9 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+= 3.0.1: September 13th, 2023 =
+* Fix: Added a build task for compatibility with the visual form builder
+
 = 3.0: August 23rd, 2023 =
 * Feature: Added Google Analytics 4 tracking on forms created using the Visual Donation Forms Builder
 
